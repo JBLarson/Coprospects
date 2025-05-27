@@ -1,33 +1,56 @@
-<styles>
-    .logo-container {
-    position: relative;
-    width: 110px; 
-    height: calc(var(--navbar-height) - 20px); 
-    display: flex; 
-    align-items: center;
-    justify-content: center;
+<style>
+    .global-nav-logo-container { /* Renamed for clarity and consistency */
+        position: relative;
+        width: 130px; /* Adjusted for better visibility, can be tuned */
+        height: calc(var(--global-nav-height) - 16px); /* Using global_nav_height & some padding */
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Align to the start of the nav bar typically */
     }
 
-    .logo-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transition: opacity 0.3s ease-in-out;
+    .global-nav-logo-container .logo-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Ensures logo scales nicely */
     }
 
+    .global-nav-logo-container .logo-base {
+        opacity: 1; /* Base logo is always 'potentially' visible */
+    }
 
-</styless>
+    .global-nav-logo-container .logo-alternate {
+        opacity: 0; /* Alternate logo starts invisible */
+        animation: fadeAlternateLogo 8s infinite ease-in-out; /* 8s total cycle, adjust as needed */
+    }
 
+    @keyframes fadeAlternateLogo {
+        0% { opacity: 0; }   /* Start: Alternate is invisible */
+        25% { opacity: 1; }  /* Fade In: Alternate becomes visible (base is under it) */
+        75% { opacity: 1; }  /* Hold: Alternate stays visible */
+        100% { opacity: 0; } /* Fade Out: Alternate becomes invisible again */
+    }
+
+    /* Ensure global-site-nav styles from global.css work with this */
+    /* If the brand link was the logo, we replace it. If it was text next to logo, adjust. */
+    /* Assuming the logo container *is* the brand area */
+    .global-site-nav .nav-brand-link { /* If you want the logo to be a link to homepage */
+        display: block; /* Makes the whole container clickable */
+        width: 100%;
+        height: 100%;
+    }
+
+</style>
 
 <nav class="global-site-nav">
     <div class="container">
-        <div className="logo-container">
-            <img src="https://coprospects.com/images/Coprospects-white-blue.png" alt="Coprospects White Logo" class="logo-image logo-default" />
-            <img src="https://coprospects.com/images/Coprospects-blue-white.png" alt="Coprospects Blue Logo" class="logo-image logo-default" />
-        </div>
+        <a href="/index.html" class="global-nav-logo-container nav-brand-link" aria-label="Homepage">
+            <img src="https://coprospects.com/images/Coprospects-white-blue.png" alt="Coprospects White on Blue Logo" class="logo-image logo-base" />
+            <img src="https://coprospects.com/images/Coprospects-blue-white.png" alt="Coprospects Blue on White Logo" class="logo-image logo-alternate" />
+        </a>
+        
         <ul>
             <li><a href="/index.html" id="global-nav-hub">Homepage</a></li>
             <li><a href="/home-services/index.html" id="global-nav-home-services">Home Services</a></li>
