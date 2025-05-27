@@ -1,4 +1,4 @@
-# coProspects.com
+# coProspects
 ## Convert Prospects Consulting
 
 ### Demo Sites
