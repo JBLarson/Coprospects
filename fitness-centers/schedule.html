@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Schedule - Peak Performance Studio</title>
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/fitness-centers.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💪</text></svg>">
+    <style>
+        /* Page-specific styles for schedule.html */
+        .page-header-section.fitness-hero {
+            padding-top: calc(var(--spacing-xl) * 0.7);
+            padding-bottom: calc(var(--spacing-xl) * 0.7);
+            min-height: 35vh;
+        }
+        .page-header-section.fitness-hero .hero-title {
+            font-size: 2.8rem;
+        }
+        .page-header-section.fitness-hero .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .schedule-section {
+            background-color: var(--color-background-light); /* Light background for the main schedule area */
+        }
+
+        .schedule-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-md);
+            background-color: var(--color-background);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+        .schedule-filters label {
+            font-weight: 600;
+            margin-right: var(--spacing-sm);
+            color: var(--fitness-color-dark-text);
+        }
+        .schedule-filters select,
+        .schedule-filters input[type="date"] {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius-sm);
+            border: 1px solid #ccc;
+            font-family: var(--font-primary);
+            min-width: 180px;
+        }
+        .schedule-filters .btn {
+            background-color: var(--fitness-color-secondary);
+            color: var(--fitness-color-light-text);
+            border: none;
+        }
+         .schedule-filters .btn:hover {
+            background-color: #d35400;
+        }
+
+
+        .schedule-table-container {
+            overflow-x: auto; /* Allows horizontal scrolling on small screens */
+            background-color: var(--color-background);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            padding: var(--spacing-md);
+        }
+
+        .schedule-table {
+            width: 100%;
+            min-width: 700px; /* Ensure table has a minimum width for better layout */
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: var(--spacing-md);
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .schedule-table th {
+            background-color: var(--fitness-color-dark-bg);
+            color: var(--fitness-color-light-text);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+        .schedule-table th:first-child {
+            border-top-left-radius: var(--border-radius-sm);
+             text-align: left;
+        }
+        .schedule-table th:last-child {
+            border-top-right-radius: var(--border-radius-sm);
+        }
+
+
+        .schedule-table td {
+            vertical-align: top;
+            color: var(--fitness-color-dark-text);
+        }
+        .schedule-table td.time-slot {
+            font-weight: 600;
+            color: var(--fitness-color-primary);
+            white-space: nowrap;
+            font-size: 1.1rem;
+            vertical-align: middle;
+        }
+
+        .class-entry {
+            background-color: var(--color-background-light);
+            padding: var(--spacing-md);
+            border-radius: var(--border-radius-sm);
+            margin-bottom: var(--spacing-sm);
+            border-left: 4px solid var(--fitness-color-primary);
+            transition: all 0.3s ease;
+        }
+        .class-entry:hover {
+            transform: scale(1.02);
+            box-shadow: var(--shadow-md);
+            border-left-color: var(--fitness-color-secondary);
+        }
+
+        .class-entry h4 {
+            font-size: 1.1rem;
+            color: var(--fitness-color-dark-text);
+            margin-bottom: var(--spacing-xs);
+        }
+        .class-entry p {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.4;
+        }
+        .class-entry .instructor {
+            font-style: italic;
+            display: block;
+            margin-bottom: var(--spacing-sm);
+        }
+        .class-entry .btn-book {
+            display: inline-block;
+            padding: var(--spacing-xs) var(--spacing-sm);
+            font-size: 0.8rem;
+            background-color: var(--fitness-color-secondary);
+            color: var(--fitness-color-light-text);
+            border-radius: var(--border-radius-sm);
+            text-align: center;
+        }
+        .class-entry .btn-book:hover {
+            background-color: #d35400;
+            color: var(--fitness-color-light-text);
+        }
+        .class-entry .spots-left {
+            font-size: 0.75rem;
+            color: var(--color-success);
+            font-weight: bold;
+            display: block;
+            margin-top: 5px;
+        }
+        .class-entry .spots-few {
+            color: var(--color-warning);
+        }
+         .class-entry .spots-full {
+            color: var(--color-danger);
+        }
+
+
+        /* Day navigation for mobile or as an alternative */
+        .day-navigation {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+        .day-navigation .btn {
+            background-color: var(--color-background);
+            color: var(--fitness-color-primary);
+            border: 1px solid var(--fitness-color-primary);
+        }
+        .day-navigation .btn.active,
+        .day-navigation .btn:hover {
+            background-color: var(--fitness-color-primary);
+            color: var(--fitness-color-light-text);
+        }
+
+
+        @media (max-width: 1300px) {
+            .schedule-table th,
+            .schedule-table td {
+                padding: var(--spacing-sm) calc(var(--spacing-sm) * 0.75); /* Reduce horizontal padding more */
+            }
+
+            .schedule-table th {
+                font-size: 0.95rem; /* Slightly smaller day headers */
+            }
+
+            .schedule-table td.time-slot {
+                font-size: 1rem; /* Slightly smaller time slots */
+                padding-right: var(--spacing-sm); /* Ensure time slot doesn't take too much space */
+            }
+
+            .class-entry {
+                padding: var(--spacing-sm); /* Reduce padding inside class entries */
+                margin-bottom: calc(var(--spacing-sm) * 0.5); /* Reduce margin between entries */
+            }
+
+            .class-entry h4 {
+                font-size: 1rem; /* Smaller class titles */
+                margin-bottom: calc(var(--spacing-xs) * 0.5);
+            }
+
+            .class-entry p {
+                font-size: 0.8rem; /* Smaller descriptive text */
+                line-height: 1.3;
+                margin-bottom: calc(var(--spacing-sm) * 0.75);
+            }
+            
+            .class-entry .instructor {
+                font-size: 0.75rem;
+                margin-bottom: calc(var(--spacing-xs) * 0.5);
+            }
+
+            .class-entry .btn-book {
+                padding: calc(var(--spacing-xs) * 0.75) calc(var(--spacing-sm) * 0.75);
+                font-size: 0.75rem;
+            }
+
+            .class-entry .spots-left {
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            /* Further reductions for smaller tablets, if still needed */
+            .schedule-table th,
+            .schedule-table td {
+                padding: calc(var(--spacing-sm) * 0.75) calc(var(--spacing-sm) * 0.5);
+            }
+            .schedule-table th {
+                font-size: 0.85rem;
+            }
+            .schedule-table td.time-slot {
+                font-size: 0.9rem;
+            }
+            .class-entry h4 {
+                font-size: 0.9rem;
+            }
+            .class-entry p, .class-entry .instructor {
+                font-size: 0.75rem;
+            }
+            .class-entry .btn-book {
+                font-size: 0.7rem;
+                padding: var(--spacing-xs) calc(var(--spacing-xs) * 1.5);
+            }
+        }
+
+
+        @media (max-width: 768px) {
+            .page-header-section.fitness-hero .hero-title {
+                font-size: 2.2rem;
+            }
+            .schedule-filters {
+                flex-direction: column;
+            }
+            .schedule-filters select,
+            .schedule-filters input[type="date"],
+            .schedule-filters .btn {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+<body class="fitness-theme">
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                Peak Performance Studio
+            </a>
+            <nav class="main-navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="classes.html">Classes</a></li>
+                    <li><a href="schedule.html" class="active">Schedule</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <section class="page-header-section fitness-hero">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Weekly Class Schedule</h1>
+                <p class="hero-subtitle">Find your next challenge. Book your spot and let's get moving!</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="schedule-section section-padding">
+        <div class="container">
+            <p class="section-intro">
+                Our schedule is packed with a variety of classes to suit all fitness levels and interests.
+                Use the filters below to find your perfect class or browse the full weekly timetable.
+                Booking in advance is highly recommended as classes fill up quickly!
+            </p>
+
+            <div class="schedule-filters">
+                <div>
+                    <label for="filter-day">Day:</label>
+                    <select id="filter-day" name="filter-day">
+                        <option value="all">All Days</option>
+                        <option value="monday">Monday</option>
+                        <option value="tuesday">Tuesday</option>
+                        <option value="wednesday">Wednesday</option>
+                        <option value="thursday">Thursday</option>
+                        <option value="friday">Friday</option>
+                        <option value="saturday">Saturday</option>
+                        <option value="sunday">Sunday</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filter-class">Class Type:</label>
+                    <select id="filter-class" name="filter-class">
+                        <option value="all">All Classes</option>
+                        <option value="hiit">Peak HIIT Blast</option>
+                        <option value="spin">Rhythm Ride Spin</option>
+                        <option value="kickboxing">Combat Cardio Kick</option>
+                        <option value="strength">Total Strength Circuit</option>
+                        <option value="core">Core Crusher</option>
+                        <option value="yoga">Flow & Restore Yoga</option>
+                        <option value="pilates">Precision Pilates Mat</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filter-instructor">Instructor:</label>
+                    <select id="filter-instructor" name="filter-instructor">
+                        <option value="all">All Instructors</option>
+                        <option value="alex">Alex P.</option>
+                        <option value="maria">Maria S.</option>
+                        <option value="chris">Chris K.</option>
+                        <option value="guest">Guest Instructor</option>
+                    </select>
+                </div>
+                <button class="btn" id="apply-filters-btn">Apply Filters</button>
+            </div>
+
+            <!-- <div class="day-navigation">
+                <button class="btn active" data-day="monday">Mon</button>
+                <button class="btn" data-day="tuesday">Tue</button>
+                 ... etc. ...
+            </div> -->
+
+            <div class="schedule-table-container">
+                <table class="schedule-table">
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                            <th>Saturday</th>
+                            <th>Sunday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="time-slot">7:00 AM</td>
+                            <td>
+                                <div class="class-entry" data-class="spin" data-instructor="alex">
+                                    <h4>Rhythm Ride Spin</h4>
+                                    <p class="instructor">Alex P.</p>
+                                    <p>Early bird energy boost!</p>
+                                    <span class="spots-left">5 spots left</span>
+                                    <a href="contact.html?class=spin-mon7am" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="class-entry" data-class="spin" data-instructor="alex">
+                                    <h4>Rhythm Ride Spin</h4>
+                                    <p class="instructor">Alex P.</p>
+                                    <p>Mid-week power ride.</p>
+                                    <span class="spots-left spots-few">2 spots left</span>
+                                    <a href="contact.html?class=spin-wed7am" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td>
+                                <div class="class-entry" data-class="spin" data-instructor="guest">
+                                    <h4>Rhythm Ride Spin</h4>
+                                    <p class="instructor">Guest Instructor</p>
+                                    <p>Finish the week strong.</p>
+                                    <span class="spots-left">7 spots left</span>
+                                    <a href="contact.html?class=spin-fri7am" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="class-entry" data-class="yoga" data-instructor="maria">
+                                    <h4>Sunrise Flow Yoga</h4>
+                                    <p class="instructor">Maria S.</p>
+                                    <p>Gentle start to your weekend.</p>
+                                    <span class="spots-left">Full</span>
+                                    <a href="#" class="btn-book disabled">Full</a>
+                                </div>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">9:00 AM</td>
+                            <td>
+                                <div class="class-entry" data-class="strength" data-instructor="chris">
+                                    <h4>Total Strength Circuit</h4>
+                                    <p class="instructor">Chris K.</p>
+                                    <p>Full body strength.</p>
+                                    <span class="spots-left">4 spots left</span>
+                                    <a href="contact.html?class=strength-mon9am" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="class-entry" data-class="pilates" data-instructor="maria">
+                                    <h4>Precision Pilates Mat</h4>
+                                    <p class="instructor">Maria S.</p>
+                                    <p>Core focus.</p>
+                                    <span class="spots-left">6 spots left</span>
+                                    <a href="contact.html?class=pilates-tue9am" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="class-entry" data-class="strength" data-instructor="chris">
+                                    <h4>Total Strength Circuit</h4>
+                                    <p class="instructor">Chris K.</p>
+                                    <p>Build and tone.</p>
+                                    <span class="spots-left">3 spots left</span>
+                                    <a href="contact.html?class=strength-wed9am" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="class-entry" data-class="pilates" data-instructor="maria">
+                                    <h4>Precision Pilates Mat</h4>
+                                    <p class="instructor">Maria S.</p>
+                                    <p>Lengthen and strengthen.</p>
+                                    <span class="spots-left">5 spots left</span>
+                                    <a href="contact.html?class=pilates-thu9am" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td>
+                                 <div class="class-entry" data-class="strength" data-instructor="chris">
+                                    <h4>Total Strength Circuit</h4>
+                                    <p class="instructor">Chris K.</p>
+                                    <p>Weekend warrior strength.</p>
+                                    <span class="spots-left">Full</span>
+                                    <a href="#" class="btn-book disabled">Full</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="class-entry" data-class="hiit" data-instructor="alex">
+                                    <h4>Peak HIIT Blast</h4>
+                                    <p class="instructor">Alex P.</p>
+                                    <p>Weekend metabolic boost.</p>
+                                    <span class="spots-left">8 spots left</span>
+                                    <a href="contact.html?class=hiit-sat9am" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="class-entry" data-class="yoga" data-instructor="maria">
+                                    <h4>Restorative Yoga</h4>
+                                    <p class="instructor">Maria S.</p>
+                                    <p>Relax and recharge.</p>
+                                    <span class="spots-left">4 spots left</span>
+                                    <a href="contact.html?class=yoga-sun9am" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">12:00 PM</td>
+                            <td>
+                                <div class="class-entry" data-class="core" data-instructor="alex">
+                                    <h4>Core Crusher (30min)</h4>
+                                    <p class="instructor">Alex P.</p>
+                                    <p>Lunchtime core blast.</p>
+                                    <span class="spots-left">7 spots left</span>
+                                    <a href="contact.html?class=core-mon12pm" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="class-entry" data-class="hiit" data-instructor="chris">
+                                    <h4>Peak HIIT Blast</h4>
+                                    <p class="instructor">Chris K.</p>
+                                    <p>Midday intensity.</p>
+                                    <span class="spots-left">5 spots left</span>
+                                    <a href="contact.html?class=hiit-tue12pm" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                             <td>
+                                <div class="class-entry" data-class="core" data-instructor="alex">
+                                    <h4>Core Crusher (30min)</h4>
+                                    <p class="instructor">Alex P.</p>
+                                    <p>Quick core workout.</p>
+                                    <span class="spots-left">6 spots left</span>
+                                    <a href="contact.html?class=core-wed12pm" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                             <td>
+                                <div class="class-entry" data-class="hiit" data-instructor="chris">
+                                    <h4>Peak HIIT Blast</h4>
+                                    <p class="instructor">Chris K.</p>
+                                    <p>Power through lunch.</p>
+                                    <span class="spots-left spots-few">2 spots left</span>
+                                    <a href="contact.html?class=hiit-thu12pm" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                             <td>
+                                <div class="class-entry" data-class="core" data-instructor="alex">
+                                    <h4>Core Crusher (30min)</h4>
+                                    <p class="instructor">Alex P.</p>
+                                    <p>Friday core focus.</p>
+                                    <span class="spots-left">8 spots left</span>
+                                    <a href="contact.html?class=core-fri12pm" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="time-slot">5:30 PM</td>
+                            <td>
+                                <div class="class-entry" data-class="kickboxing" data-instructor="guest">
+                                    <h4>Combat Cardio Kick</h4>
+                                    <p class="instructor">Guest Instructor</p>
+                                    <p>Unwind and strike!</p>
+                                    <span class="spots-left">6 spots left</span>
+                                    <a href="contact.html?class=kickboxing-mon530pm" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                             <td>
+                                <div class="class-entry" data-class="yoga" data-instructor="maria">
+                                    <h4>Flow & Restore Yoga</h4>
+                                    <p class="instructor">Maria S.</p>
+                                    <p>Evening wind-down.</p>
+                                    <span class="spots-left">3 spots left</span>
+                                    <a href="contact.html?class=yoga-tue530pm" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="class-entry" data-class="kickboxing" data-instructor="guest">
+                                    <h4>Combat Cardio Kick</h4>
+                                    <p class="instructor">Guest Instructor</p>
+                                    <p>Mid-week stress relief.</p>
+                                    <span class="spots-left">Full</span>
+                                    <a href="#" class="btn-book disabled">Full</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="class-entry" data-class="yoga" data-instructor="maria">
+                                    <h4>Flow & Restore Yoga</h4>
+                                    <p class="instructor">Maria S.</p>
+                                    <p>Stretch and release.</p>
+                                    <span class="spots-left">5 spots left</span>
+                                    <a href="contact.html?class=yoga-thu530pm" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="class-entry" data-class="hiit" data-instructor="alex">
+                                    <h4>Peak HIIT Blast</h4>
+                                    <p class="instructor">Alex P.</p>
+                                    <p>Friday night lights out!</p>
+                                    <span class="spots-left">7 spots left</span>
+                                    <a href="contact.html?class=hiit-fri530pm" class="btn-book">Book Now</a>
+                                </div>
+                            </td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section section-padding fitness-cta">
+        <div class="container text-center">
+            <h2 class="section-title">Ready to Book Your Spot?</h2>
+            <p class="section-intro">Spaces fill up fast! Secure your place in your favorite class or contact us for help finding the perfect fit.</p>
+            <a href="contact.html?interest=booking_help" class="btn btn-primary btn-large">Contact Us to Book</a>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>Peak Performance Studio</h4>
+                    <p>Transforming bodies and minds in Southern California. Your journey to peak fitness starts here.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Navigate</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="classes.html">Classes</a></li>
+                        <li><a href="schedule.html">Full Schedule</a></li>
+                        <li><a href="contact.html">Contact & Join</a></li>
+                        <li><a href="#">Privacy Policy (Placeholder)</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Visit Us</h4>
+                    <p>456 Fitness Drive, Irvine, CA 92618</p>
+                    <p>Phone: <a href="tel:+1555FITNESS">(555) FIT-NESS (348-6377)</a></p>
+                    <p>Email: <a href="mailto:info@peakperformancestudio.com">info@peakperformancestudio.com</a></p>
+                </div>
+                <div class="footer-column">
+                    <h4>Follow Our Journey</h4>
+                    <div class="social-media-links">
+                        <a href="#" aria-label="Facebook"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M22.675 0H1.325C.593 0 0 .593 0 1.325v21.35C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.732 0 1.325-.593 1.325-1.325V1.325C24 .593 23.407 0 22.675 0z'/%3E%3C/svg%3E" alt="Facebook"></a>
+                        <a href="#" aria-label="Instagram"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12 2.163c3.204 0 3.584.012 4.85.07 1.272.058 2.163.242 2.963.572.975.403 1.73 1.026 2.497 1.793s1.39 1.522 1.793 2.497c.33.8.514 1.691.572 2.963.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.058 1.272-.242 2.163-.572 2.963-.403.975-1.026 1.73-1.793 2.497s-1.522 1.39-2.497 1.793c-.8.33-1.691.514-2.963.572-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.272-.058-2.163-.242-2.963-.572-.975-.403-1.73-1.026-2.497-1.793S.802 18.975.403 18c-.33-.8-.514-1.691-.572-2.963C.012 13.784 0 13.404 0 12s.012-3.584.07-4.85c.058-1.272.242-2.163.572-2.963.403-.975 1.026-1.73 1.793-2.497S3.025.802 4 .403c.8-.33 1.691.514 2.963-.572C8.216 2.175 8.596 2.163 12 2.163zm0 1.802c-3.116 0-3.476.011-4.694.068-.99.045-1.631.223-2.15.417-.646.242-1.08.562-1.518.999-.44.44-.757.878-.999 1.518-.194.52-.372 1.16-.417 2.15-.057 1.218-.068 1.578-.068 4.694s.011 3.476.068 4.694c.045.99.223 1.631.417 2.15.242.646.562 1.08.999 1.518.44.44.878.757 1.518.999.52.194 1.16.372 2.15.417 1.218.057 1.578.068 4.694.068s3.476-.011 4.694-.068c.99-.045 1.631.223 2.15-.417.646-.242 1.08-.562 1.518-.999.44.44.757.878-.999-1.518.194-.52.372 1.16.417-2.15.057-1.218.068-1.578.068-4.694s-.011-3.476-.068-4.694c-.045-.99-.223-1.631-.417-2.15-.242-.646-.562-1.08-.999-1.518-.44-.44-.878-.757-1.518-.999-.52-.194-1.16-.372-2.15-.417C15.476 3.976 15.116 3.965 12 3.965zm0 2.932c-2.67 0-4.826 2.156-4.826 4.826s2.156 4.826 4.826 4.826 4.826-2.156 4.826-4.826S14.67 6.897 12 6.897zm0 7.853c-1.682 0-3.044-1.362-3.044-3.044s1.362-3.044 3.044-3.044 3.044 1.362 3.044 3.044-1.362 3.044-3.044 3.044zM18.305 4.85c-.663 0-1.2.537-1.2 1.2s.537 1.2 1.2 1.2 1.2-.537 1.2-1.2-.537-1.2-1.2-1.2z'/%3E%3C/svg%3E" alt="Instagram"></a>
+                        <a href="#" aria-label="TikTok"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 0 .17.01.23.05.27.17.44.44.47.73.03.34.02.7.02 1.04l-.01 6.42c-.01.4-.1.79-.25 1.17-.2.49-.5.93-.86 1.31-.43.44-.96.79-1.53.97C13.29 12.2 12 12.01 12 12c0-3.54.01-7.08.01-10.62 0-.5-.02-.99.01-1.36zM12.12 13.41c.02-.01.03-.02.05-.03h.01c.01 0 .01-.01.02-.01.13-.06.27-.1.4-.13.48-.11.97-.15 1.46-.15.43 0 .86.03 1.28.1.93.14 1.79.49 2.52 1.04.57.43 1.01.97 1.32 1.6S20 17.52 20 18.21v.02c0 .08-.01.15-.02.23-.06.28-.24.52-.5.67-.27.16-.57.23-.88.23-.98 0-1.96-.01-2.94-.01-.19 0-.39.01-.58.02-.08.01-.17.02-.25.04-.29.09-.55.26-.75.49-.21.24-.39.51-.52.8-.11.26-.2.54-.26.83-.03.11-.05.23-.07.34-.02.11-.03.22-.03.33s0 .22.01.33c.02.26.1.51.22.74.17.33.42.62.73.84.39.28.84.46 1.32.52.56.07 1.13.03 1.68-.11.39-.1.76-.27 1.08-.5.28-.2.51-.45.69-.73.17-.29.29-.62.36-.97.03-.15.04-.3.04-.45V19.5c0-.02.01-.03.01-.05s0-.03-.01-.05c-.01-.17-.04-.33-.08-.49-.08-.29-.22-.56-.41-.79s-.44-.41-.72-.55c-.29-.14-.6-.23-.92-.27-.22-.03-.44-.04-.66-.04V13c.08.06.17.11.25.17.09.06.18.12.27.19.11.08.22.16.33.25z'/%3E%3C/svg%3E" alt="TikTok"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© <span id="current-year"></span> Peak Performance Studio. All Rights Reserved. </p>
+                <p>Website by [Your Freelance Name/Company] - Elevating Small Businesses Online.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple mobile navigation toggle
+        const navToggle = document.querySelector('.mobile-nav-toggle');
+        const mainNav = document.querySelector('.main-navigation');
+        navToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        // Basic Schedule Filter (Visual Only for Demo)
+        const applyFiltersBtn = document.getElementById('apply-filters-btn');
+        if (applyFiltersBtn) {
+            applyFiltersBtn.addEventListener('click', () => {
+                const day = document.getElementById('filter-day').value;
+                const classType = document.getElementById('filter-class').value;
+                const instructor = document.getElementById('filter-instructor').value;
+
+                console.log("Filtering schedule (demo):", { day, classType, instructor });
+                // In a real app, this would fetch/filter data and update the table.
+                // For this demo, we can just show an alert or log.
+                alert("Filter applied (demo)! In a real app, the schedule would update.");
+
+                // Example of how you might visually hide/show rows (very basic)
+                const allEntries = document.querySelectorAll('.schedule-table tbody .class-entry');
+                allEntries.forEach(entry => {
+                    let show = true;
+                    if (day !== 'all' && !entry.closest('td').cellIndex === getDayIndex(day)) { // Simplistic day check
+                        // This day check is very basic and would need proper implementation
+                        // show = false; 
+                    }
+                    if (classType !== 'all' && entry.dataset.class !== classType) {
+                        show = false;
+                    }
+                    if (instructor !== 'all' && entry.dataset.instructor !== instructor) {
+                        show = false;
+                    }
+                    // entry.style.display = show ? '' : 'none'; // This would hide/show
+                    // For demo, we are not actually hiding, just logging.
+                });
+            });
+        }
+        // Helper for demo filter (very basic, needs robust logic for real use)
+        function getDayIndex(dayString) {
+            const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
+            return days.indexOf(dayString.toLowerCase()) + 1; // +1 because <th>Time</th> is index 0
+        }
+
+    </script>
+</body>
+</html>

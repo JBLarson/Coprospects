@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Fitness Classes - Peak Performance Studio</title>
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/fitness-centers.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💪</text></svg>">
+    <style>
+        /* Page-specific styles for classes.html */
+        .page-header-section.fitness-hero {
+            padding-top: calc(var(--spacing-xl) * 0.8);
+            padding-bottom: calc(var(--spacing-xl) * 0.8);
+            min-height: 40vh;
+        }
+         .page-header-section.fitness-hero .hero-title {
+            font-size: 2.8rem;
+        }
+         .page-header-section.fitness-hero .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+        .class-category-section {
+            margin-bottom: var(--spacing-xl);
+        }
+        .class-category-title {
+            font-size: 2rem;
+            color: var(--fitness-color-primary);
+            margin-bottom: var(--spacing-lg);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 2px solid var(--fitness-color-secondary);
+            display: inline-block; /* To make border only as wide as text */
+        }
+
+        .class-listing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--spacing-lg);
+        }
+
+        .class-card {
+            background-color: var(--color-background);
+            border-radius: var(--border-radius-md);
+            box-shadow: var(--shadow-md);
+            overflow: hidden; /* To contain image */
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .class-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .class-card-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .class-card-content {
+            padding: var(--spacing-lg);
+            flex-grow: 1; /* Allows button to stick to bottom if cards have varying text length */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .class-card-title {
+            font-size: 1.6rem;
+            color: var(--fitness-color-dark-text);
+            margin-bottom: var(--spacing-sm);
+        }
+        .class-card-meta {
+            font-size: 0.9rem;
+            color: #777;
+            margin-bottom: var(--spacing-md);
+        }
+        .class-card-meta span {
+            margin-right: var(--spacing-md);
+        }
+        .class-card-meta .icon {
+            color: var(--fitness-color-secondary);
+            margin-right: var(--spacing-xs);
+        }
+
+        .class-card-description {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.7;
+            margin-bottom: var(--spacing-md);
+            flex-grow: 1;
+        }
+        .class-card-cta {
+            margin-top: auto; /* Pushes button to the bottom */
+        }
+        .class-card-cta .btn {
+            background-color: var(--fitness-color-secondary);
+            border-color: var(--fitness-color-secondary);
+            color: var(--fitness-color-light-text);
+            width: 100%;
+        }
+        .class-card-cta .btn:hover {
+            background-color: #d35400; /* Darken secondary */
+        }
+
+        @media (max-width: 768px) {
+            .page-header-section.fitness-hero .hero-title {
+                font-size: 2.2rem;
+            }
+            .class-category-title {
+                font-size: 1.8rem;
+            }
+            .class-card-title {
+                font-size: 1.4rem;
+            }
+        }
+
+    </style>
+</head>
+<body class="fitness-theme">
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                Peak Performance Studio
+            </a>
+            <nav class="main-navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="classes.html" class="active">Classes</a></li>
+                    <li><a href="schedule.html">Schedule</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <section class="page-header-section fitness-hero">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Explore Our Fitness Classes</h1>
+                <p class="hero-subtitle">Find the perfect workout to match your goals, energy, and style. All levels welcome!</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="classes-overview-section section-padding">
+        <div class="container">
+            <p class="section-intro">At Peak Performance Studio, we offer a diverse range of group fitness classes led by certified, high-energy instructors. Our goal is to provide effective, engaging, and fun workouts that help you achieve your fitness aspirations. Browse our categories below and discover your new favorite class!</p>
+
+            <div class="class-category-section">
+                <h2 class="class-category-title">High Intensity & Cardio</h2>
+                <div class="class-listing-grid">
+                    <div class="class-card">
+                        <img src="https://placehold.co/600x400/1ABC9C/222831?text=HIIT+Blast" alt="HIIT Class" class="class-card-image">
+                        <div class="class-card-content">
+                            <h3 class="class-card-title">Peak HIIT Blast</h3>
+                            <p class="class-card-meta">
+                                <span><span class="icon">🔥</span> Intensity: High</span>
+                                <span><span class="icon">⏱️</span> Duration: 45 Mins</span>
+                            </p>
+                            <p class="class-card-description">Unleash your power in this High-Intensity Interval Training session. Expect a fast-paced, challenging workout combining cardio and strength bursts to maximize calorie burn and boost your metabolism.</p>
+                            <div class="class-card-cta">
+                                <a href="schedule.html#hiit" class="btn">Find HIIT Times</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="class-card">
+                        <img src="https://placehold.co/600x400/FF5722/EEEEEE?text=Spin+Cycle" alt="Spin Class" class="class-card-image">
+                        <div class="class-card-content">
+                            <h3 class="class-card-title">Rhythm Ride Spin</h3>
+                            <p class="class-card-meta">
+                                <span><span class="icon">🚴</span> Intensity: Medium-High</span>
+                                <span><span class="icon">⏱️</span> Duration: 50 Mins</span>
+                            </p>
+                            <p class="class-card-description">Clip in and get lost in the music! Our indoor cycling classes offer a thrilling cardio workout with motivating instructors, hill climbs, sprints, and an incredible energy.</p>
+                            <div class="class-card-cta">
+                                <a href="schedule.html#spin" class="btn">See Spin Schedule</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="class-card">
+                        <img src="https://placehold.co/600x400/1ABC9C/222831?text=Cardio+Kickboxing" alt="Cardio Kickboxing" class="class-card-image">
+                        <div class="class-card-content">
+                            <h3 class="class-card-title">Combat Cardio Kick</h3>
+                            <p class="class-card-meta">
+                                <span><span class="icon">🥊</span> Intensity: High</span>
+                                <span><span class="icon">⏱️</span> Duration: 55 Mins</span>
+                            </p>
+                            <p class="class-card-description">Punch, kick, and strike your way to a fitter you. This high-energy class combines martial arts techniques with cardio for a full-body workout that relieves stress.</p>
+                            <div class="class-card-cta">
+                                <a href="schedule.html#kickboxing" class="btn">Join Kickboxing</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="class-category-section">
+                <h2 class="class-category-title">Strength & Conditioning</h2>
+                <div class="class-listing-grid">
+                    <div class="class-card">
+                        <img src="https://placehold.co/600x400/222831/EEEEEE?text=Strength+Circuit" alt="Strength Circuit Class" class="class-card-image">
+                        <div class="class-card-content">
+                            <h3 class="class-card-title">Total Strength Circuit</h3>
+                            <p class="class-card-meta">
+                                <span><span class="icon">🏋️</span> Intensity: Medium-High</span>
+                                <span><span class="icon">⏱️</span> Duration: 50 Mins</span>
+                            </p>
+                            <p class="class-card-description">Build lean muscle and functional strength in this circuit-style class. We utilize a variety of equipment like dumbbells, kettlebells, and resistance bands for a comprehensive workout.</p>
+                             <div class="class-card-cta">
+                                <a href="schedule.html#strength" class="btn">View Strength Classes</a>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="class-card">
+                        <img src="https://placehold.co/600x400/1ABC9C/222831?text=Core+Crusher" alt="Core Class" class="class-card-image">
+                        <div class="class-card-content">
+                            <h3 class="class-card-title">Core Crusher</h3>
+                            <p class="class-card-meta">
+                                <span><span class="icon">💪</span> Intensity: Medium</span>
+                                <span><span class="icon">⏱️</span> Duration: 30 Mins</span>
+                            </p>
+                            <p class="class-card-description">Target your abs, obliques, and lower back in this focused 30-minute session designed to build a rock-solid core for improved stability and performance.</p>
+                             <div class="class-card-cta">
+                                <a href="schedule.html#core" class="btn">Find Core Times</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="class-category-section">
+                <h2 class="class-category-title">Mind & Body</h2>
+                <div class="class-listing-grid">
+                    <div class="class-card">
+                        <img src="https://placehold.co/600x400/FF5722/EEEEEE?text=Vinyasa+Yoga" alt="Yoga Class" class="class-card-image">
+                        <div class="class-card-content">
+                            <h3 class="class-card-title">Flow & Restore Yoga</h3>
+                            <p class="class-card-meta">
+                                <span><span class="icon">🧘</span> Intensity: Low-Medium</span>
+                                <span><span class="icon">⏱️</span> Duration: 60 Mins</span>
+                            </p>
+                            <p class="class-card-description">Connect breath with movement in our Vinyasa flow classes, building strength and flexibility. We also offer restorative sessions for deep relaxation and recovery.</p>
+                             <div class="class-card-cta">
+                                <a href="schedule.html#yoga" class="btn">Explore Yoga</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="class-card">
+                        <img src="https://placehold.co/600x400/222831/EEEEEE?text=Pilates+Mat" alt="Pilates Class" class="class-card-image">
+                        <div class="class-card-content">
+                            <h3 class="class-card-title">Precision Pilates Mat</h3>
+                            <p class="class-card-meta">
+                                <span><span class="icon">🤸</span> Intensity: Low-Medium</span>
+                                <span><span class="icon">⏱️</span> Duration: 55 Mins</span>
+                            </p>
+                            <p class="class-card-description">Focus on core strength, posture, and controlled movements with our mat Pilates classes. Suitable for all levels, helping to sculpt and tone your body.</p>
+                             <div class="class-card-cta">
+                                <a href="schedule.html#pilates" class="btn">Join Pilates</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section section-padding fitness-cta">
+        <div class="container text-center">
+            <h2 class="section-title">Find Your Perfect Class Today!</h2>
+            <p class="section-intro">Check our full schedule to see all class times and book your spot. Your first class is on us!</p>
+            <a href="schedule.html" class="btn btn-primary btn-large">View Full Schedule & Book</a>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>Peak Performance Studio</h4>
+                    <p>Transforming bodies and minds in Southern California. Your journey to peak fitness starts here.</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Navigate</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="classes.html">Classes</a></li>
+                        <li><a href="schedule.html">Full Schedule</a></li>
+                        <li><a href="contact.html">Contact & Join</a></li>
+                        <li><a href="#">Privacy Policy (Placeholder)</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Visit Us</h4>
+                    <p>456 Fitness Drive, Irvine, CA 92618</p>
+                    <p>Phone: <a href="tel:+1555FITNESS">(555) FIT-NESS (348-6377)</a></p>
+                    <p>Email: <a href="mailto:info@peakperformancestudio.com">info@peakperformancestudio.com</a></p>
+                </div>
+                <div class="footer-column">
+                    <h4>Follow Our Journey</h4>
+                    <div class="social-media-links">
+                        <a href="#" aria-label="Facebook"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M22.675 0H1.325C.593 0 0 .593 0 1.325v21.35C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.732 0 1.325-.593 1.325-1.325V1.325C24 .593 23.407 0 22.675 0z'/%3E%3C/svg%3E" alt="Facebook"></a>
+                        <a href="#" aria-label="Instagram"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12 2.163c3.204 0 3.584.012 4.85.07 1.272.058 2.163.242 2.963.572.975.403 1.73 1.026 2.497 1.793s1.39 1.522 1.793 2.497c.33.8.514 1.691.572 2.963.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.058 1.272-.242 2.163-.572 2.963-.403.975-1.026 1.73-1.793 2.497s-1.522 1.39-2.497 1.793c-.8.33-1.691.514-2.963.572-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.272-.058-2.163-.242-2.963-.572-.975-.403-1.73-1.026-2.497-1.793S.802 18.975.403 18c-.33-.8-.514-1.691-.572-2.963C.012 13.784 0 13.404 0 12s.012-3.584.07-4.85c.058-1.272.242-2.163.572-2.963.403-.975 1.026-1.73 1.793-2.497S3.025.802 4 .403c.8-.33 1.691.514 2.963-.572C8.216 2.175 8.596 2.163 12 2.163zm0 1.802c-3.116 0-3.476.011-4.694.068-.99.045-1.631.223-2.15.417-.646.242-1.08.562-1.518.999-.44.44-.757.878-.999 1.518-.194.52-.372 1.16-.417 2.15-.057 1.218-.068 1.578-.068 4.694s.011 3.476.068 4.694c.045.99.223 1.631.417 2.15.242.646.562 1.08.999 1.518.44.44.878.757 1.518.999.52.194 1.16.372 2.15.417 1.218.057 1.578.068 4.694.068s3.476-.011 4.694-.068c.99-.045 1.631.223 2.15-.417.646-.242 1.08-.562 1.518-.999.44.44.757.878-.999-1.518.194-.52.372 1.16.417-2.15.057-1.218.068-1.578.068-4.694s-.011-3.476-.068-4.694c-.045-.99-.223-1.631-.417-2.15-.242-.646-.562-1.08-.999-1.518-.44-.44-.878-.757-1.518-.999-.52-.194-1.16-.372-2.15-.417C15.476 3.976 15.116 3.965 12 3.965zm0 2.932c-2.67 0-4.826 2.156-4.826 4.826s2.156 4.826 4.826 4.826 4.826-2.156 4.826-4.826S14.67 6.897 12 6.897zm0 7.853c-1.682 0-3.044-1.362-3.044-3.044s1.362-3.044 3.044-3.044 3.044 1.362 3.044 3.044-1.362 3.044-3.044 3.044zM18.305 4.85c-.663 0-1.2.537-1.2 1.2s.537 1.2 1.2 1.2 1.2-.537 1.2-1.2-.537-1.2-1.2-1.2z'/%3E%3C/svg%3E" alt="Instagram"></a>
+                        <a href="#" aria-label="TikTok"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 0 .17.01.23.05.27.17.44.44.47.73.03.34.02.7.02 1.04l-.01 6.42c-.01.4-.1.79-.25 1.17-.2.49-.5.93-.86 1.31-.43.44-.96.79-1.53.97C13.29 12.2 12 12.01 12 12c0-3.54.01-7.08.01-10.62 0-.5-.02-.99.01-1.36zM12.12 13.41c.02-.01.03-.02.05-.03h.01c.01 0 .01-.01.02-.01.13-.06.27-.1.4-.13.48-.11.97-.15 1.46-.15.43 0 .86.03 1.28.1.93.14 1.79.49 2.52 1.04.57.43 1.01.97 1.32 1.6S20 17.52 20 18.21v.02c0 .08-.01.15-.02.23-.06.28-.24.52-.5.67-.27.16-.57.23-.88.23-.98 0-1.96-.01-2.94-.01-.19 0-.39.01-.58.02-.08.01-.17.02-.25.04-.29.09-.55.26-.75.49-.21.24-.39.51-.52.8-.11.26-.2.54-.26.83-.03.11-.05.23-.07.34-.02.11-.03.22-.03.33s0 .22.01.33c.02.26.1.51.22.74.17.33.42.62.73.84.39.28.84.46 1.32.52.56.07 1.13.03 1.68-.11.39-.1.76-.27 1.08-.5.28-.2.51-.45.69-.73.17-.29.29-.62.36-.97.03-.15.04-.3.04-.45V19.5c0-.02.01-.03.01-.05s0-.03-.01-.05c-.01-.17-.04-.33-.08-.49-.08-.29-.22-.56-.41-.79s-.44-.41-.72-.55c-.29-.14-.6-.23-.92-.27-.22-.03-.44-.04-.66-.04V13c.08.06.17.11.25.17.09.06.18.12.27.19.11.08.22.16.33.25z'/%3E%3C/svg%3E" alt="TikTok"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© <span id="current-year"></span> Peak Performance Studio. All Rights Reserved. </p>
+                <p>Website by [Your Freelance Name/Company] - Elevating Small Businesses Online.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple mobile navigation toggle
+        const navToggle = document.querySelector('.mobile-nav-toggle');
+        const mainNav = document.querySelector('.main-navigation');
+        navToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
