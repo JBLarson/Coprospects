@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Technology Advantage - Prestige SoCal Homes</title>
+    <link rel="stylesheet" href="../styles/global.css">
+    <link rel="stylesheet" href="../styles/real-estate.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏠</text></svg>">
+    <style>
+        /* Page-specific styles for tech.html */
+        .page-header-section.re-hero {
+            padding-top: calc(var(--spacing-xl) * 0.7);
+            padding-bottom: calc(var(--spacing-xl) * 0.7);
+            min-height: 35vh; /* Shorter hero for subpages */
+        }
+        .page-header-section.re-hero .hero-title {
+            font-size: 2.8rem;
+        }
+         .page-header-section.re-hero .hero-subtitle {
+            font-size: 1.2rem;
+        }
+
+
+        .tech-detail-item {
+            background-color: var(--color-background);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-xl);
+            display: flex;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-xl);
+            align-items: flex-start; /* Align icon/content to top */
+            border-left: 6px solid var(--real-estate-secondary); /* Stronger accent */
+        }
+
+        .tech-detail-icon-wrapper { /* Wrapper for icon to control its size and alignment */
+            flex-shrink: 0;
+        }
+        .tech-detail-icon { /* Reusing .tech-icon styles */
+            width: 80px; /* Larger icons for detail page */
+            height: 80px;
+            background-color: var(--real-estate-primary);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: 55%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .tech-detail-content h3 {
+            font-size: 1.8rem;
+            color: var(--real-estate-primary);
+            margin-top: 0;
+            margin-bottom: var(--spacing-sm);
+        }
+        .tech-detail-content .service-highlight {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--real-estate-secondary);
+            margin-bottom: var(--spacing-md);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .tech-detail-content p {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--real-estate-text-medium);
+            margin-bottom: var(--spacing-md);
+        }
+        .tech-detail-content ul {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: var(--spacing-md);
+        }
+        .tech-detail-content ul li {
+            position: relative;
+            padding-left: 25px; /* Space for custom bullet */
+            margin-bottom: var(--spacing-sm);
+            color: var(--real-estate-text-medium);
+        }
+        .tech-detail-content ul li::before {
+            content: '✓'; /* Checkmark for benefits */
+            position: absolute;
+            left: 0;
+            color: var(--real-estate-accent); /* Muted green accent for checkmarks */
+            font-weight: bold;
+        }
+
+        .consulting-cta-section {
+            background-color: var(--real-estate-primary);
+            color: var(--real-estate-text-light);
+        }
+        .consulting-cta-section .section-title,
+        .consulting-cta-section .section-intro {
+            color: var(--real-estate-text-light);
+        }
+        .consulting-cta-section .btn-primary {
+            background-color: var(--real-estate-secondary);
+            border-color: var(--real-estate-secondary);
+            color: var(--real-estate-text-dark);
+        }
+         .consulting-cta-section .btn-primary:hover {
+            background-color: #9c7741;
+        }
+
+
+        @media (max-width: 768px) {
+            .tech-detail-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            .tech-detail-icon-wrapper {
+                margin: 0 auto var(--spacing-md);
+            }
+            .tech-detail-content h3 {
+                font-size: 1.6rem;
+            }
+            .tech-detail-content ul {
+                text-align: left;
+            }
+             .page-header-section.re-hero .hero-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body class="real-estate-theme">
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                Prestige SoCal Homes
+            </a>
+            <nav class="main-navigation">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="listings.html">Listings</a></li>
+                    <li><a href="tech.html" class="active">Our Tech Advantage</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <section class="page-header-section re-hero">
+        <div class="re-hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Our Technology Advantage</h1>
+                <p class="hero-subtitle">Discover how Prestige SoCal Homes leverages cutting-edge technology to deliver superior results for buyers and sellers.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="tech-detail-section section-padding bg-light">
+        <div class="container">
+            <p class="section-intro">In today's fast-paced real estate market, technology is key. At Prestige SoCal Homes, we don't just use technology; we integrate it strategically to enhance every aspect of your experience. Below, explore the advanced solutions that set us apart and demonstrate the types of services our expert consulting partners can implement for real estate professionals.</p>
+
+            <div class="tech-detail-item">
+                <div class="tech-detail-icon-wrapper">
+                    <div class="tech-detail-icon drip-campaign-icon"></div>
+                </div>
+                <div class="tech-detail-content">
+                    <h3>Automated Email & SMS Drip Campaigns</h3>
+                    <span class="service-highlight">Your Service Offering: Setup & Management</span>
+                    <p>Stay top-of-mind with potential clients without lifting a finger. We design and implement sophisticated email and SMS drip campaigns that nurture leads from initial contact to closing. These automated sequences deliver valuable content, property updates, and personalized messages at precisely the right moments.</p>
+                    <ul>
+                        <li>Keeps leads warm and engaged over time.</li>
+                        <li>Delivers relevant information based on client interest.</li>
+                        <li>Saves agents countless hours of manual follow-up.</li>
+                        <li>Increases conversion rates by maintaining consistent contact.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tech-detail-item">
+                <div class="tech-detail-icon-wrapper">
+                    <div class="tech-detail-icon lead-scoring-icon"></div>
+                </div>
+                <div class="tech-detail-content">
+                    <h3>Intelligent & Automated Lead Scoring</h3>
+                    <span class="service-highlight">Your Service Offering: System Implementation</span>
+                    <p>Not all leads are created equal. Our automated lead scoring system analyzes various data points – website activity, email engagement, search criteria, and more – to identify and prioritize the hottest prospects. This allows our agents (and could allow you) to focus their energy where it counts most.</p>
+                    <ul>
+                        <li>Identifies highly motivated buyers and sellers quickly.</li>
+                        <li>Optimizes agent time and resources.</li>
+                        <li>Provides data-backed insights for sales strategy.</li>
+                        <li>Shortens the sales cycle by focusing on ready-to-act leads.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tech-detail-item">
+                <div class="tech-detail-icon-wrapper">
+                    <div class="tech-detail-icon ads-api-icon"></div>
+                </div>
+                <div class="tech-detail-content">
+                    <h3>Google Ads & Facebook API Integration</h3>
+                    <span class="service-highlight">Your Service Offering: API Connection & Campaign Management</span>
+                    <p>Reach your ideal audience with unparalleled precision. We utilize direct API connections with Google Ads and Facebook to create dynamic, highly targeted advertising campaigns. This means your listings get in front of the right eyes, and lead generation efforts are maximized for efficiency and ROI.</p>
+                    <ul>
+                        <li>Hyper-targeted ad campaigns based on demographics and behavior.</li>
+                        <li>Dynamic ad creatives that update with new listings or price changes.</li>
+                        <li>Optimized ad spend for better cost-per-lead.</li>
+                        <li>Enhanced tracking and reporting capabilities.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tech-detail-item">
+                <div class="tech-detail-icon-wrapper">
+                    <div class="tech-detail-icon mls-api-icon"></div>
+                </div>
+                <div class="tech-detail-content">
+                    <h3>Seamless MLS API Integration</h3>
+                    <span class="service-highlight">Your Service Offering: Website & App Integration</span>
+                    <p>Provide your clients (and your website visitors) with the most accurate, up-to-the-minute property information. Our platform integrates directly with the MLS via API, ensuring that all listings, property details, and status updates are current and comprehensive. This builds trust and positions your website as the go-to resource.</p>
+                    <ul>
+                        <li>Real-time property data on your website.</li>
+                        <li>Advanced search filters and map-based searching.</li>
+                        <li>Automated new listing alerts for clients.</li>
+                        <li>Reduced manual data entry for agents.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tech-detail-item">
+                <div class="tech-detail-icon-wrapper">
+                    <div class="tech-detail-icon dashboard-icon"></div>
+                </div>
+                <div class="tech-detail-content">
+                    <h3>Custom Performance Dashboards</h3>
+                    <span class="service-highlight">Your Service Offering: Dashboard Design & Build</span>
+                    <p>Track your success and make informed decisions with our custom-built performance dashboards. For sellers, we provide clear insights into their property's marketing reach, viewing statistics, lead engagement, and more. For agents, these dashboards can track KPIs, lead sources, and conversion funnels.</p>
+                    <ul>
+                        <li>Transparent reporting for sellers on marketing efforts.</li>
+                        <li>Actionable insights for agents to optimize strategies.</li>
+                        <li>Centralized view of key performance indicators.</li>
+                        <li>Data visualization for easy understanding of complex data.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="consulting-cta-section section-padding">
+        <div class="container text-center">
+            <h2 class="section-title">Elevate Your Real Estate Business with Tech</h2>
+            <p class="section-intro">The technologies showcased here are examples of what our expert consulting team can implement for your real estate agency. If you're ready to automate workflows, enhance client engagement, and gain a competitive edge, let's talk.</p>
+            <a href="[YourConsultingFirmContactPage.html]" class="btn btn-primary btn-large">Request Consulting Info</a>
+            </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>Prestige SoCal Homes</h4>
+                    <p>Your Premier Partner for Real Estate in Southern California. Experience the difference technology makes.</p>
+                    <p>DRE #01234567</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="listings.html">All Listings</a></li>
+                        <li><a href="tech.html">Tech Advantage</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contact Us</h4>
+                    <p>789 Property Plaza, Beverly Hills, CA 90210</p>
+                    <p>Phone: <a href="tel:+1555REALESTATE">(555) REAL-EST (732-5378)</a></p>
+                    <p>Email: <a href="mailto:info@prestigesocalhomes.com">info@prestigesocalhomes.com</a></p>
+                </div>
+                <div class="footer-column">
+                    <h4>Connect</h4>
+                    <div class="social-media-links">
+                        <a href="#" aria-label="Facebook"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M22.675 0H1.325C.593 0 0 .593 0 1.325v21.35C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.732 0 1.325-.593 1.325-1.325V1.325C24 .593 23.407 0 22.675 0z'/%3E%3C/svg%3E" alt="Facebook"></a>
+                        <a href="#" aria-label="Instagram"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M12 2.163c3.204 0 3.584.012 4.85.07 1.272.058 2.163.242 2.963.572.975.403 1.73 1.026 2.497 1.793s1.39 1.522 1.793 2.497c.33.8.514 1.691.572 2.963.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.058 1.272-.242 2.163-.572 2.963-.403.975-1.026 1.73-1.793 2.497s-1.522 1.39-2.497 1.793c-.8.33-1.691.514-2.963.572-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.272-.058-2.163-.242-2.963-.572-.975-.403-1.73-1.026-2.497-1.793S.802 18.975.403 18c-.33-.8-.514-1.691-.572-2.963C.012 13.784 0 13.404 0 12s.012-3.584.07-4.85c.058-1.272.242-2.163.572-2.963.403-.975 1.026-1.73 1.793-2.497S3.025.802 4 .403c.8-.33 1.691.514 2.963-.572C8.216 2.175 8.596 2.163 12 2.163zm0 1.802c-3.116 0-3.476.011-4.694.068-.99.045-1.631.223-2.15.417-.646.242-1.08.562-1.518.999-.44.44-.757.878-.999 1.518-.194.52-.372 1.16-.417 2.15-.057 1.218-.068 1.578-.068 4.694s.011 3.476.068 4.694c.045.99.223 1.631.417 2.15.242.646.562 1.08.999 1.518.44.44.878.757 1.518.999.52.194 1.16.372 2.15.417 1.218.057 1.578.068 4.694.068s3.476-.011 4.694-.068c.99-.045 1.631.223 2.15-.417.646-.242 1.08-.562 1.518-.999.44.44.757.878-.999-1.518.194-.52.372 1.16.417-2.15.057-1.218.068-1.578.068-4.694s-.011-3.476-.068-4.694c-.045-.99-.223-1.631-.417-2.15-.242-.646-.562-1.08-.999-1.518-.44-.44-.878-.757-1.518-.999-.52-.194-1.16-.372-2.15-.417C15.476 3.976 15.116 3.965 12 3.965zm0 2.932c-2.67 0-4.826 2.156-4.826 4.826s2.156 4.826 4.826 4.826 4.826-2.156 4.826-4.826S14.67 6.897 12 6.897zm0 7.853c-1.682 0-3.044-1.362-3.044-3.044s1.362-3.044 3.044-3.044 3.044 1.362 3.044 3.044-1.362 3.044-3.044 3.044zM18.305 4.85c-.663 0-1.2.537-1.2 1.2s.537 1.2 1.2 1.2 1.2-.537 1.2-1.2-.537-1.2-1.2-1.2z'/%3E%3C/svg%3E" alt="Instagram"></a>
+                        <a href="#" aria-label="LinkedIn"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23fff'%3E%3Cpath d='M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z'/%3E%3C/svg%3E" alt="LinkedIn"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© <span id="current-year"></span> Prestige SoCal Homes. All Rights Reserved.</p>
+                <p>Website by [Your Freelance Name/Company] - Tech-Powered Real Estate Solutions.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Simple mobile navigation toggle
+        const navToggle = document.querySelector('.mobile-nav-toggle');
+        const mainNav = document.querySelector('.main-navigation');
+        navToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
