@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikiDev</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and Basic Setup */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; /* Fallback font */
+            color: #fff;
+            background-color: #1a1a2e; /* Fallback background */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Hide scrollbars caused by large pseudo-elements */
+            position: relative; /* For positioning pseudo-elements */
+            text-align: center;
+        }
+
+        /* Abstract Animated Background */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200vw; /* Large enough to cover screen during rotation */
+            height: 200vw;
+            border-radius: 45%; /* Organic shape */
+            opacity: 0.3;
+            z-index: -1; /* Behind content */
+            animation: rotateColors 12s linear infinite;
+        }
+
+        body::before {
+            background: linear-gradient(45deg, #18085f, #18085f, #ffeb3b, #18085f);
+            transform-origin: center center;
+        }
+
+        body::after {
+            background: linear-gradient(-45deg, #3bff7e, #ff6b00, #ae00ff, #00c3ff);
+            animation-delay: -12.5s; /* Offset animation */
+            transform-origin: center center;
+            opacity: 0.25;
+        }
+
+        @keyframes rotateColors {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg) scale(1);
+            }
+            25% {
+                transform: translate(-50%, -50%) rotate(90deg) scale(1.1);
+            }
+            50% {
+                transform: translate(-50%, -50%) rotate(180deg) scale(1);
+            }
+            75% {
+                transform: translate(-50%, -50%) rotate(270deg) scale(1.1);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg) scale(1);
+            }
+        }
+
+        /* Content Wrapper */
+        .content-wrapper {
+            position: relative; /* To stay above pseudo-elements */
+            z-index: 1;
+            padding: 40px;
+            background-color: rgba(20, 20, 40, 0.6); /* Semi-transparent dark background for readability */
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 90%;
+            width: 600px; /* Max width for content */
+        }
+
+        /* Site Title */
+        .site-title {
+            font-family: 'Syne', sans-serif; /* Artistic font */
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(61, 27, 255, 0.5); /* Neon-like glow */
+            letter-spacing: 1px;
+        }
+
+        .site-tagline {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            margin-bottom: 40px;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        /* Navigation Menu */
+        nav.main-menu {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        nav.main-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px; /* Spacing between menu items */
+        }
+
+        nav.main-menu ul li a {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.1rem;
+            padding: 12px 25px;
+            border-radius: 50px; /* Pill shape */
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            display: inline-block;
+        }
+
+        nav.main-menu ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #1a1a2e; /* Dark color from body background */
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3); /* Soft pinkish glow on hover */
+        }
+
+        nav.main-menu ul li a:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .site-title {
+                font-size: 2.8rem;
+            }
+            .site-tagline {
+                font-size: 1rem;
+            }
+            nav.main-menu ul {
+                flex-direction: column; /* Stack menu items vertically on smaller screens */
+                gap: 15px;
+            }
+            nav.main-menu ul li a {
+                padding: 10px 20px;
+                font-size: 1rem;
+                width: 100%; /* Make buttons full width in column layout */
+            }
+            .content-wrapper {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-title {
+                font-size: 2.2rem;
+            }
+            .site-tagline {
+                font-size: 0.9rem;
+            }
+             body::before, body::after {
+                width: 300vw;
+                height: 300vw;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="content-wrapper">
+        <header>
+            <h1 class="site-title">Freelance Shii</h1>
+            <p class="site-tagline">Hire Us 4:</p>
+        </header>
+
+        <nav class="main-menu">
+            <ul>
+                <li><a href="home-services/">Home Services</a></li>
+                <li><a href="real-estate/">Real Estate</a></li>
+                <li><a href="fitness-centers/">Fitness Centers</a></li>
+            </ul>
+        </nav>
+    </div>
+
+</body>
+</html>
