@@ -1,0 +1,276 @@
+/* Home Services (Electrician Demo) Specific Styles */
+
+/* Override Global Variables if needed for this specific theme */
+:root {
+    --home-services-color-primary: #005ea2; /* A deeper, trustworthy blue for electricians */
+    --home-services-color-secondary: #fdb813; /* A bright, energetic yellow/gold accent */
+    --home-services-color-accent: #fdb813; /* Using the secondary as accent */
+    --home-services-hero-bg: #e9f1f7; /* Light blueish grey for hero */
+    --home-services-text-dark: #212529;
+    --home-services-text-medium: #495057;
+}
+
+
+/* If directly overriding global vars (ensure this loads AFTER global.css or use higher specificity) */
+:root {
+    --color-primary: var(--home-services-color-primary);
+    --color-secondary: var(--home-services-color-secondary); /* Can be a different grey or the accent */
+    --color-accent: var(--home-services-color-accent);
+}
+
+
+/* Hero Section */
+.hero-section {
+    background-color: var(--home-services-hero-bg);
+    background-image:
+        linear-gradient(rgba(233, 241, 247, 0.85), rgba(233, 241, 247, 0.85)),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23d0e0eb' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); /* Subtle pattern */
+    padding: var(--spacing-xl) 0;
+    text-align: center;
+    color: var(--home-services-text-dark);
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--home-services-color-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--home-services-text-medium);
+    max-width: 750px;
+    margin: 0 auto var(--spacing-lg);
+    line-height: 1.8;
+}
+
+.hero-cta-buttons .btn {
+    margin: var(--spacing-sm);
+    padding: 0.9rem 2rem;
+    font-size: 1.1rem;
+}
+.hero-cta-buttons .btn-primary {
+    background-color: var(--home-services-color-primary);
+    border-color: var(--home-services-color-primary);
+}
+.hero-cta-buttons .btn-primary:hover {
+    background-color: #004a80; /* Darken primary */
+    border-color: #004a80;
+}
+.hero-cta-buttons .btn-secondary {
+    background-color: var(--home-services-color-accent);
+    border-color: var(--home-services-color-accent);
+    color: var(--home-services-text-dark);
+}
+.hero-cta-buttons .btn-secondary:hover {
+    background-color: #e0a800; /* Darken accent */
+    border-color: #e0a800;
+}
+
+
+/* Services Section */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+.service-item {
+    background-color: var(--color-background);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    text-align: center;
+    transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+}
+
+.service-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.service-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto var(--spacing-md);
+    background-color: var(--home-services-color-accent); /* Accent color for icon background */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Placeholder for actual SVG icons - using background images for demo */
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+/* Example for specific icons - replace with actual SVGs or font icons */
+.residential-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23005ea2'%3E%3Cpath d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/%3E%3C/svg%3E"); }
+.commercial-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23005ea2'%3E%3Cpath d='M12 7V3H2v18h20V7H12zm-2 12H4v-2h6v2zm0-4H4v-2h6v2zm0-4H4V9h6v2zm0-4H4V5h6v2zm10 12h-8V9h8v10zm-2-8h-4v2h4v-2zm0 4h-4v2h4v-2z'/%3E%3C/svg%3E"); }
+.ev-charger-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23005ea2'%3E%3Cpath d='M20 7h-3V4c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v3H6c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm-8-3h4v3h-4V4zm6 16H6V9h12v11z'/%3E%3Cpath d='M13 10h-2v3H8v2h3v3h2v-3h3v-2h-3z'/%3E%3C/svg%3E"); }
+.smart-home-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23005ea2'%3E%3Cpath d='M12 3L2 12h3v8h14v-8h3L12 3zm0 2.45L17.55 11H15v7H9v-7H6.45L12 5.45zM7 18v-4.77L12 9.5l5 3.73V18H7zm5-6.5c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5z'/%3E%3C/svg%3E"); }
+.emergency-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23005ea2'%3E%3Cpath d='M13 14h-2V9h2m0 6h-2v2h2M1 21h22L12 2 1 21z'/%3E%3C/svg%3E"); }
+.safety-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23005ea2'%3E%3Cpath d='M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z'/%3E%3C/svg%3E"); }
+
+
+.service-title {
+    font-size: 1.4rem;
+    color: var(--home-services-color-primary);
+    margin-bottom: var(--spacing-sm);
+}
+.service-description {
+    font-size: 0.95rem;
+    color: var(--home-services-text-medium);
+}
+
+/* Why Choose Us Section */
+.why-choose-us-section {
+    background-color: var(--color-background-light); /* Uses global light bg */
+}
+.why-choose-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+}
+.why-choose-item {
+    background: var(--color-background);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+    box-shadow: var(--shadow-sm);
+}
+.why-choose-item h4 {
+    color: var(--home-services-color-primary);
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+}
+.why-choose-item h4 .icon-check {
+    color: var(--color-success);
+    margin-right: var(--spacing-sm);
+    font-size: 1.3em; /* Make checkmark a bit larger */
+}
+.why-choose-item p {
+    font-size: 0.95rem;
+    color: var(--home-services-text-medium);
+    margin-bottom: 0;
+}
+
+/* Testimonials Section */
+.testimonial-slider { /* Basic styling, real slider needs JS */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+.testimonial {
+    background-color: var(--color-background-light);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    border-left: 5px solid var(--home-services-color-accent);
+    box-shadow: var(--shadow-sm);
+}
+.testimonial-text {
+    font-style: italic;
+    color: var(--home-services-text-medium);
+    margin-bottom: var(--spacing-md);
+    position: relative;
+    padding-left: 30px; /* Space for quote icon */
+}
+.testimonial-text::before {
+    content: '“'; /* Opening quote */
+    font-family: Georgia, serif;
+    font-size: 3rem;
+    color: var(--home-services-color-accent);
+    position: absolute;
+    left: 0px;
+    top: -10px;
+    line-height: 1;
+}
+.testimonial-author {
+    font-weight: 600;
+    color: var(--home-services-color-primary);
+    text-align: right;
+}
+
+/* LLM Teaser Section */
+.llm-teaser-section {
+    background-color: var(--home-services-color-primary); /* Darker primary for this section */
+    color: var(--color-text-light);
+}
+.llm-teaser-section .section-title,
+.llm-teaser-section .section-intro {
+    color: var(--color-text-light);
+}
+.llm-teaser-section .section-intro {
+    opacity: 0.9;
+}
+.ask-sparky-form {
+    display: flex;
+    max-width: 600px;
+    margin: 0 auto var(--spacing-md);
+    gap: var(--spacing-sm);
+}
+#ask-sparky-input {
+    flex-grow: 1;
+    background-color: rgba(255,255,255,0.9);
+    color: var(--home-services-text-dark);
+    border-color: var(--home-services-color-accent);
+}
+#ask-sparky-input::placeholder {
+    color: #777;
+}
+#ask-sparky-input:focus {
+    border-color: var(--home-services-color-accent);
+    box-shadow: 0 0 0 0.2rem rgba(253, 184, 19, .5);
+}
+#ask-sparky-btn {
+    background-color: var(--home-services-color-accent);
+    color: var(--home-services-text-dark);
+    border-color: var(--home-services-color-accent);
+    font-weight: 700;
+}
+#ask-sparky-btn:hover {
+    background-color: #e0a800;
+    border-color: #e0a800;
+}
+.ask-sparky-response {
+    margin-top: var(--spacing-md);
+    padding: var(--spacing-md);
+    background-color: rgba(0,0,0,0.1);
+    border-radius: var(--border-radius-sm);
+    min-height: 30px;
+    font-style: italic;
+}
+.ask-sparky-response p {
+    margin-bottom: 0;
+}
+
+/* CTA Section */
+.cta-section .btn-primary {
+    background-color: var(--home-services-color-accent);
+    border-color: var(--home-services-color-accent);
+    color: var(--home-services-text-dark);
+    font-weight: 700;
+}
+.cta-section .btn-primary:hover {
+    background-color: #e0a800;
+    border-color: #e0a800;
+}
+
+/* Responsive adjustments for Home Services */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.4rem;
+    }
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    .services-grid,
+    .why-choose-grid,
+    .testimonial-slider {
+        grid-template-columns: 1fr; /* Stack items on smaller screens */
+    }
+    .ask-sparky-form {
+        flex-direction: column;
+    }
+}

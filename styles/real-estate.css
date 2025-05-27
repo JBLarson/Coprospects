@@ -1,0 +1,344 @@
+/* Real Estate (Prestige SoCal Homes) Specific Styles */
+
+/* Define Real Estate Theme Variables */
+:root {
+    --real-estate-primary: #1A374D;      /* Dark Desaturated Blue */
+    --real-estate-secondary: #B08D57;    /* Muted Gold/Bronze */
+    --real-estate-accent: #4A7C59;       /* Muted Teal/Green for subtle highlights */
+    --real-estate-light-bg: #F4F6F7;     /* Very Light Grey for sections */
+    --real-estate-text-dark: #212529;
+    --real-estate-text-light: #FFFFFF;
+    --real-estate-text-medium: #525B63;
+}
+
+/* Apply real estate theme colors by overriding global CSS variables when .real-estate-theme is present */
+.real-estate-theme {
+    --color-primary: var(--real-estate-primary);
+    --color-secondary: var(--real-estate-secondary);
+    --color-accent: var(--real-estate-accent);
+    --color-text: var(--real-estate-text-dark);
+    --color-background-light: var(--real-estate-light-bg);
+    --color-background-dark: var(--real-estate-primary); /* Using primary dark blue for dark sections */
+}
+
+/* Logo specific for Real Estate */
+.real-estate-theme .logo {
+    color: var(--real-estate-primary);
+    font-weight: 700;
+    font-family: var(--font-secondary); /* Montserrat for a more stately logo */
+}
+.real-estate-theme .logo-icon {
+    font-size: 1.7rem;
+    color: var(--real-estate-secondary); /* Gold icon */
+    margin-right: 10px;
+}
+
+/* Header Navigation Active/Hover State for Real Estate Theme */
+.real-estate-theme .main-navigation ul li a:hover,
+.real-estate-theme .main-navigation ul li a.active {
+    background-color: var(--real-estate-primary);
+    color: var(--real-estate-text-light);
+}
+.real-estate-theme .main-navigation ul li a {
+    color: var(--real-estate-primary);
+    font-weight: 600;
+}
+.real-estate-theme .mobile-nav-toggle span {
+    background-color: var(--real-estate-primary);
+}
+
+/* Real Estate Hero Section */
+.re-hero {
+    background-image: url('https://tiki.hirejb.me/images/caHouse.jpg');
+    background-size: cover;
+    background-position: center center;
+    color: var(--real-estate-text-light);
+    padding: 120px 0;
+    position: relative;
+    text-align: center;
+}
+
+.re-hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(26, 55, 77, 0.85); /* Dark Desaturated Blue overlay, adjust opacity */
+    z-index: 1;
+}
+
+.re-hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.re-hero .hero-title {
+    font-size: 3.2rem; /* Slightly smaller than fitness for elegance */
+    font-weight: 700;
+    color: var(--real-estate-text-light);
+    text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    margin-bottom: var(--spacing-md);
+}
+
+.re-hero .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--real-estate-text-light);
+    opacity: 0.9;
+    max-width: 750px;
+    margin: 0 auto var(--spacing-lg);
+    line-height: 1.7;
+}
+
+.hero-search-mockup {
+    display: flex;
+    max-width: 700px;
+    margin: 0 auto var(--spacing-lg);
+    background-color: rgba(255,255,255,0.95);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+}
+.hero-search-mockup input[type="text"] {
+    flex-grow: 1;
+    border: none;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: var(--border-radius-sm) 0 0 var(--border-radius-sm);
+    background-color: transparent;
+    color: var(--real-estate-text-dark);
+}
+.hero-search-mockup .btn-primary {
+    background-color: var(--real-estate-secondary); /* Gold button */
+    border-color: var(--real-estate-secondary);
+    color: var(--real-estate-text-dark);
+    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+    font-weight: 600;
+}
+.hero-search-mockup .btn-primary:hover {
+    background-color: #9c7741; /* Darken gold */
+}
+
+.re-hero .hero-cta-buttons .btn { margin: var(--spacing-sm); }
+.re-hero .hero-cta-buttons .btn-secondary {
+    background-color: #ffffff;
+    border-color: var(--real-estate-secondary);
+    color: #9c7741;
+}
+.re-hero .hero-cta-buttons .btn-secondary:hover {
+    background-color: #102331;
+}
+.re-hero .hero-cta-buttons .btn-outline {
+    border: 2px solid var(--real-estate-secondary);
+    color: var(--real-estate-secondary);
+    background-color: transparent;
+}
+.re-hero .hero-cta-buttons .btn-outline:hover {
+    background-color: var(--real-estate-secondary);
+    color: var(--real-estate-text-dark);
+}
+
+
+/* Featured Listings Section */
+.featured-listings-section .section-title {
+    color: var(--real-estate-primary);
+}
+.listings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-lg);
+}
+.listing-card {
+    background-color: var(--color-background);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+.listing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+.listing-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+}
+.listing-info {
+    padding: var(--spacing-md);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+.listing-price {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--real-estate-secondary); /* Gold price */
+    margin-bottom: var(--spacing-xs);
+}
+.listing-address {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--real-estate-text-dark);
+    margin-bottom: var(--spacing-sm);
+}
+.listing-details {
+    font-size: 0.9rem;
+    color: var(--real-estate-text-medium);
+    margin-bottom: var(--spacing-md);
+    flex-grow: 1;
+}
+.listing-card .btn-sm { /* Smaller button for cards */
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    background-color: var(--real-estate-primary);
+    color: var(--real-estate-text-light);
+    align-self: flex-start; /* Align button to start if info has varying height */
+}
+.listing-card .btn-sm:hover {
+    background-color: #102331;
+}
+
+/* Tech Advantage Section */
+.tech-advantage-section {
+    background-color: var(--real-estate-light-bg);
+}
+.tech-advantage-section .section-title {
+    color: var(--real-estate-primary);
+}
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+.tech-item {
+    background-color: var(--color-background);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border-left: 5px solid var(--real-estate-secondary); /* Gold accent border */
+}
+.tech-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto var(--spacing-md);
+    background-color: var(--real-estate-primary);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-size: 55%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+/* Placeholder icons for tech services */
+.drip-campaign-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFFFFF'%3E%3Cpath d='M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z'/%3E%3C/svg%3E"); } /* Email icon */
+.lead-scoring-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFFFFF'%3E%3Cpath d='M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z'/%3E%3C/svg%3E"); } /* Star icon */
+.ads-api-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFFFFF'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z'/%3E%3C/svg%3E"); } /* Target/Ads icon */
+.mls-api-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFFFFF'%3E%3Cpath d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/%3E%3C/svg%3E"); } /* House/MLS icon */
+.dashboard-icon { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FFFFFF'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-4h2v4zm4 0h-2v-2h2v2zm0-4h-2V9h2v4zm4 4h-2V9h2v8z'/%3E%3C/svg%3E"); } /* Chart/Dashboard icon */
+
+.tech-title {
+    font-size: 1.3rem;
+    color: var(--real-estate-primary);
+    margin-bottom: var(--spacing-sm);
+}
+.tech-description {
+    font-size: 0.9rem;
+    color: var(--real-estate-text-medium);
+    line-height: 1.6;
+}
+.tech-item.learn-more-item {
+    background-color: var(--real-estate-primary);
+    color: var(--real-estate-text-light);
+    border-left-color: var(--real-estate-secondary);
+}
+.tech-item.learn-more-item .tech-title {
+    color: var(--real-estate-text-light);
+}
+.tech-item.learn-more-item .tech-description {
+    color: #e0e0e0;
+}
+.tech-item.learn-more-item .btn-secondary {
+    background-color: #ffffff;
+    border-color: var(--real-estate-secondary);
+    color: #9c7741;
+    margin-top: var(--spacing-md);
+}
+.tech-item.learn-more-item .btn-secondary:hover{
+    background-color: #9c7741; /* Darken gold */
+}
+
+
+/* Testimonials Section for Real Estate */
+.re-testimonial {
+    background-color: var(--color-background-light);
+    border-left-color: var(--real-estate-primary);
+}
+.re-testimonial .testimonial-text {
+    color: var(--real-estate-text-dark);
+}
+.re-testimonial .testimonial-author {
+    color: var(--real-estate-primary);
+    font-weight: 600;
+}
+
+/* CTA Section for Real Estate */
+.re-cta {
+    background-color: var(--real-estate-primary);
+}
+.re-cta .section-title,
+.re-cta .section-intro {
+    color: var(--real-estate-text-light);
+}
+.re-cta .btn-primary {
+    background-color: var(--real-estate-secondary); /* Gold CTA */
+    border-color: var(--real-estate-secondary);
+    color: var(--real-estate-text-dark);
+    font-weight: 700;
+}
+.re-cta .btn-primary:hover {
+    background-color: #9c7741; /* Darken gold */
+}
+
+/* Footer for Real Estate Theme */
+.real-estate-theme .site-footer {
+    background-color: var(--real-estate-text-dark); /* Very dark footer */
+    color: var(--real-estate-text-light);
+}
+.real-estate-theme .site-footer h4 {
+    color: var(--real-estate-secondary); /* Gold footer headings */
+}
+.real-estate-theme .site-footer p,
+.real-estate-theme .site-footer ul li a {
+    color: #adb5bd; /* Lighter grey for footer text */
+}
+.real-estate-theme .site-footer ul li a:hover {
+    color: var(--real-estate-text-light);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .re-hero .hero-title {
+        font-size: 2.4rem;
+    }
+    .hero-search-mockup {
+        flex-direction: column;
+        padding: var(--spacing-xs);
+    }
+    .hero-search-mockup input[type="text"] {
+        border-radius: var(--border-radius-sm);
+        margin-bottom: var(--spacing-sm);
+        text-align:center;
+    }
+     .hero-search-mockup .btn-primary {
+        border-radius: var(--border-radius-sm);
+    }
+    .tech-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
