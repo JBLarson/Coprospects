@@ -1,11 +1,21 @@
 <style>
-    .global-nav-logo-container { /* Renamed for clarity and consistency */
-        position: relative;
-        width: 130px; /* Adjusted for better visibility, can be tuned */
-        height: calc(var(--global-nav-height) - 16px); /* Using global_nav_height & some padding */
-        display: flex;
+    /* Styles specific to the global navigation bar */
+    /* Ensuring these styles work with or refine those in global.css */
+
+    /* Logo Container & Images */
+    .global-nav-logo-wrapper { /* This is the <a> tag acting as the brand link */
+        display: flex; /* Allows vertical centering of the inner container */
         align-items: center;
-        justify-content: flex-start; /* Align to the start of the nav bar typically */
+        height: 100%; /* Take full height of nav item */
+        text-decoration: none;
+    }
+
+    .global-nav-logo-container {
+        position: relative; /* For absolute positioning of images */
+        width: 130px;      /* Adjust to your logo's aspect ratio and desired display size */
+        height: calc(var(--global-nav-height) - 16px); /* e.g., 50px - 16px = 34px logo height */
+                                                    /* Allows 8px top/bottom padding within the 50px nav */
+        margin-left: var(--spacing-sm); /* Give some space if it's far left in container */
     }
 
     .global-nav-logo-container .logo-image {
@@ -14,48 +24,90 @@
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: contain; /* Ensures logo scales nicely */
+        object-fit: contain; /* Scales logo to fit, maintaining aspect ratio */
     }
 
     .global-nav-logo-container .logo-base {
-        opacity: 1; /* Base logo is always 'potentially' visible */
+        opacity: 1; /* Start with base logo visible */
+        animation: logoBaseAnimation 10s infinite ease-in-out;
     }
 
     .global-nav-logo-container .logo-alternate {
-        opacity: 0; /* Alternate logo starts invisible */
-        animation: fadeAlternateLogo 8s infinite ease-in-out; /* 8s total cycle, adjust as needed */
+        opacity: 0; /* Start with alternate logo hidden */
+        animation: logoAlternateAnimation 10s infinite ease-in-out;
     }
 
-    @keyframes fadeAlternateLogo {
-        0% { opacity: 0; }   /* Start: Alternate is invisible */
-        25% { opacity: 1; }  /* Fade In: Alternate becomes visible (base is under it) */
-        75% { opacity: 1; }  /* Hold: Alternate stays visible */
-        100% { opacity: 0; } /* Fade Out: Alternate becomes invisible again */
+    /* Keyframes for a smooth crossfade effect */
+    @keyframes logoBaseAnimation {
+        0%, 40%, 100% { opacity: 1; } /* Base visible */
+        50%, 90% { opacity: 0; }    /* Base hidden (alternate visible) */
     }
 
-    /* Ensure global-site-nav styles from global.css work with this */
-    /* If the brand link was the logo, we replace it. If it was text next to logo, adjust. */
-    /* Assuming the logo container *is* the brand area */
-    .global-site-nav .nav-brand-link { /* If you want the logo to be a link to homepage */
-        display: block; /* Makes the whole container clickable */
-        width: 100%;
+    @keyframes logoAlternateAnimation {
+        0%, 40%, 100% { opacity: 0; } /* Alternate hidden */
+        50%, 90% { opacity: 1; }    /* Alternate visible */
+    }
+
+    /* Refined Global Nav Link Styling (can also be in global.css if preferred) */
+    /* Assuming .global-site-nav and .global-site-nav .container are styled in global.css */
+    .global-site-nav ul {
+        margin-left: auto; /* Pushes the links to the right of the logo */
+        display: flex;
+        align-items: center; /* Vertically align items in the ul */
         height: 100%;
+         /* gap: var(--spacing-sm); /* Slightly reduced gap for a tighter look if desired */
     }
 
+    .global-site-nav ul li a {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; /* Common FAANG-like stack */
+        font-size: 15px;
+        font-weight: 500; /* Medium weight */
+        color: var(--global-nav-text, #e0e0e0); /* Use var from global.css with fallback */
+        padding: 10px 16px; /* Refined padding */
+        text-decoration: none;
+        border-radius: 6px; /* Softer radius */
+        transition: background-color 0.2s ease-out, color 0.2s ease-out;
+        display: flex;
+        align-items: center;
+        height: calc(var(--global-nav-height) - 16px); /* Match padded logo height area */
+        line-height: normal; /* Ensure text is centered in its own box */
+    }
+
+    .global-site-nav ul li a:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: var(--global-nav-text-hover, #ffffff);
+    }
+
+    .global-site-nav ul li a.current-demo {
+        color: var(--global-nav-accent, #00f2ff); /* Use accent color from global.css */
+        font-weight: 600;
+        background-color: transparent; /* Remove background for active state */
+        position: relative;
+    }
+
+    .global-site-nav ul li a.current-demo::after {
+        content: '';
+        position: absolute;
+        bottom: 6px; /* Adjust to look good within the 50px nav height */
+        left: 16px; /* Match padding */
+        right: 16px; /* Match padding */
+        height: 2px;
+        background-color: var(--global-nav-accent, #00f2ff); /* Use accent color */
+        border-radius: 1px;
+    }
 </style>
 
 <nav class="global-site-nav">
     <div class="container">
-        <a href="/index.html" class="global-nav-logo-container nav-brand-link" aria-label="Homepage">
-            <img src="https://coprospects.com/images/Coprospects-white-blue.png" alt="Coprospects White on Blue Logo" class="logo-image logo-base" />
-            <img src="https://coprospects.com/images/Coprospects-blue-white.png" alt="Coprospects Blue on White Logo" class="logo-image logo-alternate" />
+        <a href="/" class="global-nav-logo-wrapper" aria-label="Coprospects Homepage"> <div class="global-nav-logo-container">
+                <img src="https://coprospects.com/images/Coprospects-white-blue.png" alt="Coprospects White on Blue Logo" class="logo-image logo-base" />
+                <img src="https://coprospects.com/images/Coprospects-blue-white.png" alt="Coprospects Blue on White Logo" class="logo-image logo-alternate" />
+            </div>
         </a>
         
         <ul>
-            <li><a href="/index.html" id="global-nav-hub">Homepage</a></li>
-            <li><a href="/home-services/index.html" id="global-nav-home-services">Home Services</a></li>
-            <li><a href="/real-estate/index.html" id="global-nav-real-estate">Real Estate</a></li>
-            <li><a href="/fitness-centers/index.html" id="global-nav-fitness">Fitness Centers</a></li>
+            <li><a href="/" id="global-nav-hub">Homepage</a></li> <li><a href="/home-services/" id="global-nav-home-services">Home Services</a></li> <li><a href="/real-estate/" id="global-nav-real-estate">Real Estate</a></li>
+            <li><a href="/fitness-centers/" id="global-nav-fitness">Fitness Centers</a></li>
         </ul>
     </div>
 </nav>
