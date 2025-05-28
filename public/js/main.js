@@ -2,20 +2,39 @@
 
 // Toggle mobile menu
 function setupMobileMenu() {
-    const hamburger = document.querySelector('.global-nav-hamburger');
-    const navLinks = document.getElementById('globalNavLinks');
+    const hamburgerButton = document.querySelector('.global-nav-hamburger');
+    const navLinks = document.getElementById('globalNavLinks'); // This is your <ul class="global-nav-links">
 
-    if (!hamburger || !navLinks) {
-        console.error('setupMobileMenu: elements not found');
-        return;
+    if (hamburgerButton && navLinks) {
+        // Ensure the menu is hidden by default via inline style if not already by CSS,
+        // to match the logic of toggling. Your CSS already handles this, but this is a safeguard.
+        // However, relying on your stylesheet's "display: none" is cleaner.
+        // navLinks.style.display = 'none'; // Optional: set initial inline style if needed
+
+        hamburgerButton.addEventListener('click', () => {
+            // 1. Toggle 'active' class on the hamburger button for its own animation (X <-> bars)
+            hamburgerButton.classList.toggle('active');
+            
+            // 2. Toggle ARIA attribute for accessibility
+            const isExpanded = hamburgerButton.getAttribute('aria-expanded') === 'true';
+            hamburgerButton.setAttribute('aria-expanded', String(!isExpanded));
+
+            // 3. Directly toggle the display style for the navigation links (the UL)
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                // If it's 'none' (from your CSS or previous toggle) or empty (initially), set to 'flex'
+                navLinks.style.display = 'flex';
+            }
+        });
+    } else {
+        if (!hamburgerButton) {
+            console.error("Hamburger button (.global-nav-hamburger) not found.");
+        }
+        if (!navLinks) {
+            console.error("Navigation links list (#globalNavLinks) not found.");
+        }
     }
-
-    hamburger.addEventListener('click', () => {
-        hamburger.classList.toggle('active');
-        const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-        hamburger.setAttribute('aria-expanded', String(!expanded));
-        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-    });
 }
 
 // Highlight current link
