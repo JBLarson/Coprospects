@@ -1,19 +1,20 @@
 <style>
     /* Styles specific to the global navigation bar */
-
-    :root { /* Fallbacks if not defined in global.css, but they should be */
+    :root { /* Fallbacks/Defaults */
         --global-nav-height: 50px;
         --global-nav-text: #e0e0e0;
         --global-nav-text-hover: #ffffff;
         --global-nav-accent: #00f2ff;
+        --spacing-xs: 4px;
         --spacing-sm: 8px;
         --spacing-md: 16px;
+        --spacing-lg: 32px;
         --font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
     .global-site-nav {
         background-color: #032a8a; /* YOUR BLUE */
-        height: var(--global-nav-height); /* DESKTOP: Fixed 50px height */
+        height: 55px; /* Slightly increased for better logo fit */
         width: 100%;
         position: fixed;
         top: 0;
@@ -38,19 +39,14 @@
         align-items: center;
         height: 100%;
         text-decoration: none;
-        flex-shrink: 0;
+        flex-shrink: 0; /* Prevent shrinking */
     }
 
-    /* DESKTOP LOGO STYLING - As per your settings */
+    /* --- DESKTOP LOGO STYLING --- */
     .global-nav-logo-container {
         position: relative;
-        width: 130px; /* Your specified desktop width */
-        height: 20vw; /* YOUR MANDATED DESKTOP HEIGHT */
-        /* IMPORTANT: If height: 20vw makes this container taller than 
-           .global-site-nav height (50px), the logo WILL overflow or the 
-           navbar itself needs 'height: auto' or a larger fixed height on desktop.
-           Assuming you want the navbar to remain 50px and the logo to fit: */
-        max-height: calc(var(--global-nav-height) - 10px); /* Cap height to fit in 50px bar */
+        width: 160px; /* Increased width */
+        height: 45px; /* Increased height */
     }
 
     .global-nav-logo-container .logo-image {
@@ -59,7 +55,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: contain; /* Ensure logo scales well */
     }
 
     .global-nav-logo-container .logo-base {
@@ -76,11 +72,11 @@
     @keyframes logoAlternateAnimationGlobal { 0%, 40%, 100% { opacity: 0; } 50%, 90% { opacity: 1; } }
 
     /* --- DESKTOP NAVIGATION LINKS --- */
-    nav.global-site-nav .container > ul.global-nav-links {
+    .global-nav-links {
         list-style: none;
-        display: flex; /* Ensures it's flex on desktop */
+        display: flex; /* Flex on desktop */
         align-items: center;
-        margin: 0 0 0 auto;
+        margin: 0 0 0 auto; /* Push to the right */
         padding: 0;
         height: 100%;
     }
@@ -100,7 +96,7 @@
         transition: background-color 0.15s ease-out, color 0.15s ease-out;
         display: flex;
         align-items: center;
-        height: calc(var(--global-nav-height) - 16px);
+        height: 40px; /* Adjust link height */
         line-height: normal;
     }
 
@@ -117,90 +113,73 @@
     }
 
     .global-nav-links li a.current-demo::after {
-        content: ''; position: absolute; bottom: 8px;
+        content: ''; position: absolute; bottom: 5px; /* Adjusted position */
         left: var(--spacing-md); right: var(--spacing-md);
         height: 2px; background-color: var(--global-nav-accent, #10e6e6);
     }
 
     /* --- HAMBURGER BUTTON (Initially hidden) --- */
     .global-nav-hamburger {
-        display: none;
+        display: none; /* Hidden on desktop */
         background: none; border: none; cursor: pointer; padding: 8px;
         z-index: 2001; margin-left: var(--spacing-sm);
     }
     .global-nav-hamburger .bar {
-        display: block; width: 22px; height: 2px;
+        display: block; width: 25px; height: 3px; /* Slightly thicker */
         background-color: var(--global-nav-text, #f0f0f0);
         margin: 5px auto; transition: all 0.25s ease-in-out; border-radius: 1px;
     }
-    .global-nav-hamburger.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .global-nav-hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); } /* Adjusted transform */
     .global-nav-hamburger.active .bar:nth-child(2) { opacity: 0; }
-    .global-nav-hamburger.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .global-nav-hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); } /* Adjusted transform */
 
     /* --- MOBILE & RESPONSIVE STYLES (<= 850px) --- */
     @media (max-width: 850px) {
         .global-site-nav {
-            height: auto; /* Allow navbar to grow for potentially taller logo on mobile */
-            min-height: var(--global-nav-height); /* Ensure it's at least 50px */
+            height: 60px; /* Fixed height for mobile nav bar */
         }
         .global-site-nav .container {
-            height: auto; /* Let content (logo+hamburger) define height */
-            min-height: var(--global-nav-height);
-            /* justify-content: space-between; is inherited */
+             /* Ensure container uses full height */
         }
 
         /* MOBILE LOGO SIZING */
         .global-nav-logo-container {
-            width: 20vw;   /* Your requested base */
-            height: 18vw;  /* Your requested base */
-            /* Constraints to make it look decent and not "illegibly small" or overly dominant */
-            min-width: 100px; /* INCREASED MINIMUM WIDTH for better visibility */
-            max-width: 140px; /* Cap to prevent it getting too large if 20vw is big */
-            min-height: 40px; /* INCREASED MINIMUM HEIGHT for better visibility */
-            max-height: 55px; /* Cap height to ensure it fits reasonably with other elements */
-                               /* The navbar height will adjust due to 'height: auto' on .global-site-nav */
-            margin-left: 0; /* Reset margin if any was added for desktop */
+            width: 135px; /* Good size for mobile */
+            height: 45px; /* Maintain good height */
         }
-        .global-nav-logo-wrapper { /* Adjust padding for the wrapper on mobile */
-             padding: var(--spacing-xs) 0;
-        }
-
 
         .global-nav-hamburger {
             display: block; /* Show hamburger */
         }
 
-        /* CRITICAL FIX FOR MOBILE MENU HIDING/SHOWING */
-        /* Using highly specific selector to override global.css */
-        body nav.global-site-nav > div.container > ul#globalNavLinks.global-nav-links {
-            display: none !important; /* HIDDEN BY DEFAULT - !important to ensure override */
-            /* --- Below are styles for the dropdown when it becomes active --- */
+        /* --- MOBILE MENU HIDING/SHOWING --- */
+        .global-nav-links {
+            display: none; /* HIDDEN BY DEFAULT */
             flex-direction: column;
             position: absolute;
-            top: 100%; /* Position below the parent .global-site-nav's current height */
+            top: 60px; /* Position below the 60px nav bar */
             left: 0;
-            right: 0; /* Ensure it spans full width */
+            right: 0;
             width: 100%;
-            background-color: #021e66; /* Slightly darker shade of your blue for dropdown */
+            background-color: #021e66; /* Slightly darker dropdown */
             box-shadow: 0 5px 10px rgba(0,0,0,0.25);
             padding: var(--spacing-sm, 8px) 0;
             border-top: 1px solid rgba(255,255,255,0.1);
             z-index: 1999;
-            max-height: calc(100vh - 70px); /* Prevent very long dropdowns */
+            max-height: calc(100vh - 60px); /* Prevent full screen overlap */
             overflow-y: auto;
-            align-items: stretch; /* Default */
         }
 
-        body nav.global-site-nav > div.container > ul#globalNavLinks.global-nav-links.active {
-            display: flex !important; /* SHOW WHEN ACTIVE - !important */
+        .global-nav-links.active {
+            display: flex !important; /* SHOW WHEN ACTIVE - Using important to ensure override */
         }
 
         /* Styling for links within the mobile dropdown */
-        nav.global-site-nav > div.container > ul.global-nav-links li {
+        .global-nav-links li {
             margin: 0;
         }
 
-        nav.global-site-nav > div.container > ul.global-nav-links li a {
+        .global-nav-links li a {
             padding: 16px var(--spacing-lg, 32px); /* Larger touch targets */
             text-align: left;
             border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -208,26 +187,36 @@
             height: auto;
             line-height: 1.5;
             font-size: 16px;
-            font-weight: 500;
             color: #f0f0f0;
             border-radius: 0;
         }
-        nav.global-site-nav > div.container > ul.global-nav-links li:last-child a {
+        .global-nav-links li:last-child a {
             border-bottom: none;
         }
-        nav.global-site-nav > div.container > ul.global-nav-links li a:hover {
+        .global-nav-links li a:hover {
             background-color: rgba(255,255,255,0.1);
             color: #ffffff;
         }
-        nav.global-site-nav > div.container > ul.global-nav-links li a.current-demo {
+        .global-nav-links li a.current-demo {
             background-color: rgba(255,255,255,0.15);
             color: var(--global-nav-accent, #10e6e6);
             font-weight: 700;
         }
-        nav.global-site-nav > div.container > ul.global-nav-links li a.current-demo::after {
-            display: none; /* No underline for mobile dropdown active items */
+        .global-nav-links li a.current-demo::after {
+            display: none; /* No underline for mobile */
         }
     }
+
+     /* Adjust body padding if global.css isn't handling it sufficiently */
+     body {
+        padding-top: 55px; /* Match desktop nav height */
+     }
+     @media (max-width: 850px) {
+        body {
+            padding-top: 60px; /* Match mobile nav height */
+        }
+     }
+
 </style>
 
 <nav class="global-site-nav">
@@ -238,7 +227,7 @@
                 <img src="https://coprospects.com/images/Coprospects-blue-white.png" alt="Coprospects Blue on White Logo" class="logo-image logo-alternate" />
             </div>
         </a>
-        
+
         <button class="global-nav-hamburger" aria-label="Toggle Menu" aria-expanded="false">
             <span class="bar"></span>
             <span class="bar"></span>

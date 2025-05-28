@@ -1,3 +1,26 @@
+// Function to handle the mobile menu toggle
+function setupMobileMenu() {
+    const hamburgerButton = document.querySelector('.global-nav-hamburger');
+    const navLinks = document.getElementById('globalNavLinks');
+
+    // Check if both elements exist (they should after loading)
+    if (hamburgerButton && navLinks) {
+        hamburgerButton.addEventListener('click', () => {
+            // Toggle 'active' class on both the button and the nav links list
+            hamburgerButton.classList.toggle('active');
+            navLinks.classList.toggle('active');
+
+            // Toggle ARIA attribute for accessibility
+            const isExpanded = hamburgerButton.getAttribute('aria-expanded') === 'true';
+            hamburgerButton.setAttribute('aria-expanded', !isExpanded);
+        });
+    } else {
+        // Log an error if elements aren't found, helps in debugging
+        console.error("Hamburger button or navigation links element not found.");
+    }
+}
+
+
 // Function to load and inject the global navigation
 async function loadGlobalNav() {
     const navPlaceholder = document.getElementById('global-nav-placeholder');
@@ -7,17 +30,20 @@ async function loadGlobalNav() {
     }
 
     try {
-        // Adjust the path to _global-nav.html based on where main.js is relative to it.
-        // If main.js is in /js/ and _global-nav.html is in root, path is '../_global-nav.html'
-        // If both are in root, path is '_global-nav.html'
-        const response = await fetch('/_global-nav.html'); // Assuming _global-nav.html is at the root
+        // Ensure this path is correct. If _global-nav.html is in the root, /_global-nav.html is correct.
+        // If it's relative, you might need '../_global-nav.html'.
+        const response = await fetch('/_global-nav.html'); 
 
         if (!response.ok) {
             throw new Error(`Failed to fetch global nav: ${response.status} ${response.statusText}`);
         }
         const navHTML = await response.text();
         navPlaceholder.innerHTML = navHTML;
-        highlightCurrentDemoLink(); // Call function to highlight the active link
+
+        // --- Call functions AFTER HTML is loaded ---
+        highlightCurrentDemoLink(); 
+        setupMobileMenu(); // <--- ADDED: Set up the hamburger menu functionality
+
     } catch (error) {
         console.error("Error loading global navigation:", error);
         navPlaceholder.innerHTML = "<p style='color:red; text-align:center;'>Error loading navigation.</p>";
@@ -26,22 +52,36 @@ async function loadGlobalNav() {
 
 // Function to highlight the current demo link in the global navigation
 function highlightCurrentDemoLink() {
-    const currentPath = window.location.pathname; // Gets the path of the current page
+    const currentPath = window.location.pathname; 
+    const navLinksList = document.querySelectorAll('.global-site-nav ul li a');
 
-    // Remove .current-demo from all links first
-    document.querySelectorAll('.global-site-nav ul li a').forEach(link => {
+    if (!navLinksList.length) {
+        console.warn("Global nav links not found for highlighting.");
+        return; // Exit if no links are found yet
+    }
+
+    navLinksList.forEach(link => {
         link.classList.remove('current-demo');
     });
 
-    // Add .current-demo to the appropriate link
-    if (currentPath === '/' || currentPath.endsWith('/index.html') && !currentPath.includes('/home-services/') && !currentPath.includes('/real-estate/') && !currentPath.includes('/fitness-centers/')) {
-        document.getElementById('global-nav-hub')?.classList.add('current-demo');
-    } else if (currentPath.includes('/home-services/')) {
-        document.getElementById('global-nav-home-services')?.classList.add('current-demo');
+    // Determine which link to highlight
+    let linkIdToHighlight = 'global-nav-hub'; // Default to hub
+
+    if (currentPath.includes('/home-services/')) {
+        linkIdToHighlight = 'global-nav-home-services';
     } else if (currentPath.includes('/real-estate/')) {
-        document.getElementById('global-nav-real-estate')?.classList.add('current-demo');
+        linkIdToHighlight = 'global-nav-real-estate';
     } else if (currentPath.includes('/fitness-centers/')) {
-        document.getElementById('global-nav-fitness')?.classList.add('current-demo');
+        linkIdToHighlight = 'global-nav-fitness';
+    } else if (currentPath !== '/' && !currentPath.endsWith('/index.html')) {
+        // If it's not a known section and not the root, don't highlight hub
+        // unless it's the root path.
+    }
+    
+    // Add the class to the identified link
+    const activeLink = document.getElementById(linkIdToHighlight);
+    if (activeLink) {
+        activeLink.classList.add('current-demo');
     }
 }
 
