@@ -1,7 +1,7 @@
 <style>
     /* Styles specific to the global navigation bar */
     :root { /* Fallbacks/Defaults */
-        --global-nav-height: 50px;
+        --global-nav-height: 50px; /* This is a general variable, actual height is set below */
         --global-nav-text: #e0e0e0;
         --global-nav-text-hover: #ffffff;
         --global-nav-accent: #00f2ff;
@@ -14,7 +14,8 @@
 
     .global-site-nav {
         background-color: #032a8a; /* YOUR BLUE */
-        height: 55px; /* Slightly increased for better logo fit */
+        /* Desktop height - will be overridden in mobile */
+        height: 55px; 
         width: 100%;
         position: fixed;
         top: 0;
@@ -37,26 +38,43 @@
     .global-nav-logo-wrapper {
         display: flex;
         align-items: center;
-        height: 100%;
+        height: 100%; /* Wrapper will try to fit parent, but logo container inside can overflow */
         text-decoration: none;
         flex-shrink: 0; /* Prevent shrinking */
+        /* This helps center the oversized logo if the nav bar is shorter than the logo */
+        position: relative; 
     }
 
     /* --- DESKTOP LOGO STYLING --- */
+    /* DO NOT ADJUST - User confirmed this is perfect */
     .global-nav-logo-container {
-        position: relative;
+        position: relative; /* Changed to relative for simpler centering if needed, absolute also works */
         width: 200px;
-        height: 200px;
+        height: 200px; 
+        /* The logo container itself is 200x200. It will overflow the 55px desktop nav bar. */
+        /* To make it visually fit, the images inside are object-fit: contain */
+        /* And the wrapper might need to be clipped or the nav bar made taller */
+        /* For now, assuming the visual effect of a large logo "sitting" in a smaller bar is intended. */
+        /* If the bar should fully contain it, .global-site-nav height would need to be ~200px */
+         display: flex; /* For centering image if needed */
+         align-items: center;
+         justify-content: center;
     }
 
     .global-nav-logo-container .logo-image {
-        position: absolute;
+        position: absolute; /* Keep absolute for layering */
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        object-fit: contain; /* Ensure logo scales well */
+        object-fit: contain; 
     }
+
+    /* If the desktop nav bar (55px) should visually contain a smaller version of the 200x200 logo */
+    /* then the .global-nav-logo-container itself would need different desktop dimensions. */
+    /* But per instruction, these 200x200 values are "perfect". */
+    /* This implies the logo is intentionally much larger than the 55px bar on desktop. */
+
 
     .global-nav-logo-container .logo-base {
         opacity: 1;
@@ -74,9 +92,9 @@
     /* --- DESKTOP NAVIGATION LINKS --- */
     .global-nav-links {
         list-style: none;
-        display: flex; /* Flex on desktop */
+        display: flex; 
         align-items: center;
-        margin: 0 0 0 auto; /* Push to the right */
+        margin: 0 0 0 auto; 
         padding: 0;
         height: 100%;
     }
@@ -96,7 +114,7 @@
         transition: background-color 0.15s ease-out, color 0.15s ease-out;
         display: flex;
         align-items: center;
-        height: 40px; /* Adjust link height */
+        height: 40px; 
         line-height: normal;
     }
 
@@ -113,65 +131,81 @@
     }
 
     .global-nav-links li a.current-demo::after {
-        content: ''; position: absolute; bottom: 5px; /* Adjusted position */
+        content: ''; position: absolute; bottom: 5px; 
         left: var(--spacing-md); right: var(--spacing-md);
         height: 2px; background-color: var(--global-nav-accent, #10e6e6);
     }
 
-    /* --- HAMBURGER BUTTON (Initially hidden) --- */
+    /* --- HAMBURGER BUTTON --- */
     .global-nav-hamburger {
-        display: none; /* Hidden on desktop */
+        display: none; 
         background: none; border: none; cursor: pointer; padding: 8px;
-        z-index: 2001; margin-left: var(--spacing-sm);
+        z-index: 2001; 
+        margin-left: var(--spacing-sm);
+        align-self: center; /* Ensure it's vertically centered in the taller mobile bar */
     }
     .global-nav-hamburger .bar {
-        display: block; width: 25px; height: 3px; /* Slightly thicker */
+        display: block; width: 25px; height: 3px; 
         background-color: var(--global-nav-text, #f0f0f0);
         margin: 5px auto; transition: all 0.25s ease-in-out; border-radius: 1px;
     }
-    .global-nav-hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); } /* Adjusted transform */
+    .global-nav-hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); } 
     .global-nav-hamburger.active .bar:nth-child(2) { opacity: 0; }
-    .global-nav-hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); } /* Adjusted transform */
+    .global-nav-hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); } 
 
     /* --- MOBILE & RESPONSIVE STYLES (<= 850px) --- */
     @media (max-width: 850px) {
         .global-site-nav {
-            height: 60px; /* Fixed height for mobile nav bar */
+            /* CRITICAL CHANGE: Make nav bar tall enough for the 150px logo + some padding */
+            height: 160px; 
+            padding-left: var(--spacing-sm); /* Add some padding for mobile */
+            padding-right: var(--spacing-sm);
         }
         .global-site-nav .container {
-             /* Ensure container uses full height */
+            /* Container will also be 160px tall */
+             max-width: 100%; /* Allow container to use full width on mobile */
         }
 
-        /* MOBILE LOGO SIZING */
+        .global-nav-logo-wrapper {
+            /* Ensure the wrapper itself doesn't shrink the logo and is centered */
+            height: 150px; /* Match logo height */
+            display: flex;
+            align-items: center;
+        }
+
+        /* MOBILE LOGO SIZING - DO NOT ADJUST - User confirmed this is perfect */
         .global-nav-logo-container {
             width: 150px;
             height: 150px;
+            /* The logo container is now properly contained within the 160px tall nav bar */
         }
 
         .global-nav-hamburger {
             display: block; /* Show hamburger */
+             /* The hamburger is already align-items: center in .global-site-nav .container */
         }
 
         /* --- MOBILE MENU HIDING/SHOWING --- */
         .global-nav-links {
-            display: none; /* HIDDEN BY DEFAULT */
+            display: none; 
             flex-direction: column;
             position: absolute;
-            top: 60px; /* Position below the 60px nav bar */
+            /* CRITICAL CHANGE: Position below the new 160px nav bar */
+            top: 160px; 
             left: 0;
             right: 0;
             width: 100%;
-            background-color: #021e66; /* Slightly darker dropdown */
+            background-color: #021e66; 
             box-shadow: 0 5px 10px rgba(0,0,0,0.25);
             padding: var(--spacing-sm, 8px) 0;
             border-top: 1px solid rgba(255,255,255,0.1);
             z-index: 1999;
-            max-height: calc(100vh - 60px); /* Prevent full screen overlap */
+            max-height: calc(100vh - 160px); /* Adjust available height */
             overflow-y: auto;
         }
 
         .global-nav-links.active {
-            display: flex !important; /* SHOW WHEN ACTIVE - Using important to ensure override */
+            display: flex !important; 
         }
 
         /* Styling for links within the mobile dropdown */
@@ -180,7 +214,7 @@
         }
 
         .global-nav-links li a {
-            padding: 16px var(--spacing-lg, 32px); /* Larger touch targets */
+            padding: 16px var(--spacing-lg, 32px); 
             text-align: left;
             border-bottom: 1px solid rgba(255,255,255,0.08);
             width: 100%;
@@ -203,17 +237,21 @@
             font-weight: 700;
         }
         .global-nav-links li a.current-demo::after {
-            display: none; /* No underline for mobile */
+            display: none; 
         }
     }
 
-     /* Adjust body padding if global.css isn't handling it sufficiently */
+     /* Adjust body padding */
      body {
-        padding-top: 55px; /* Match desktop nav height */
+        /* Desktop padding-top should match desktop .global-site-nav height */
+        /* If desktop logo (200px) is meant to be fully contained, desktop nav height needs to be >200px */
+        /* Assuming 55px is the intended visual height of the bar itself, not fully containing logo */
+        padding-top: 55px; 
      }
      @media (max-width: 850px) {
         body {
-            padding-top: 60px; /* Match mobile nav height */
+            /* CRITICAL CHANGE: Match the new mobile nav bar height */
+            padding-top: 160px; 
         }
      }
 
