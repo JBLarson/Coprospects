@@ -1,24 +1,40 @@
 // Function to handle the mobile menu toggle
 function setupMobileMenu() {
     const hamburgerButton = document.querySelector('.global-nav-hamburger');
-    const navLinks = document.getElementById('globalNavLinks');
+    const navLinks = document.getElementById('globalNavLinks'); // This is your <ul class="global-nav-links">
 
-    // Check if both elements exist (they should after loading)
     if (hamburgerButton && navLinks) {
-        hamburgerButton.addEventListener('click', () => {
-            // Toggle 'active' class on both the button and the nav links list
-            hamburgerButton.classList.toggle('active');
-            navLinks.classList.toggle('active');
+        // Ensure the menu is hidden by default via inline style if not already by CSS,
+        // to match the logic of toggling. Your CSS already handles this, but this is a safeguard.
+        // However, relying on your stylesheet's "display: none" is cleaner.
+        // navLinks.style.display = 'none'; // Optional: set initial inline style if needed
 
-            // Toggle ARIA attribute for accessibility
+        hamburgerButton.addEventListener('click', () => {
+            // 1. Toggle 'active' class on the hamburger button for its own animation (X <-> bars)
+            hamburgerButton.classList.toggle('active');
+            
+            // 2. Toggle ARIA attribute for accessibility
             const isExpanded = hamburgerButton.getAttribute('aria-expanded') === 'true';
-            hamburgerButton.setAttribute('aria-expanded', !isExpanded);
+            hamburgerButton.setAttribute('aria-expanded', String(!isExpanded));
+
+            // 3. Directly toggle the display style for the navigation links (the UL)
+            if (navLinks.style.display === 'flex') {
+                navLinks.style.display = 'none';
+            } else {
+                // If it's 'none' (from your CSS or previous toggle) or empty (initially), set to 'flex'
+                navLinks.style.display = 'flex';
+            }
         });
     } else {
-        // Log an error if elements aren't found, helps in debugging
-        console.error("Hamburger button or navigation links element not found.");
+        if (!hamburgerButton) {
+            console.error("Hamburger button (.global-nav-hamburger) not found.");
+        }
+        if (!navLinks) {
+            console.error("Navigation links list (#globalNavLinks) not found.");
+        }
     }
 }
+
 
 
 // Function to load and inject the global navigation
