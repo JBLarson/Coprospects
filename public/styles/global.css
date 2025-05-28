@@ -496,7 +496,6 @@ textarea {
     /* Demo Site Header Mobile */
     .site-header {
         top: calc(var(--global-nav-height) * 1.2); /* Adjust sticky top for demo header if global nav is taller on mobile */
-        /* Or adjust based on actual height of global nav on mobile */
     }
     .main-navigation {
         display: none; /* Hide for mobile by default */
