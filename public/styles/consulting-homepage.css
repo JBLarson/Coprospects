@@ -10,6 +10,8 @@
     --color-bg-light: #21262D;       /* Lighter dark (for borders/hovers) */
     --color-primary-new: #347dff;   /* Brighter, modern blue */
     --color-secondary-new: #f9a826; /* Kept the gold for vibrant CTA */
+    /*--color-secondary-new: #B08D57; // Gold for vibrant CTA */
+
     --color-accent-new: #48d1cc;   /* A teal/cyan for highlights */
     --color-text-light-new: #e6edf3;   /* Main text color (off-white) */
     --color-text-med-new: #a0aec0;   /* Secondary text color */
@@ -426,6 +428,9 @@ body.consulting-theme-v2 {
     border-top: 1px solid var(--color-bg-light);
     font-size: 0.9rem;
 }
+
+
+
 
 /* =============================================
    RESPONSIVE ADJUSTMENTS
