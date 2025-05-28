@@ -459,6 +459,12 @@ textarea {
 }
 
 
+.global-nav-links { display: none; }
+.global-nav-links.active { display: flex !important; }
+
+
+
+
 /* Responsive Adjustments for Global Styles */
 @media (max-width: 768px) {
     body {
