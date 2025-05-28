@@ -132,9 +132,11 @@ body {
     background-color: rgba(255,255,255,0.1);
     text-decoration: none;
 }
+/* commenting out underline accent on current selected menu item
+
 .global-site-nav ul li a.current-demo {
     border-bottom: 2px solid var(--global-nav-accent);
-}
+}*/
 
 
 /* NEW: Animated Banner Styles (for stagingSite/index.html) */
@@ -475,6 +477,7 @@ textarea {
     .global-site-nav .nav-brand {
         margin-bottom: var(--spacing-sm);
     }
+    /*
     .global-site-nav ul {
         flex-direction: column;
         width: 100%;
@@ -487,7 +490,7 @@ textarea {
         text-align: center;
         padding: var(--spacing-sm);
     }
-
+    */
 
     /* Demo Site Header Mobile */
     .site-header {

@@ -1,54 +1,65 @@
 <style>
-    /* Styles for the global navigation bar - Aiming for FAANG Quality */
+    /* Styles specific to the global navigation bar */
+    /* These styles aim to work with your global.css and address mobile issues */
 
-    /* Ensure these variables are available from your global.css, or define fallbacks */
-    :root {
-        --global-nav-height: 50px;
-        --global-nav-bg: #032a8a; /* Your chosen background color */
-        --global-nav-text: #e0e0e0;
-        --global-nav-text-hover: #ffffff;
-        --global-nav-accent: #00f2ff; /* Using a bright accent for active state */
-        --spacing-sm: 8px;
-        --spacing-md: 16px;
-        --font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    }
+    /* --global-nav-height is 50px from your global.css -- */
+    /* --global-nav-bg is #043bbb as per your update -- */
+    /* --global-nav-text, --global-nav-text-hover, --global-nav-accent are from your global.css or can be overridden here */
 
     .global-site-nav {
-        background-color: var(--global-nav-bg);
-        height: var(--global-nav-height);
+        background-color: #032a8a; /* Your chosen background */
         width: 100%;
         position: fixed;
         top: 0;
         left: 0;
         z-index: 2000;
         box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-        padding: 0 var(--spacing-md); /* Add padding directly to nav */
+        /* Height will be auto on mobile to accommodate logo, fixed on desktop */
     }
 
     .global-site-nav .container {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 100%;
-        width: 100%; /* Ensure container takes full width within padded nav */
-        max-width: 1300px; /* Or your site's max-width */
+        height: var(--global-nav-height); /* Desktop fixed height */
+        width: 100%;
+        max-width: 1300px;
         margin: 0 auto;
+        padding: 0 var(--spacing-md);
     }
 
-    /* Logo Styling - CRITICAL FIX */
+    /* Logo Styling - Respecting your 20vw width and 18vw height for the container */
     .global-nav-logo-wrapper {
         display: flex;
         align-items: center;
-        height: 100%;
+        height: 100%; /* Takes height of parent (.container) */
         text-decoration: none;
     }
 
     .global-nav-logo-container {
         position: relative;
-        width: 130px; /* Fixed width for logo - adjust as needed */
-        height: calc(var(--global-nav-height) - 20px); /* e.g., 30px height for logo, allowing 10px top/bottom margin */
-        /* margin-right: auto; /* Pushes links to the very right */
+        width: 20vw;  /* As per your requirement */
+        height: 18vw; /* As per your requirement */
+        /* On very wide screens, 18vw can be very tall. We might need a max-height for desktop */
+        /* On mobile, this will determine part of the nav's height */
+        max-width: 150px; /* Prevents logo from becoming excessively wide on desktop */
+                         /* Max-height will be controlled by navbar or explicitly set for desktop */
     }
+    
+    /* Desktop specific constraints for logo container IF NEEDED to fit 50px nav */
+    /* If 18vw is too large for desktop, we need to constrain it or increase desktop nav height */
+    /* Forcing it into 50px navbar: */
+    @media (min-width: 851px) { /* Desktop view */
+        .global-nav-logo-container {
+            height: calc(var(--global-nav-height) - 16px); /* e.g., 34px */
+            width: auto; /* Let height control width with object-fit */
+            max-width: 150px; /* Still cap overall width */
+        }
+         .global-nav-logo-container .logo-image{
+             max-height: 100%; /* Ensure image respects container height */
+         }
+    }
+
 
     .global-nav-logo-container .logo-image {
         position: absolute;
@@ -69,20 +80,13 @@
         animation: logoAlternateAnimationGlobal 10s infinite ease-in-out;
     }
 
-    @keyframes logoBaseAnimationGlobal {
-        0%, 40%, 100% { opacity: 1; }
-        50%, 90% { opacity: 0; }
-    }
+    @keyframes logoBaseAnimationGlobal { 0%, 40%, 100% { opacity: 1; } 50%, 90% { opacity: 0; } }
+    @keyframes logoAlternateAnimationGlobal { 0%, 40%, 100% { opacity: 0; } 50%, 90% { opacity: 1; } }
 
-    @keyframes logoAlternateAnimationGlobal {
-        0%, 40%, 100% { opacity: 0; }
-        50%, 90% { opacity: 1; }
-    }
-
-    /* Navigation Links Styling */
-    .global-nav-links {
+    /* Desktop Navigation Links Styling */
+    .global-nav-links { /* This is the UL */
         list-style: none;
-        display: flex;
+        display: flex; /* Desktop: flex */
         align-items: center;
         margin: 0;
         padding: 0;
@@ -90,31 +94,31 @@
     }
 
     .global-nav-links li {
-        margin-left: var(--spacing-sm); /* Spacing between links */
+        margin-left: var(--spacing-sm, 8px);
     }
 
     .global-nav-links li a {
-        font-family: var(--font-primary);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         font-size: 15px;
         font-weight: 500;
-        color: var(--global-nav-text);
-        padding: 0 var(--spacing-md); /* Vertical padding handled by flex align-items on ul */
+        color: var(--global-nav-text, #e0e0e0);
+        padding: 0 var(--spacing-md, 16px);
         text-decoration: none;
-        border-radius: 4px; /* Softer radius */
+        border-radius: 4px;
         transition: background-color 0.2s ease-out, color 0.2s ease-out;
         display: flex;
         align-items: center;
-        height: calc(var(--global-nav-height) - 16px); /* Consistent clickable area height */
+        height: calc(var(--global-nav-height) - 16px);
         line-height: calc(var(--global-nav-height) - 16px);
     }
 
     .global-nav-links li a:hover {
         background-color: rgba(255, 255, 255, 0.1);
-        color: var(--global-nav-text-hover);
+        color: var(--global-nav-text-hover, #ffffff);
     }
 
     .global-nav-links li a.current-demo {
-        color: var(--global-nav-accent);
+        color: var(--global-nav-accent, #00f2ff);
         font-weight: 600;
         background-color: transparent;
         position: relative;
@@ -123,91 +127,101 @@
     .global-nav-links li a.current-demo::after {
         content: '';
         position: absolute;
-        bottom: 8px; /* Position for underline */
-        left: var(--spacing-md);
-        right: var(--spacing-md);
+        bottom: 8px;
+        left: var(--spacing-md, 16px);
+        right: var(--spacing-md, 16px);
         height: 2px;
-        background-color: var(--global-nav-accent);
+        background-color: var(--global-nav-accent, #00f2ff);
     }
 
-    /* Hamburger Menu Button Styling */
+    /* Hamburger Menu Button - Hidden on Desktop */
     .global-nav-hamburger {
-        display: none; /* Hidden on desktop */
+        display: none;
         background: none;
         border: none;
         cursor: pointer;
         padding: 10px;
         margin: 0;
-        z-index: 1001; /* Above nav links on mobile */
+        z-index: 2001; /* Above other nav content if it overlaps */
     }
-
     .global-nav-hamburger .bar {
-        display: block;
-        width: 25px;
-        height: 3px;
-        background-color: var(--global-nav-text);
-        margin: 5px auto;
-        transition: all 0.3s ease-in-out;
-        border-radius: 1px;
+        display: block; width: 25px; height: 3px;
+        background-color: var(--global-nav-text, #e0e0e0);
+        margin: 5px auto; transition: all 0.3s ease-in-out; border-radius: 1px;
     }
-    
-    .global-nav-hamburger.active .bar:nth-child(1) {
-        transform: translateY(8px) rotate(45deg);
-    }
-    .global-nav-hamburger.active .bar:nth-child(2) {
-        opacity: 0;
-    }
-    .global-nav-hamburger.active .bar:nth-child(3) {
-        transform: translateY(-8px) rotate(-45deg);
-    }
+    .global-nav-hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .global-nav-hamburger.active .bar:nth-child(2) { opacity: 0; }
+    .global-nav-hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-
-    /* Responsive: Mobile Menu */
-    @media (max-width: 850px) { /* Adjust breakpoint as needed */
-        .global-nav-links {
-            display: none; /* Hide links by default */
-            flex-direction: column;
-            position: absolute;
-            top: var(--global-nav-height); /* Position below the nav bar */
-            left: 0;
-            width: 100%;
-            background-color: var(--global-nav-bg); /* Same background as nav */
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            padding: var(--spacing-md) 0; /* Add some padding */
-            border-top: 1px solid rgba(255,255,255,0.1); /* Subtle separator */
-            align-items: stretch; /* Make list items take full width */
-            height: auto; /* Override fixed height */
+    /* MOBILE STYLES ( <= 850px ) - CRITICAL FIXES */
+    @media (max-width: 850px) {
+        .global-site-nav {
+            height: auto; /* Allow navbar to grow for logo + hamburger line */
+            min-height: var(--global-nav-height); /* Still ensure it's at least 50px if logo is small */
+        }
+        .global-site-nav .container {
+            height: auto; /* Let content dictate height */
+            min-height: var(--global-nav-height); /* Minimum touch target */
+            flex-wrap: nowrap; /* Ensure logo and hamburger stay on one line if possible */
+            justify-content: space-between; /* Logo left, hamburger right */
         }
 
-        .global-nav-links.active {
-            display: flex; /* Show when hamburger is active */
+        .global-nav-logo-container {
+            width: 20vw; /* User's requirement */
+            height: 18vw; /* User's requirement - this will make the nav bar tall */
+            /* The following will try to keep it from being absurdly tall but user might override */
+            max-height: 60px; /* Cap the visual height for sanity, logo will 'contain' */
+            margin-left: 0; /* Remove extra left margin */
+        }
+
+
+        .global-nav-hamburger {
+            display: block; /* Show hamburger */
+        }
+
+        /* This targets the UL directly for the mobile dropdown */
+        nav.global-site-nav .container > ul.global-nav-links {
+            display: none; /* HIDDEN BY DEFAULT ON MOBILE */
+            flex-direction: column;
+            position: absolute;
+            top: 100%; /* Position it below the calculated height of the .global-site-nav */
+            left: 0;
+            width: 100%;
+            background-color: var(--global-nav-bg); /* Match nav background */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+            padding: var(--spacing-sm, 8px) 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            z-index: 1999; /* Below the main nav bar but above page content */
+            align-items: stretch;
+        }
+
+        nav.global-site-nav .container > ul.global-nav-links.active {
+            display: flex !important; /* SHOW WHEN ACTIVE - use !important if global.css conflicts hard */
         }
 
         .global-nav-links li {
             margin: 0;
-            width: 100%;
         }
 
         .global-nav-links li a {
-            padding: 15px var(--spacing-md); /* Make clickable area larger */
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.05); /* Separators for links */
+            padding: 14px var(--spacing-md, 16px); /* Good touch target size */
+            text-align: left; /* Better for lists */
+            border-bottom: 1px solid rgba(255,255,255,0.08);
             width: 100%;
-            height: auto;
-            line-height: normal;
-            border-radius: 0;
+            height: auto; /* Let content dictate height */
+            line-height: 1.5; /* Normal line height for readability */
+            font-size: 16px;
+            border-radius: 0; /* Full width links in dropdown */
         }
         .global-nav-links li:last-child a {
             border-bottom: none;
         }
-        .global-nav-links li a.current-demo::after { /* Adjust underline for mobile */
+        .global-nav-links li a.current-demo::after { /* Mobile active state underline */
             bottom: 8px;
-            left: 25%;
-            right: 25%;
-        }
-
-        .global-nav-hamburger {
-            display: block; /* Show hamburger on mobile */
+            left: var(--spacing-md, 16px);
+            right: auto; /* Underline only under text */
+            width: calc(100% - (2 * var(--spacing-md, 16px))); /* Adjust width */
+            max-width: 100px; /* Max width for underline to look neat */
         }
     }
 </style>
@@ -227,8 +241,7 @@
             <span class="bar"></span>
         </button>
 
-        <ul class="global-nav-links" id="globalNavLinks">
-            <li><a href="/" id="global-nav-hub">Homepage</a></li>
+        <ul class="global-nav-links" id="globalNavLinks"> <li><a href="/" id="global-nav-hub">Homepage</a></li>
             <li><a href="/home-services/" id="global-nav-home-services">Home Services</a></li>
             <li><a href="/real-estate/" id="global-nav-real-estate">Real Estate</a></li>
             <li><a href="/fitness-centers/" id="global-nav-fitness">Fitness Centers</a></li>
