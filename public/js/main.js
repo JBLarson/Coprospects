@@ -1,51 +1,65 @@
 // main.js
 
-// Toggle mobile menu
-function setupMobileMenu() {
-    const hamburger = document.querySelector('.global-nav-hamburger');
-    const navLinks = document.getElementById('globalNavLinks');
-    console.log('setupMobileMenu:', hamburger, navLinks);
-    if (!hamburger || !navLinks) return;
+console.log('Script loaded');
 
-    hamburger.addEventListener('click', () => {
-        console.log('hamburger clicked');
-        hamburger.classList.toggle('active');
-        const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-        hamburger.setAttribute('aria-expanded', String(!expanded));
-        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-    });
-}
-
-// Highlight current link
 function highlightCurrentDemoLink() {
+    console.log('highlightCurrentDemoLink running');
     const path = window.location.pathname;
-    document.querySelectorAll('.global-nav-links a')
-        .forEach(a => a.classList.remove('current-demo'));
+    const links = document.querySelectorAll('.global-nav-links a');
+    console.log('Found links:', links);
+    links.forEach(a => a.classList.remove('current-demo'));
 
     let id = 'global-nav-hub';
     if (path.includes('/home-services/'))      id = 'global-nav-home-services';
     else if (path.includes('/real-estate/'))   id = 'global-nav-real-estate';
     else if (path.includes('/fitness-centers/')) id = 'global-nav-fitness';
 
-    document.getElementById(id)?.classList.add('current-demo');
+    const active = document.getElementById(id);
+    console.log('Active link element:', active);
+    if (active) active.classList.add('current-demo');
 }
 
-// Load and inject global nav
 async function loadGlobalNav() {
+    console.log('loadGlobalNav start');
     const placeholder = document.getElementById('global-nav-placeholder');
+    console.log('Placeholder:', placeholder);
     if (!placeholder) return console.error('Nav placeholder missing');
 
     try {
+        console.log('Fetching /_global-nav.html');
         const res = await fetch('/_global-nav.html');
+        console.log('Fetch response ok?', res.ok);
         if (!res.ok) throw new Error(res.statusText);
-        placeholder.innerHTML = await res.text();
-
+        const text = await res.text();
+        console.log('Fetched HTML length:', text.length);
+        placeholder.innerHTML = text;
+        console.log('Injected nav HTML');
         highlightCurrentDemoLink();
-        // ensure the new DOM is parsed before binding
-        setTimeout(setupMobileMenu, 0);
     } catch (e) {
         console.error('Failed to load nav:', e);
     }
 }
 
-document.addEventListener('DOMContentLoaded', loadGlobalNav);
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded');
+    loadGlobalNav();
+});
+
+document.addEventListener('click', (e) => {
+    const ham = e.target.closest('.global-nav-hamburger');
+    console.log('Click event, ham:', ham);
+    if (!ham) return;
+
+    const nav = document.getElementById('globalNavLinks');
+    console.log('Nav links:', nav);
+    if (!nav) return console.error('Nav links not found');
+
+    console.log('Toggling menu');
+    ham.classList.toggle('active');
+    nav.classList.toggle('active');
+
+    const expanded = ham.getAttribute('aria-expanded') === 'true';
+    console.log('Previous aria-expanded:', expanded);
+    ham.setAttribute('aria-expanded', String(!expanded));
+    console.log('New aria-expanded:', !expanded);
+});
