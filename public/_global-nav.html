@@ -38,43 +38,31 @@
     .global-nav-logo-wrapper {
         display: flex;
         align-items: center;
-        height: 100%; /* Wrapper will try to fit parent, but logo container inside can overflow */
+        height: 100%; 
         text-decoration: none;
-        flex-shrink: 0; /* Prevent shrinking */
-        /* This helps center the oversized logo if the nav bar is shorter than the logo */
+        flex-shrink: 0; 
         position: relative; 
     }
 
     /* --- DESKTOP LOGO STYLING --- */
     /* DO NOT ADJUST - User confirmed this is perfect */
     .global-nav-logo-container {
-        position: relative; /* Changed to relative for simpler centering if needed, absolute also works */
+        position: relative; 
         width: 200px;
         height: 200px; 
-        /* The logo container itself is 200x200. It will overflow the 55px desktop nav bar. */
-        /* To make it visually fit, the images inside are object-fit: contain */
-        /* And the wrapper might need to be clipped or the nav bar made taller */
-        /* For now, assuming the visual effect of a large logo "sitting" in a smaller bar is intended. */
-        /* If the bar should fully contain it, .global-site-nav height would need to be ~200px */
-         display: flex; /* For centering image if needed */
-         align-items: center;
-         justify-content: center;
+        display: flex; 
+        align-items: center;
+        justify-content: center;
     }
 
     .global-nav-logo-container .logo-image {
-        position: absolute; /* Keep absolute for layering */
+        position: absolute; 
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         object-fit: contain; 
     }
-
-    /* If the desktop nav bar (55px) should visually contain a smaller version of the 200x200 logo */
-    /* then the .global-nav-logo-container itself would need different desktop dimensions. */
-    /* But per instruction, these 200x200 values are "perfect". */
-    /* This implies the logo is intentionally much larger than the 55px bar on desktop. */
-
 
     .global-nav-logo-container .logo-base {
         opacity: 1;
@@ -142,7 +130,7 @@
         background: none; border: none; cursor: pointer; padding: 8px;
         z-index: 2001; 
         margin-left: var(--spacing-sm);
-        align-self: center; /* Ensure it's vertically centered in the taller mobile bar */
+        /* align-self: center; Will be handled by container's align-items */
     }
     .global-nav-hamburger .bar {
         display: block; width: 25px; height: 3px; 
@@ -156,33 +144,38 @@
     /* --- MOBILE & RESPONSIVE STYLES (<= 850px) --- */
     @media (max-width: 850px) {
         .global-site-nav {
-            /* CRITICAL CHANGE: Make nav bar tall enough for the 150px logo + some padding */
             height: 160px; 
-            padding-left: var(--spacing-sm); /* Add some padding for mobile */
+            padding-left: var(--spacing-sm); 
             padding-right: var(--spacing-sm);
         }
         .global-site-nav .container {
-            /* Container will also be 160px tall */
-             max-width: 100%; /* Allow container to use full width on mobile */
+            display: flex;
+            flex-direction: row !important; /* CRITICAL: Override global.css if it sets column */
+            justify-content: space-between; /* Space out logo and hamburger */
+            align-items: center; /* Vertically center items in the 160px tall bar */
+            height: 100%;
+            width: 100%;
+            max-width: 100%; /* Use full width on mobile */
+            position: relative; /* Context for absolutely positioned dropdown */
         }
 
         .global-nav-logo-wrapper {
-            /* Ensure the wrapper itself doesn't shrink the logo and is centered */
             height: 150px; /* Match logo height */
             display: flex;
-            align-items: center;
+            align-items: center; /* Center logo vertically within its wrapper */
+            flex-shrink: 0; /* Prevent logo wrapper from shrinking */
         }
 
         /* MOBILE LOGO SIZING - DO NOT ADJUST - User confirmed this is perfect */
         .global-nav-logo-container {
             width: 150px;
             height: 150px;
-            /* The logo container is now properly contained within the 160px tall nav bar */
         }
 
         .global-nav-hamburger {
             display: block; /* Show hamburger */
-             /* The hamburger is already align-items: center in .global-site-nav .container */
+            flex-shrink: 0; /* Prevent hamburger from being squeezed */
+            /* align-self: center; is handled by container's align-items: center */
         }
 
         /* --- MOBILE MENU HIDING/SHOWING --- */
@@ -190,17 +183,16 @@
             display: none; 
             flex-direction: column;
             position: absolute;
-            /* CRITICAL CHANGE: Position below the new 160px nav bar */
-            top: 160px; 
+            top: 160px; /* Position below the 160px nav bar */
             left: 0;
             right: 0;
             width: 100%;
-            background-color: #021e66; 
+            background-color: #021e66; /* Solid background for dropdown */
             box-shadow: 0 5px 10px rgba(0,0,0,0.25);
             padding: var(--spacing-sm, 8px) 0;
             border-top: 1px solid rgba(255,255,255,0.1);
-            z-index: 1999;
-            max-height: calc(100vh - 160px); /* Adjust available height */
+            z-index: 1999; /* Below nav bar (2000) and hamburger (2001) */
+            max-height: calc(100vh - 160px); 
             overflow-y: auto;
         }
 
@@ -243,15 +235,11 @@
 
      /* Adjust body padding */
      body {
-        /* Desktop padding-top should match desktop .global-site-nav height */
-        /* If desktop logo (200px) is meant to be fully contained, desktop nav height needs to be >200px */
-        /* Assuming 55px is the intended visual height of the bar itself, not fully containing logo */
         padding-top: 55px; 
      }
      @media (max-width: 850px) {
         body {
-            /* CRITICAL CHANGE: Match the new mobile nav bar height */
-            padding-top: 160px; 
+            padding-top: 160px; /* Match the new mobile nav bar height */
         }
      }
 
