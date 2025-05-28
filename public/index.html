@@ -3,207 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coprospects</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        /* Reset and Basic Setup */
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif; /* Fallback font */
-            color: #fff;
-            background-color: #1a1a2e; /* Fallback background */
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; /* Hide scrollbars caused by large pseudo-elements */
-            position: relative; /* For positioning pseudo-elements */
-            text-align: center;
-        }
-
-        /* Abstract Animated Background */
-        body::before, body::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 200vw; /* Large enough to cover screen during rotation */
-            height: 200vw;
-            border-radius: 45%; /* Organic shape */
-            opacity: 0.3;
-            z-index: -1; /* Behind content */
-            animation: rotateColors 12s linear infinite;
-        }
-
-        body::before {
-            background: linear-gradient(45deg, #18085f, #18085f, #ffeb3b, #18085f);
-            transform-origin: center center;
-        }
-
-        body::after {
-            background: linear-gradient(-45deg, #3bff7e, #ff6b00, #ae00ff, #00c3ff);
-            animation-delay: -12.5s; /* Offset animation */
-            transform-origin: center center;
-            opacity: 0.25;
-        }
-
-        @keyframes rotateColors {
-            0% {
-                transform: translate(-50%, -50%) rotate(0deg) scale(1);
-            }
-            25% {
-                transform: translate(-50%, -50%) rotate(90deg) scale(1.1);
-            }
-            50% {
-                transform: translate(-50%, -50%) rotate(180deg) scale(1);
-            }
-            75% {
-                transform: translate(-50%, -50%) rotate(270deg) scale(1.1);
-            }
-            100% {
-                transform: translate(-50%, -50%) rotate(360deg) scale(1);
-            }
-        }
-
-        /* Content Wrapper */
-        .content-wrapper {
-            position: relative; /* To stay above pseudo-elements */
-            z-index: 1;
-            padding: 40px;
-            background-color: rgba(20, 20, 40, 0.6); /* Semi-transparent dark background for readability */
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            backdrop-filter: blur(10px); /* Frosted glass effect */
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-width: 90%;
-            width: 600px; /* Max width for content */
-        }
-
-        /* Site Title */
-        .site-title {
-            font-family: 'Syne', sans-serif; /* Artistic font */
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3), 0 0 20px rgba(61, 27, 255, 0.5); /* Neon-like glow */
-            letter-spacing: 1px;
-        }
-
-        .site-tagline {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.1rem;
-            color: #e0e0e0;
-            margin-bottom: 40px;
-            font-weight: 300;
-            line-height: 1.6;
-        }
-
-        /* Navigation Menu */
-        nav.main-menu {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        nav.main-menu ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            gap: 20px; /* Spacing between menu items */
-        }
-
-        nav.main-menu ul li a {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            text-decoration: none;
-            color: #fff;
-            font-size: 1.1rem;
-            padding: 12px 25px;
-            border-radius: 50px; /* Pill shape */
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
-            display: inline-block;
-        }
-
-        nav.main-menu ul li a:hover {
-            background-color: rgba(255, 255, 255, 0.9);
-            color: #1a1a2e; /* Dark color from body background */
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3); /* Soft pinkish glow on hover */
-        }
-
-        nav.main-menu ul li a:active {
-            transform: translateY(-1px) scale(1.02);
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .site-title {
-                font-size: 2.8rem;
-            }
-            .site-tagline {
-                font-size: 1rem;
-            }
-            nav.main-menu ul {
-                flex-direction: column; /* Stack menu items vertically on smaller screens */
-                gap: 15px;
-            }
-            nav.main-menu ul li a {
-                padding: 10px 20px;
-                font-size: 1rem;
-                width: 100%; /* Make buttons full width in column layout */
-            }
-            .content-wrapper {
-                padding: 30px 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .site-title {
-                font-size: 2.2rem;
-            }
-            .site-tagline {
-                font-size: 0.9rem;
-            }
-             body::before, body::after {
-                width: 300vw;
-                height: 300vw;
-            }
-        }
-
-    </style>
+    <title>Coprospects - Automate & Amplify Your Business Growth</title>
+    <link rel="stylesheet" href="styles/global.css"> <link rel="stylesheet" href="styles/consulting-homepage.css"> <link rel="icon" href="https://coprospects.com/images/Coprospects-blue-white.png">
 </head>
-<body>
+<body class="consulting-theme">
 
-    <div class="content-wrapper">
-        <header>
-            <h1 class="site-title">Coprospects</h1>
-            <p class="site-tagline">Convert Prospects Consulting</p>
-        </header>
+    <div id="global-nav-placeholder"></div> <section class="hero-consulting">
+        <div class="hero-consulting-overlay"></div>
+        <div class="container">
+            <div class="hero-consulting-content">
+                <h1>Supercharge Your Business with Intelligent Automation & Digital Expertise</h1>
+                <p class="subtitle">We help small to medium businesses streamline operations, attract more clients, and drive measurable growth through custom web development, targeted digital marketing, and cutting-edge AI/LLM solutions.</p>
+                <a href="#contact-cta" class="btn btn-primary btn-large">Schedule a Free Strategy Call</a>
+            </div>
+        </div>
+    </section>
 
-        <nav class="main-menu">
-            <ul>
-                <li><a href="home-services/">Home Services</a></li>
-                <li><a href="real-estate/">Real Estate</a></li>
-                <li><a href="fitness-centers/">Fitness Centers</a></li>
-            </ul>
-        </nav>
-    </div>
+    <section id="services" class="services-overview-consulting section-padding">
+        <div class="container">
+            <h2 class="section-title">Our Core Service Offerings</h2>
+            <p class="section-intro">We provide tailored solutions to meet your unique business challenges and unlock new opportunities.</p>
+            <div class="services-consulting-grid">
+                <div class="service-card-consulting">
+                    <div class="service-icon-consulting llm-icon"></div>
+                    <h3>AI & LLM Integration</h3>
+                    <p>Leverage the power of Large Language Models. We build custom AI chatbots, automate content creation, and integrate intelligent solutions to enhance customer engagement and efficiency.</p>
+                </div>
+                <div class="service-card-consulting">
+                    <div class="service-icon-consulting automation-icon"></div>
+                    <h3>Workflow & Marketing Automation</h3>
+                    <p>Streamline your repetitive tasks. We set up email/SMS drip campaigns, automate lead scoring, and create efficient workflows so you can focus on what you do best.</p>
+                </div>
+                <div class="service-card-consulting">
+                    <div class="service-icon-consulting webdev-icon"></div>
+                    <h3>Custom Web Development</h3>
+                    <p>From stunning landing pages to robust web applications, we build responsive, user-friendly websites that serve as powerful tools for your business growth.</p>
+                </div>
+                <div class="service-card-consulting">
+                    <div class="service-icon-consulting digitalmarketing-icon"></div>
+                    <h3>Targeted Digital Marketing</h3>
+                    <p>Reach your ideal customers. We manage Google Ads, set up advanced analytics & Tag Manager, and leverage social media API connections for effective campaigns.</p>
+                </div>
+                <div class="service-card-consulting">
+                    <div class="service-icon-consulting api-icon"></div>
+                    <h3>Custom API Integrations</h3>
+                    <p>Connect your essential tools seamlessly. We integrate various APIs (like MLS for real estate, or other industry-specific platforms) to ensure smooth data flow and enhanced functionality.</p>
+                </div>
+                <div class="service-card-consulting">
+                    <div class="service-icon-consulting dashboard-icon"></div>
+                    <h3>Performance Dashboards</h3>
+                    <p>Make data-driven decisions. We build custom dashboards to track key metrics, visualize your marketing performance, and provide actionable insights for continuous improvement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-</body>
+    <section class="why-choose-consulting section-padding bg-light">
+        <div class="container">
+            <h2 class="section-title">Why Partner with Coprospects?</h2>
+            <div class="why-choose-consulting-grid">
+                <div class="why-item-consulting">
+                    <div class="why-icon-consulting tech-expertise-icon"></div>
+                    <h4>Cutting-Edge Expertise</h4>
+                    <p>We bring fresh perspectives and proficiency in the latest web, AI, and automation technologies to give your business a competitive edge.</p>
+                </div>
+                <div class="why-item-consulting">
+                    <div class="why-icon-consulting results-driven-icon"></div>
+                    <h4>Results-Driven Approach</h4>
+                    <p>Our solutions are focused on delivering measurable outcomes – increased leads, better efficiency, and tangible business growth.</p>
+                </div>
+                <div class="why-item-consulting">
+                    <div class="why-icon-consulting tailored-solutions-icon"></div>
+                    <h4>Tailored Solutions for SMBs</h4>
+                    <p>We understand the unique challenges and budgets of small to medium businesses, offering customized and affordable services.</p>
+                </div>
+                <div class="why-item-consulting">
+                    <div class="why-icon-consulting agile-nimble-icon"></div>
+                    <h4>Agile & Collaborative</h4>
+                    <p>As a dynamic team, we're responsive, flexible, and work closely with you to ensure our solutions perfectly fit your needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process-consulting section-padding">
+        <div class="container">
+            <h2 class="section-title">Our Simple Path to Your Success</h2>
+            <div class="process-steps-consulting">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-icon discover-icon"></div>
+                    <h4>Discovery & Strategy</h4>
+                    <p>We start by understanding your business, goals, and challenges to craft a tailored automation and digital strategy.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-icon implement-icon"></div>
+                    <h4>Implementation & Integration</h4>
+                    <p>Our team expertly builds and integrates the chosen solutions, whether it's AI tools, marketing campaigns, or web features.</p>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-icon optimize-icon"></div>
+                    <h4>Launch & Optimization</h4>
+                    <p>We launch your new systems and continuously monitor performance, making data-driven adjustments for optimal results.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="case-studies" class="case-studies-section section-padding bg-light">
+        <div class="container">
+            <h2 class="section-title">Real Results for Businesses Like Yours</h2>
+            <p class="section-intro">Discover how Coprospects (Convert Prospects Consulting) has empowered businesses to automate, innovate, and achieve significant growth through our tailored technology solutions.</p>
+            <div class="case-study-grid">
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <img src="https://placehold.co/600x400/032a8a/e0e0e0?text=Plumbing+Co+Logo" alt="Plumbing Company Client" class="case-study-image">
+                        <h3 class="case-study-client">"SoCal Premier Plumbers"</h3>
+                        <p class="client-industry">Home Services Sector</p>
+                    </div>
+                    <div class="case-study-content">
+                        <h4>The Challenge:</h4>
+                        <p>Overwhelmed by repetitive customer inquiries about services, pricing, and scheduling, leading to slow response times and missed opportunities.</p>
+                        <h4>Our Solution: AI-Powered Customer Assistance</h4>
+                        <p>Coprospects implemented an LLM-powered chatbot on their website, trained on their service offerings and FAQs. We also set up automated lead qualification for complex queries.</p>
+                        <ul class="case-study-results">
+                            <li><span class="result-metric">40% Reduction</span> in repetitive email/call volume.</li>
+                            <li><span class="result-metric">24/7 Availability</span> for instant customer answers.</li>
+                            <li><span class="result-metric">15% Increase</span> in qualified leads passed to staff.</li>
+                        </ul>
+                        <p class="service-tag">Service: LLM Integration, Lead Scoring Automation</p>
+                    </div>
+                </div>
+
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <img src="https://placehold.co/600x400/F9A826/212934?text=Realty+Group+Logo" alt="Real Estate Client" class="case-study-image">
+                        <h3 class="case-study-client">"Golden State Realty Group"</h3>
+                        <p class="client-industry">Real Estate Agency</p>
+                    </div>
+                    <div class="case-study-content">
+                        <h4>The Challenge:</h4>
+                        <p>Struggling to generate consistent, high-quality buyer and seller leads, and effectively nurture them through a long sales cycle.</p>
+                        <h4>Our Solution: Targeted Digital Outreach & Nurturing</h4>
+                        <p>We developed targeted Google Ads & Facebook campaigns (via API integration), set up automated email/SMS drip campaigns for lead nurturing, and built a performance dashboard to track ROI.</p>
+                        <ul class="case-study-results">
+                            <li><span class="result-metric">200% Increase</span> in monthly qualified leads.</li>
+                            <li><span class="result-metric">25% Higher</span> lead-to-appointment conversion rate.</li>
+                            <li>Clear visibility into marketing spend and lead sources via dashboard.</li>
+                        </ul>
+                        <p class="service-tag">Services: Digital Marketing (Ads API), Drip Campaigns, Performance Dashboards</p>
+                    </div>
+                </div>
+
+                <div class="case-study-card">
+                    <div class="case-study-header">
+                        <img src="https://placehold.co/600x400/4CAF50/FFFFFF?text=Fitness+Studio+Logo" alt="Fitness Studio Client" class="case-study-image">
+                        <h3 class="case-study-client">"Elevate Fitness OC"</h3>
+                        <p class="client-industry">Fitness & Wellness Center</p>
+                    </div>
+                    <div class="case-study-content">
+                        <h4>The Challenge:</h4>
+                        <p>Outdated website with no online booking integration, leading to administrative bottlenecks and a poor member experience for class sign-ups.</p>
+                        <h4>Our Solution: Modern Web Platform & Process Automation</h4>
+                        <p>Coprospects (Convert Prospects Consulting) rebuilt their website with a user-friendly design, integrated a class scheduling system via API, and automated class reminder notifications.</p>
+                        <ul class="case-study-results">
+                            <li><span class="result-metric">50% Reduction</span> in staff time spent on manual bookings.</li>
+                            <li><span class="result-metric">30% Increase</span> in online class registrations.</li>
+                            <li>Improved member satisfaction and retention.</li>
+                        </ul>
+                        <p class="service-tag">Services: Web Development, API Integration, Workflow Automation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact-cta" class="cta-final-consulting section-padding">
+        <div class="container text-center">
+            <h2>Ready to Automate, Innovate, and Grow?</h2>
+            <p>Let's discuss how Coprospects can tailor a solution to elevate your business. Your initial consultation is free, with no obligation.</p>
+            <a href="mailto:yourconsultingemail@coprospects.com?subject=Consulting Inquiry from Coprospects.com" class="btn btn-primary btn-large">Book Your Free Strategy Call</a>
+            <p style="margin-top: var(--spacing-md); font-size: 0.9rem;">Or explore our demo sites to see our work in action!</p>
+            <div class="demo-links-cta">
+                <a href="/home-services/" class="btn btn-secondary btn-sm">Home Services Demo</a>
+                <a href="/real-estate/" class="btn btn-secondary btn-sm">Real Estate Demo</a>
+                <a href="/fitness-centers/" class="btn btn-secondary btn-sm">Fitness Demo</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer consulting-footer">
+        <div class="container">
+            <p>© <span id="current-year"></span> Coprospects. All Rights Reserved.</p>
+            <p>Empowering Businesses with Smart Technology Solutions.</p>
+            </div>
+    </footer>
+
+    <script src="js/main.js"></script> </body>
 </html>
