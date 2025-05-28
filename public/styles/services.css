@@ -95,7 +95,10 @@ body.service-page-theme {
     border-bottom: 1px solid var(--color-bg-light);
 }
 
-.service-hero__bg-elements { /* Add subtle shapes/dots if desired */ }
+/*
+
+
+.service-hero__bg-elements { /* Add subtle shapes/dots if desired */ 
 
 .service-hero__content { z-index: 1; }
 
