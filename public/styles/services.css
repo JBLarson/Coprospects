@@ -1,0 +1,411 @@
+/* styles/services.css */
+/* Styles for the individual Coprospects Service Pages */
+
+/* =============================================
+   THEME SETUP & VARIABLES (Consistent with Homepage V2)
+   ============================================= */
+
+.service-page-theme {
+    --color-bg-dark: #0D1117;
+    --color-bg-med: #161B22;
+    --color-bg-light: #21262D;
+    --color-primary-new: #347dff;
+    --color-secondary-new: #f9a826;
+    --color-accent-new: #48d1cc;
+    --color-text-light-new: #e6edf3;
+    --color-text-med-new: #a0aec0;
+    --color-text-dark-new: #0D1117;
+    --font-primary: 'Poppins', sans-serif;
+    --font-secondary: 'Montserrat', sans-serif;
+    --border-radius-new: 10px;
+    --shadow-new: 0 10px 30px rgba(0, 0, 0, 0.3);
+    --transition-main: all 0.3s ease-in-out;
+}
+
+body.service-page-theme {
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-light-new);
+    font-family: var(--font-primary);
+    line-height: 1.7;
+    /* Padding-top MUST be handled by _global-nav.html styles */
+}
+
+/* =============================================
+   SHARED STYLES & UTILITIES
+   ============================================= */
+
+.service-main-content {
+    /* Ensures content starts below the global nav space */
+    padding-top: 0;
+}
+
+.section-padding {
+    padding: 80px 0;
+}
+
+.bg-med {
+    background-color: var(--color-bg-med);
+    border-top: 1px solid var(--color-bg-light);
+    border-bottom: 1px solid var(--color-bg-light);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.service-section__title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-text-light-new);
+    margin-bottom: var(--spacing-sm);
+    font-family: var(--font-secondary);
+}
+
+.service-section__intro {
+    font-size: 1.1rem;
+    color: var(--color-text-med-new);
+    max-width: 700px;
+    margin-bottom: var(--spacing-lg);
+}
+.service-section__intro.text-center { margin-left: auto; margin-right: auto; }
+
+.btn-primary, .btn-secondary { /* Ensure global styles are available */
+    /* Assuming global.css handles base button styles. */
+    /* These might need tweaking based on global.css */
+    text-decoration: none;
+}
+.btn-primary { background-color: var(--color-secondary-new); color: var(--color-text-dark-new); border-color: var(--color-secondary-new); }
+.btn-primary:hover { background-color: #ffbe4a; border-color: #ffbe4a; color: var(--color-text-dark-new); }
+.btn-secondary { background-color: transparent; color: var(--color-secondary-new); border: 2px solid var(--color-secondary-new); }
+.btn-secondary:hover { background-color: var(--color-secondary-new); color: var(--color-text-dark-new); }
+
+/* =============================================
+   1. SERVICE HERO SECTION
+   ============================================= */
+
+.service-hero {
+    background: linear-gradient(160deg, var(--color-bg-med) 0%, var(--color-primary-new) 150%);
+    padding: 100px 0 60px 0; /* Adjusted padding */
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--color-bg-light);
+}
+
+.service-hero__bg-elements { /* Add subtle shapes/dots if desired */ }
+
+.service-hero__content { z-index: 1; }
+
+.service-hero__breadcrumbs {
+    font-size: 0.9rem;
+    color: var(--color-text-med-new);
+    margin-bottom: var(--spacing-md);
+}
+.service-hero__breadcrumbs a {
+    color: var(--color-text-med-new);
+    text-decoration: none;
+}
+.service-hero__breadcrumbs a:hover {
+    color: var(--color-accent-new);
+    text-decoration: underline;
+}
+.service-hero__breadcrumbs span {
+    color: var(--color-text-light-new);
+    font-weight: 600;
+}
+
+.service-hero__title {
+    font-size: 3.5rem;
+    color: var(--color-text-light-new);
+    font-weight: 800;
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.service-hero__subtitle {
+    font-size: 1.3rem;
+    color: var(--color-text-med-new);
+    max-width: 700px;
+    margin: 0 auto var(--spacing-lg);
+}
+
+/* =============================================
+   2. SERVICE INTRO SECTION
+   ============================================= */
+
+.service-section__wrapper--two-col {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-xl);
+}
+
+.service-section__text { flex: 1 1 55%; }
+.service-section__text p { margin-bottom: var(--spacing-md); }
+.service-section__visual { flex: 1 1 40%; }
+.service-section__visual img {
+    max-width: 100%;
+    border-radius: var(--border-radius-new);
+    border: 1px solid var(--color-bg-light);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+}
+
+/* =============================================
+   3. SERVICE BENEFITS SECTION
+   ============================================= */
+
+.service-benefits__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.benefit-card {
+    background-color: var(--color-bg-dark);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-new);
+    border: 1px solid var(--color-bg-light);
+    text-align: center;
+    transition: var(--transition-main);
+}
+.benefit-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    border-color: var(--color-accent-new);
+}
+
+.benefit-card__icon {
+    font-size: 2.5rem; /* Placeholder - Use actual icons */
+    color: var(--color-accent-new);
+    margin-bottom: var(--spacing-md);
+    display: inline-block;
+    /* Add icon styles here */
+    width: 60px; height: 60px; line-height: 60px;
+    background-color: var(--color-bg-light); border-radius: 50%;
+}
+
+.benefit-card__title {
+    font-size: 1.3rem;
+    color: var(--color-text-light-new);
+    margin-bottom: var(--spacing-sm);
+}
+
+.benefit-card__description {
+    font-size: 0.95rem;
+    color: var(--color-text-med-new);
+    line-height: 1.6;
+}
+
+/* =============================================
+   4. SERVICE PROCESS SECTION
+   ============================================= */
+
+.process-timeline {
+    position: relative;
+    max-width: 800px;
+    margin: var(--spacing-xl) auto 0;
+    padding: 0 20px;
+}
+
+/* The vertical line */
+.process-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 19px; /* Position to align with marker center */
+    width: 3px;
+    background-color: var(--color-bg-light);
+    z-index: 0;
+}
+
+.process-timeline__step {
+    position: relative;
+    padding-left: 60px; /* Space for marker and line */
+    margin-bottom: var(--spacing-lg);
+    min-height: 70px;
+}
+.process-timeline__step:last-child { margin-bottom: 0; }
+
+.process-timeline__marker {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--color-bg-dark);
+    border: 3px solid var(--color-primary-new);
+    z-index: 1;
+    transition: var(--transition-main);
+}
+.process-timeline__step:hover .process-timeline__marker {
+    background-color: var(--color-primary-new);
+    transform: scale(1.1);
+}
+
+.process-timeline__content {
+    background-color: var(--color-bg-med);
+    padding: var(--spacing-md);
+    border-radius: var(--border-radius-new);
+    border: 1px solid var(--color-bg-light);
+    transition: var(--transition-main);
+}
+.process-timeline__step:hover .process-timeline__content {
+    border-color: var(--color-primary-new);
+}
+
+.process-timeline__title {
+    font-size: 1.2rem;
+    color: var(--color-text-light-new);
+    margin-bottom: var(--spacing-xs);
+}
+.process-timeline__content p {
+    font-size: 0.95rem;
+    color: var(--color-text-med-new);
+    margin: 0;
+}
+
+/* =============================================
+   5. USE CASES SECTION
+   ============================================= */
+
+.use-case__tabs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.use-case__card {
+    background-color: var(--color-bg-dark);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-new);
+    border: 1px solid var(--color-bg-light);
+    border-top: 4px solid var(--color-secondary-new);
+    transition: var(--transition-main);
+}
+.use-case__card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+}
+
+.use-case__title {
+    font-size: 1.3rem;
+    color: var(--color-secondary-new);
+    margin-bottom: var(--spacing-sm);
+}
+
+/* =============================================
+   6. CTA SECTION
+   ============================================= */
+
+.service-cta {
+    background-color: var(--color-bg-dark);
+}
+.service-cta__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-xl);
+    background-color: var(--color-bg-med);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-new);
+    border: 1px solid var(--color-bg-light);
+    box-shadow: var(--shadow-new);
+}
+
+.service-cta__text { flex: 1 1 55%; }
+.service-cta__text .service-section__title { font-size: 2.2rem; }
+.service-cta__text p { margin-bottom: var(--spacing-lg); }
+
+.service-cta__form {
+    flex: 1 1 40%;
+    background-color: var(--color-bg-dark);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-new);
+}
+.service-cta__form h4 {
+    font-size: 1.3rem;
+    color: var(--color-text-light-new);
+    margin-bottom: var(--spacing-md);
+    text-align: center;
+}
+
+.service-cta__form input,
+.service-cta__form textarea {
+    background-color: var(--color-bg-light);
+    border: 1px solid #30363d; /* Slightly darker border */
+    color: var(--color-text-light-new);
+    border-radius: var(--border-radius-sm);
+    padding: 12px 15px;
+    margin-bottom: var(--spacing-md);
+    width: 100%;
+    font-family: var(--font-primary);
+    transition: var(--transition-main);
+}
+.service-cta__form input::placeholder,
+.service-cta__form textarea::placeholder {
+    color: var(--color-text-med-new);
+}
+.service-cta__form input:focus,
+.service-cta__form textarea:focus {
+    outline: none;
+    border-color: var(--color-primary-new);
+    box-shadow: 0 0 0 3px rgba(52, 125, 255, 0.3);
+}
+
+.service-cta__form button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* =============================================
+   FOOTER (Shared - Assuming V2 Homepage styles)
+   ============================================= */
+.site-footer-new {
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-med-new);
+    text-align: center;
+    padding: var(--spacing-lg) 0;
+    border-top: 1px solid var(--color-bg-light);
+    font-size: 0.9rem;
+}
+
+/* =============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================= */
+
+@media (max-width: 992px) {
+    .service-hero__title { font-size: 2.8rem; }
+    .service-section__wrapper--two-col { flex-direction: column; }
+    .service-section__visual { margin-top: var(--spacing-lg); }
+    .service-cta__wrapper { flex-direction: column; }
+    .service-cta__form { margin-top: var(--spacing-lg); width: 100%; }
+}
+
+@media (max-width: 768px) {
+    .section-padding { padding: 60px 0; }
+    .service-hero__title { font-size: 2.2rem; }
+    .service-hero__subtitle { font-size: 1.1rem; }
+    .service-section__title { font-size: 2rem; }
+    .process-timeline::before { left: 19px; } /* Ensure line stays aligned */
+    .process-timeline { padding: 0; }
+}
+
+@media (max-width: 480px) {
+     .service-hero__title { font-size: 1.8rem; }
+     .service-hero__subtitle { font-size: 1rem; }
+     .service-section__title { font-size: 1.7rem; }
+     .service-benefits__grid { grid-template-columns: 1fr; }
+     .use-case__tabs { grid-template-columns: 1fr; }
+     .process-timeline__step { padding-left: 55px; }
+     .process-timeline__marker { width: 30px; height: 30px; left: 10px; }
+     .process-timeline::before { left: 24px; }
+}
