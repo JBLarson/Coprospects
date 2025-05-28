@@ -1,69 +1,52 @@
+// main.js
 
+// Toggle mobile menu
+function setupMobileMenu() {
+    const hamburger = document.querySelector('.global-nav-hamburger');
+    const navLinks = document.getElementById('globalNavLinks');
 
-
-// Function to load and inject the global navigation
-async function loadGlobalNav() {
-    const navPlaceholder = document.getElementById('global-nav-placeholder');
-    if (!navPlaceholder) {
-        console.error("Global navigation placeholder not found!");
+    if (!hamburger || !navLinks) {
+        console.error('setupMobileMenu: elements not found');
         return;
     }
 
-    try {
-        // Ensure this path is correct. If _global-nav.html is in the root, /_global-nav.html is correct.
-        // If it's relative, you might need '../_global-nav.html'.
-        const response = await fetch('/_global-nav.html'); 
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch global nav: ${response.status} ${response.statusText}`);
-        }
-        const navHTML = await response.text();
-        navPlaceholder.innerHTML = navHTML;
-
-        // --- Call functions AFTER HTML is loaded ---
-        //highlightCurrentDemoLink(); 
-        //setupMobileMenu();
-
-    } catch (error) {
-        console.error("Error loading global navigation:", error);
-        navPlaceholder.innerHTML = "<p style='color:red; text-align:center;'>Error loading navigation.</p>";
-    }
-}
-
-// Function to highlight the current demo link in the global navigation
-function highlightCurrentDemoLink() {
-    const currentPath = window.location.pathname; 
-    const navLinksList = document.querySelectorAll('.global-site-nav ul li a');
-
-    if (!navLinksList.length) {
-        console.warn("Global nav links not found for highlighting.");
-        return; // Exit if no links are found yet
-    }
-
-    navLinksList.forEach(link => {
-        link.classList.remove('current-demo');
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+        hamburger.setAttribute('aria-expanded', String(!expanded));
+        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
     });
+}
 
-    // Determine which link to highlight
-    let linkIdToHighlight = 'global-nav-hub'; // Default to hub
+// Highlight current link
+function highlightCurrentDemoLink() {
+    const path = window.location.pathname;
+    const links = document.querySelectorAll('.global-nav-links a');
+    links.forEach(a => a.classList.remove('current-demo'));
 
-    if (currentPath.includes('/home-services/')) {
-        linkIdToHighlight = 'global-nav-home-services';
-    } else if (currentPath.includes('/real-estate/')) {
-        linkIdToHighlight = 'global-nav-real-estate';
-    } else if (currentPath.includes('/fitness-centers/')) {
-        linkIdToHighlight = 'global-nav-fitness';
-    } else if (currentPath !== '/' && !currentPath.endsWith('/index.html')) {
-        // If it's not a known section and not the root, don't highlight hub
-        // unless it's the root path.
-    }
-    
-    // Add the class to the identified link
-    const activeLink = document.getElementById(linkIdToHighlight);
-    if (activeLink) {
-        activeLink.classList.add('current-demo');
+    let id = 'global-nav-hub';
+    if (path.includes('/home-services/')) id = 'global-nav-home-services';
+    else if (path.includes('/real-estate/')) id = 'global-nav-real-estate';
+    else if (path.includes('/fitness-centers/')) id = 'global-nav-fitness';
+
+    const active = document.getElementById(id);
+    if (active) active.classList.add('current-demo');
+}
+
+// Load and inject global nav
+async function loadGlobalNav() {
+    const placeholder = document.getElementById('global-nav-placeholder');
+    if (!placeholder) return console.error('Nav placeholder missing');
+
+    try {
+        const res = await fetch('/_global-nav.html');
+        if (!res.ok) throw new Error(res.statusText);
+        placeholder.innerHTML = await res.text();
+        highlightCurrentDemoLink();
+        setupMobileMenu();
+    } catch (e) {
+        console.error('Failed to load nav:', e);
     }
 }
 
-// Call the function to load the navigation when the DOM is ready
 document.addEventListener('DOMContentLoaded', loadGlobalNav);
