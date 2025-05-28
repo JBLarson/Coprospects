@@ -1,208 +1,510 @@
+<!DOCTYPE html>
+<!-- 
+    This is _global-nav.html
+    It will be fetched and injected into the #global-nav-placeholder div.
+    All styles are self-contained. No external CSS from global.css is used.
+-->
 <style>
-    /* Styles specific to the global navigation bar */
-    :root { /* Fallbacks/Defaults */
-        --global-nav-height: 50px; /* This is a general variable, actual height is set below */
-        --global-nav-text: #e0e0e0;
-        --global-nav-text-hover: #ffffff;
-        --global-nav-accent: #00f2ff;
-        --spacing-xs: 4px;
-        --spacing-sm: 8px;
-        --spacing-md: 16px;
-        --spacing-lg: 32px;
-        --font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    /* Reset and Base Styles for Navigation Component */
+    :root {
+        --cp-nav-font-primary: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --cp-nav-font-secondary: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+        --cp-nav-bg: #10121A; /* Deep, sophisticated dark blue/grey */
+        --cp-nav-text: #D1D5DB; /* Light grey for readable text */
+        --cp-nav-text-hover: #FFFFFF;
+        --cp-nav-accent: #3B82F6; /* A modern, vibrant blue (similar to Tailwind blue-500) */
+        --cp-nav-highlight: #F9A826; /* Coprospects Gold for logo highlight */
+        --cp-nav-border: #2D3748; /* Subtle border/divider */
+        --cp-nav-submenu-bg: #1A1D29; /* Slightly lighter for dropdown */
+
+        --cp-nav-height-desktop: 70px;
+        --cp-nav-height-mobile: 60px;
+        --cp-nav-transition-speed: 0.3s;
+        --cp-nav-z-index: 2000;
+
+        /* Spacing (can be adjusted) */
+        --cp-space-xs: 4px;
+        --cp-space-sm: 8px;
+        --cp-space-md: 16px;
+        --cp-space-lg: 24px;
+        --cp-space-xl: 32px;
     }
 
-    .global-site-nav {
-        background-color: rgb(24 57 177); /* YOUR BLUE */
-        /* Desktop height - will be overridden in mobile */
-        height: 55px; 
+    .cp-global-nav *,
+    .cp-global-nav *::before,
+    .cp-global-nav *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Main Navigation Bar Styling */
+    .cp-global-nav {
+        font-family: var(--cp-nav-font-primary);
+        background-color: var(--cp-nav-bg);
+        height: var(--cp-nav-height-desktop);
         width: 100%;
         position: fixed;
         top: 0;
         left: 0;
-        z-index: 2000;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        padding: 0 var(--spacing-md);
+        z-index: var(--cp-nav-z-index);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        border-bottom: 1px solid var(--cp-nav-border);
     }
 
-    .global-site-nav .container {
+    .cp-global-nav__container {
         display: flex;
         justify-content: space-between;
         align-items: center;
         height: 100%;
         width: 100%;
-        max-width: 1300px;
+        max-width: 1300px; /* Consistent max-width */
         margin: 0 auto;
-    }
-    .global-site-nav ul li a.current-demo {
-        border-bottom: none;
+        padding: 0 var(--cp-space-lg);
     }
 
-    .global-nav-logo-wrapper {
+    /* Brand/Logo Styling */
+    .cp-global-nav__brand {
         display: flex;
         align-items: center;
-        height: 100%; 
         text-decoration: none;
-        flex-shrink: 0; 
-        position: relative; 
+        color: var(--cp-nav-text-hover);
+        font-family: var(--cp-nav-font-secondary);
+        font-size: 1.6rem; /* Increased size */
+        font-weight: 700;
+        letter-spacing: -0.5px;
+        transition: color var(--cp-nav-transition-speed) ease;
+    }
+    .cp-global-nav__brand:hover,
+    .cp-global-nav__brand:focus {
+        color: var(--cp-nav-highlight);
+    }
+    .cp-global-nav__logo-highlight {
+        color: var(--cp-nav-highlight);
     }
 
-    /* --- DESKTOP LOGO STYLING --- */
-    /* DO NOT ADJUST - User confirmed this is perfect */
-    .global-nav-logo-container {
-        position: relative; 
-        width: 200px;
-        height: 200px; 
-        display: flex; 
+    /* Desktop Navigation Links Wrapper (Initially shown on desktop) */
+    .cp-global-nav__links-wrapper--desktop {
+        display: flex;
         align-items: center;
-        justify-content: center;
+        height: 100%;
     }
 
-    .global-nav-logo-container .logo-image {
-        position: absolute; 
-        top: 0;
+    .cp-global-nav__links {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    .cp-global-nav__links li {
+        position: relative; /* For submenu positioning */
+        margin-left: var(--cp-space-sm); /* Spacing between top-level items */
+    }
+     .cp-global-nav__links li:first-child {
+        margin-left: 0;
+    }
+
+    .cp-global-nav__link {
+        display: flex;
+        align-items: center;
+        padding: 0 var(--cp-space-md);
+        height: 100%;
+        text-decoration: none;
+        color: var(--cp-nav-text);
+        font-size: 0.95rem;
+        font-weight: 500;
+        position: relative;
+        transition: color var(--cp-nav-transition-speed) ease, background-color var(--cp-nav-transition-speed) ease;
+        border-radius: 4px; /* Subtle rounding on hover */
+    }
+
+    .cp-global-nav__link:hover,
+    .cp-global-nav__link:focus,
+    .cp-global-nav__link.current-demo-page { /* For JS highlighting */
+        color: var(--cp-nav-text-hover);
+        background-color: rgba(255, 255, 255, 0.05); /* Subtle hover background */
+    }
+    
+    .cp-global-nav__link.current-demo-page {
+        font-weight: 600;
+        color: var(--cp-nav-accent); /* Highlight active page */
+    }
+
+    /* Active link indicator (modern underline) */
+    .cp-global-nav__link::after {
+        content: '';
+        position: absolute;
+        bottom: 15px; /* Adjust vertical position */
+        left: var(--cp-space-md);
+        right: var(--cp-space-md);
+        height: 2px;
+        background-color: var(--cp-nav-accent);
+        transform: scaleX(0);
+        transform-origin: center;
+        transition: transform var(--cp-nav-transition-speed) ease;
+    }
+
+    .cp-global-nav__link:hover::after,
+    .cp-global-nav__link:focus::after,
+    .cp-global-nav__link.current-demo-page::after {
+        transform: scaleX(1);
+    }
+    .cp-global-nav__link.current-demo-page::after {
+         background-color: var(--cp-nav-accent); /* Ensure active indicator uses accent */
+    }
+
+
+    /* Submenu Styling (for "Demo Sites") */
+    .cp-global-nav__item--has-submenu > .cp-global-nav__link {
+        padding-right: calc(var(--cp-space-md) + var(--cp-space-sm) + 5px); /* Space for caret */
+    }
+    .cp-global-nav__link--submenu-trigger::before { /* Caret icon */
+        content: '▼';
+        font-size: 0.6em;
+        margin-left: var(--cp-space-sm);
+        display: inline-block;
+        transition: transform var(--cp-nav-transition-speed) ease;
+    }
+    .cp-global-nav__item--has-submenu:hover > .cp-global-nav__link--submenu-trigger::before,
+    .cp-global-nav__item--has-submenu > .cp-global-nav__link--submenu-trigger[aria-expanded="true"]::before {
+        transform: rotate(180deg);
+    }
+
+    .cp-global-nav__submenu {
+        list-style: none;
+        position: absolute;
+        top: 100%; /* Position below parent */
+        left: 0;
+        background-color: var(--cp-nav-submenu-bg);
+        border: 1px solid var(--cp-nav-border);
+        border-top: none;
+        border-radius: 0 0 6px 6px;
+        padding: var(--cp-space-sm) 0;
+        min-width: 200px;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: opacity var(--cp-nav-transition-speed) ease,
+                    visibility var(--cp-nav-transition-speed) ease,
+                    transform var(--cp-nav-transition-speed) ease;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        z-index: var(--cp-nav-z-index) + 1; /* Above main nav */
+    }
+
+    .cp-global-nav__item--has-submenu:hover .cp-global-nav__submenu,
+    .cp-global-nav__item--has-submenu:focus-within .cp-global-nav__submenu { /* focus-within for keyboard nav */
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .cp-global-nav__submenu-link {
+        display: block;
+        padding: var(--cp-space-sm) var(--cp-space-md);
+        text-decoration: none;
+        color: var(--cp-nav-text);
+        font-size: 0.9rem;
+        transition: background-color var(--cp-nav-transition-speed) ease, color var(--cp-nav-transition-speed) ease;
+    }
+    .cp-global-nav__submenu-link:hover,
+    .cp-global-nav__submenu-link:focus,
+    .cp-global-nav__submenu-link.current-demo-page {
+        background-color: var(--cp-nav-accent);
+        color: var(--cp-nav-text-hover);
+    }
+     .cp-global-nav__submenu-link.current-demo-page {
+        font-weight: 600;
+    }
+
+
+    /* Mobile Navigation Toggle Button */
+    .cp-global-nav__mobile-toggle {
+        display: none; /* Hidden on desktop */
+        background: none;
+        border: none;
+        padding: var(--cp-space-sm);
+        cursor: pointer;
+        z-index: var(--cp-nav-z-index) + 2; /* Above everything else when mobile menu is open */
+    }
+
+    .cp-global-nav__mobile-toggle-icon {
+        display: block;
+        position: relative;
+        width: 24px;
+        height: 2px;
+        background-color: var(--cp-nav-text-hover);
+        transition: background-color 0s var(--cp-nav-transition-speed) linear; /* Delay hiding middle bar */
+    }
+    .cp-global-nav__mobile-toggle-icon::before,
+    .cp-global-nav__mobile-toggle-icon::after {
+        content: '';
+        position: absolute;
         left: 0;
         width: 100%;
-        height: 100%;
-        object-fit: contain; 
+        height: 2px;
+        background-color: var(--cp-nav-text-hover);
+        transition: transform var(--cp-nav-transition-speed) ease, top var(--cp-nav-transition-speed) ease;
+    }
+    .cp-global-nav__mobile-toggle-icon::before { top: -7px; }
+    .cp-global-nav__mobile-toggle-icon::after { top: 7px; }
+
+    /* Mobile Toggle Active State (X icon) */
+    .cp-global-nav__mobile-toggle[aria-expanded="true"] .cp-global-nav__mobile-toggle-icon {
+        background-color: transparent; /* Hide middle bar */
+    }
+    .cp-global-nav__mobile-toggle[aria-expanded="true"] .cp-global-nav__mobile-toggle-icon::before {
+        top: 0;
+        transform: rotate(45deg);
+    }
+    .cp-global-nav__mobile-toggle[aria-expanded="true"] .cp-global-nav__mobile-toggle-icon::after {
+        top: 0;
+        transform: rotate(-45deg);
     }
 
-    .global-nav-logo-container .logo-base {
-        opacity: 1;
-        animation: logoBaseAnimationGlobal 10s infinite ease-in-out;
-    }
+    /* Mobile Navigation Links Wrapper (Full-screen overlay) */
+    .cp-global-nav__links-wrapper--mobile {
+        display: none; /* Hidden by default, shown by JS */
+        position: fixed;
+        top: 0; /* Start from top after nav bar */
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--cp-nav-bg); /* Same as nav bar or slightly different */
+        padding-top: var(--cp-nav-height-mobile); /* Space for the nav bar itself */
+        overflow-y: auto;
+        z-index: var(--cp-nav-z-index) -1; /* Below main nav bar but above page content */
+        
+        flex-direction: column;
+        align-items: center;
+        justify-content: center; /* Center links vertically */
 
-    .global-nav-logo-container .logo-alternate {
         opacity: 0;
-        animation: logoAlternateAnimationGlobal 10s infinite ease-in-out;
+        visibility: hidden;
+        transform: translateY(-20px); /* Slight animation */
+        transition: opacity var(--cp-nav-transition-speed) ease,
+                    visibility var(--cp-nav-transition-speed) ease,
+                    transform var(--cp-nav-transition-speed) ease;
     }
 
-    @keyframes logoBaseAnimationGlobal { 0%, 40%, 100% { opacity: 1; } 50%, 90% { opacity: 0; } }
-    @keyframes logoAlternateAnimationGlobal { 0%, 40%, 100% { opacity: 0; } 50%, 90% { opacity: 1; } }
-
-    /* --- DESKTOP NAVIGATION LINKS --- */
-    .global-nav-links {
-        list-style: none;
-        display: flex; 
+    .cp-global-nav__links-wrapper--mobile.is-active {
+        display: flex; /* Show when active */
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+    
+    /* Mobile links structure will reuse .cp-global-nav__links but with different layout */
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__links {
+        flex-direction: column;
         align-items: center;
-        margin: 0 0 0 auto; 
+        width: 100%;
+        height: auto; /* Allow it to grow */
+        padding: var(--cp-space-xl) 0;
+    }
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__links li {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+    }
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__link {
+        font-size: 1.3rem; /* Larger for touch */
+        padding: var(--cp-space-md) var(--cp-space-lg);
+        height: auto;
+        width: 100%;
+        justify-content: center;
+    }
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__link::after {
+       display: none; /* No underline indicator on mobile main links */
+    }
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__link.current-demo-page {
+        background-color: var(--cp-nav-accent);
+        color: var(--cp-nav-text-hover);
+        border-radius: 0;
+    }
+
+    /* Mobile Submenu Styling */
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__item--has-submenu > .cp-global-nav__link--submenu-trigger[aria-expanded="true"] {
+        background-color: rgba(255, 255, 255, 0.03); /* Slight indication it's open */
+    }
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__submenu {
+        position: static; /* Not absolute on mobile */
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        background-color: transparent;
+        border: none;
+        box-shadow: none;
         padding: 0;
-        height: 100%;
+        min-width: auto;
+        margin-top: var(--cp-space-xs);
+        display: none; /* Hidden by default, toggled by JS/ARIA */
     }
-
-    .global-nav-links li {
-        margin-left: var(--spacing-sm);
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__item--has-submenu > .cp-global-nav__link--submenu-trigger[aria-expanded="true"] + .cp-global-nav__submenu {
+        display: block;
     }
-
-    .global-nav-links li a {
-        font-family: var(--font-primary);
-        font-size: 15px;
-        font-weight: 500;
-        color: var(--global-nav-text, #f0f0f0);
-        padding: 0 var(--spacing-md);
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.15s ease-out, color 0.15s ease-out;
-        display: flex;
-        align-items: center;
-        height: 40px; 
-        line-height: normal;
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__submenu-link {
+        font-size: 1.1rem;
+        color: var(--cp-nav-text);
+        padding: var(--cp-space-sm) var(--cp-space-lg);
+        background-color: rgba(255, 255, 255, 0.03); /* Subtle distinction */
     }
-
-    .global-nav-links li a:hover {
-        background-color: rgba(255, 255, 255, 0.12);
-        color: var(--global-nav-text-hover, #ffffff);
-    }
-
-    .global-nav-links li a.current-demo {
-        color: var(--global-nav-accent, #10e6e6);
-        font-weight: 600;
-        background-color: rgba(255, 255, 255, 0.05);
-        position: relative;
-    }
-
-    .global-nav-links li a.current-demo::after {
-        content: ''; position: absolute; bottom: 5px; 
-        left: var(--spacing-md); right: var(--spacing-md);
-        height: 2px; background-color: var(--global-nav-accent, #10e6e6);
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__submenu-link:hover,
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__submenu-link:focus,
+    .cp-global-nav__links-wrapper--mobile .cp-global-nav__submenu-link.current-demo-page {
+        background-color: var(--cp-nav-accent);
+        color: var(--cp-nav-text-hover);
     }
 
 
-    /* --- MOBILE & RESPONSIVE STYLES (<= 850px) --- */
+    /* Responsive Adjustments */
     @media (max-width: 850px) {
-        .global-site-nav {
-            height: 70px; 
-            padding-left: var(--spacing-sm); 
-            padding-right: var(--spacing-sm);
+        .cp-global-nav {
+            height: var(--cp-nav-height-mobile);
         }
-
-        .global-site-nav ul {
-            display: none;
+        .cp-global-nav__container {
+            padding: 0 var(--cp-space-md); /* Less padding on mobile */
         }
-
-        .global-site-nav .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            align-items: center; /* Vertically center items in the 160px tall bar */
-            height: 100%;
-            width: 100%;
-            max-width: 100%; /* Use full width on mobile */
-            position: relative; /* Context for absolutely positioned dropdown */
+        .cp-global-nav__brand {
+            font-size: 1.4rem; /* Slightly smaller logo on mobile */
         }
-
-        .global-nav-logo-wrapper {
-            height: 150px; /* Match logo height */
-            display: flex;
-            align-items: center; /* Center logo vertically within its wrapper */
-            flex-shrink: 0; /* Prevent logo wrapper from shrinking */
+        .cp-global-nav__links-wrapper--desktop {
+            display: none; /* Hide desktop links */
         }
-
-        /* MOBILE LOGO SIZING - DO NOT ADJUST - User confirmed this is perfect */
-        .global-nav-logo-container {
-            width: 200px;
-            height: 200px;
+        .cp-global-nav__mobile-toggle {
+            display: flex; /* Show mobile toggle */
         }
-
-
-        /* --- MOBILE MENU HIDING/SHOWING --- */
-        .global-nav-links {
-            display: none; 
+        /* Adjust body padding (this should ideally be in global CSS if possible, but for self-containment...) */
+        body {
+            padding-top: var(--cp-nav-height-mobile) !important;
         }
-
-        .global-nav-links li a {
-            display: none;
-        }
-
     }
 
-     /* Adjust body padding */
-     body {
-        padding-top: 55px; 
-     }
-     @media (max-width: 850px) {
-        body {
-            padding-top: 160px; /* Match the new mobile nav bar height */
-        }
-     }
+    /* Add a class to body when mobile menu is open to prevent scrolling */
+    body.cp-mobile-menu-open {
+        overflow: hidden;
+    }
 
 </style>
 
-
-
-<nav class="global-site-nav">
-    <div class="container">
-        <a href="/" class="global-nav-logo-wrapper" aria-label="Coprospects Homepage">
-            <h1>coPro</h1>
+<nav class="cp-global-nav" aria-label="Main Navigation">
+    <div class="cp-global-nav__container">
+        <a href="/" class="cp-global-nav__brand" aria-label="Coprospects Homepage">
+            <span class="cp-global-nav__logo-text">co<span class="cp-global-nav__logo-highlight">Pro</span>spects</span>
         </a>
 
-        <ul class="global-nav-links" id="globalNavLinks">
-            <li><a href="/" id="global-nav-hub">Homepage</a></li>
-            <ul class="demo-businesses">
-                <li><a href="/home-services/" id="global-nav-home-services">Home Services</a></li>
-                <li><a href="/real-estate/" id="global-nav-real-estate">Real Estate</a></li>
-                <li><a href="/fitness-centers/" id="global-nav-fitness">Fitness Centers</a></li>
-            </ul>
-        </ul>
+        <button class="cp-global-nav__mobile-toggle" aria-expanded="false" aria-controls="globalNavLinksMobile" aria-label="Toggle Navigation Menu">
+            <span class="cp-global-nav__mobile-toggle-icon"></span>
+        </button>
+
+        <div class="cp-global-nav__links-wrapper--desktop">
+            <ul class="cp-global-nav__links">
+                <li><a href="/" class="cp-global-nav__link" id="global-nav-hub-desktop">Homepage</a></li>
+                <li class="cp-global-nav__item--has-submenu">
+                    <a href="#" class="cp-global-nav__link cp-global-nav__link--submenu-trigger" aria-haspopup="true" aria-expanded="false" role="button">Demo Sites</a>
+                    <ul class="cp-global-nav__submenu" aria-label="Demo Sites Submenu">
+                        <li><a href="/home-services/" class="cp-global-nav__submenu-link" id="global-nav-home-services-desktop">Home Services</a></li>
+                        <li><a href="/real-estate/" class="cp-global-nav__submenu-link" id="global-nav-real-estate-desktop">Real Estate</a></li>
+                        <li><a href="/fitness-centers/" class="cp-global-nav__submenu-link" id="global-nav-fitness-desktop">Fitness Centers</a></li>
+                    </ul>
+                </li>
+                </ul>
+        </div>
+
+        <div class="cp-global-nav__links-wrapper--mobile" id="globalNavLinksMobile" role="dialog" aria-modal="true" aria-labelledby="mobileMenuTitle">
+            <ul class="cp-global-nav__links">
+                <li><a href="/" class="cp-global-nav__link" id="global-nav-hub-mobile" role="menuitem">Homepage</a></li>
+                <li class="cp-global-nav__item--has-submenu">
+                    <a href="#" class="cp-global-nav__link cp-global-nav__link--submenu-trigger" aria-haspopup="true" aria-expanded="false" role="button" aria-controls="demoSubmenuMobile">Demo Sites</a>
+                    <ul class="cp-global-nav__submenu" id="demoSubmenuMobile" aria-label="Demo Sites Submenu">
+                        <li><a href="/home-services/" class="cp-global-nav__submenu-link" id="global-nav-home-services-mobile" role="menuitem">Home Services</a></li>
+                        <li><a href="/real-estate/" class="cp-global-nav__submenu-link" id="global-nav-real-estate-mobile" role="menuitem">Real Estate</a></li>
+                        <li><a href="/fitness-centers/" class="cp-global-nav__submenu-link" id="global-nav-fitness-mobile" role="menuitem">Fitness Centers</a></li>
+                    </ul>
+                </li>
+                 </ul>
+        </div>
     </div>
 </nav>
+
+<!-- 
+    IMPORTANT: JavaScript for Toggling Mobile Menu and Submenus.
+    This script should ideally be part of your main.js or a dedicated navigation script
+    that runs after this HTML is injected. For self-containment demonstration,
+    it's included here, but best practice is to manage JS globally.
+-->
+<script>
+    // Encapsulate script to avoid global scope pollution
+    (function() {
+        const nav = document.querySelector('.cp-global-nav');
+        if (!nav) return;
+
+        const mobileToggleButton = nav.querySelector('.cp-global-nav__mobile-toggle');
+        const mobileMenu = nav.querySelector('.cp-global-nav__links-wrapper--mobile');
+        
+        // Mobile menu toggle
+        if (mobileToggleButton && mobileMenu) {
+            mobileToggleButton.addEventListener('click', () => {
+                const isExpanded = mobileToggleButton.getAttribute('aria-expanded') === 'true';
+                mobileToggleButton.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.classList.toggle('is-active');
+                document.body.classList.toggle('cp-mobile-menu-open'); // For overflow:hidden
+            });
+        }
+
+        // Mobile submenu toggles
+        const mobileSubmenuTriggers = mobileMenu.querySelectorAll('.cp-global-nav__link--submenu-trigger');
+        mobileSubmenuTriggers.forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent navigation for the trigger link itself
+                const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+                trigger.setAttribute('aria-expanded', !isExpanded);
+                // const submenu = trigger.nextElementSibling; // Assuming submenu is direct sibling
+                // if (submenu && submenu.classList.contains('cp-global-nav__submenu')) {
+                //     submenu.style.display = isExpanded ? 'none' : 'block';
+                // }
+                // More robust: find by ID if IDs are stable
+                const controlledSubmenuId = trigger.getAttribute('aria-controls');
+                if(controlledSubmenuId) {
+                    const submenu = document.getElementById(controlledSubmenuId);
+                    if(submenu) {
+                         submenu.style.display = isExpanded ? 'none' : 'block';
+                    }
+                }
+            });
+        });
+
+        // Function to highlight current page link (example, to be called from main.js)
+        // This is a simplified version. Your main.js has a more robust one.
+        function highlightCurrentNavPage() {
+            const path = window.location.pathname;
+            const allLinks = nav.querySelectorAll('.cp-global-nav__link, .cp-global-nav__submenu-link');
+            
+            allLinks.forEach(link => {
+                link.classList.remove('current-demo-page');
+                if (link.getAttribute('href') === path) {
+                    link.classList.add('current-demo-page');
+
+                    // If it's a submenu link, also highlight its parent trigger on desktop
+                    const parentSubmenuTrigger = link.closest('.cp-global-nav__item--has-submenu')?.querySelector('.cp-global-nav__link--submenu-trigger');
+                    if(parentSubmenuTrigger && window.innerWidth > 850) { // Only for desktop view
+                        // parentSubmenuTrigger.classList.add('current-demo-page'); // Or a different class for parent active
+                    }
+                }
+            });
+        }
+        
+        // Call highlight on load (or better, integrate this logic into your existing main.js highlight function)
+        // highlightCurrentNavPage(); // Example call
+        // window.addEventListener('popstate', highlightCurrentNavPage); // Update on back/forward
+
+        // Ensure this script runs after the nav is in the DOM.
+        // If this _global-nav.html is fetched, the script in main.js that injects it
+        // should call a function to initialize this nav's JS behavior.
+        // For instance, in your main.js, after placeholder.innerHTML = await response.text();
+        // you could call: if (typeof window.initGlobalNav === 'function') { window.initGlobalNav(); }
+        // And then wrap this script content in: window.initGlobalNav = function() { ...this script... };
+
+    })();
+</script>
