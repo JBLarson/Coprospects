@@ -13,7 +13,7 @@
     }
 
     .global-site-nav {
-        background-color: #032a8a; /* YOUR BLUE */
+        background-color: rgb(24 57 177); /* YOUR BLUE */
         /* Desktop height - will be overridden in mobile */
         height: 55px; 
         width: 100%;
@@ -131,7 +131,7 @@
     /* --- MOBILE & RESPONSIVE STYLES (<= 850px) --- */
     @media (max-width: 850px) {
         .global-site-nav {
-            height: 160px; 
+            height: 70px; 
             padding-left: var(--spacing-sm); 
             padding-right: var(--spacing-sm);
         }
@@ -142,8 +142,8 @@
 
         .global-site-nav .container {
             display: flex;
-            flex-direction: row !important; /* CRITICAL: Override global.css if it sets column */
-            justify-content: space-between; /* Space out logo and hamburger */
+            justify-content: center;
+            align-items: center;
             align-items: center; /* Vertically center items in the 160px tall bar */
             height: 100%;
             width: 100%;
@@ -168,56 +168,12 @@
         /* --- MOBILE MENU HIDING/SHOWING --- */
         .global-nav-links {
             display: none; 
-            flex-direction: column;
-            position: absolute;
-            top: 160px; /* Position below the 160px nav bar */
-            left: 0;
-            right: 0;
-            width: 100%;
-            background-color: #021e66; /* Solid background for dropdown */
-            box-shadow: 0 5px 10px rgba(0,0,0,0.25);
-            padding: var(--spacing-sm, 8px) 0;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            z-index: 1999; /* Below nav bar (2000) and hamburger (2001) */
-            max-height: calc(100vh - 160px); 
-            overflow-y: auto;
-        }
-
-        .global-nav-links.active {
-            display: flex !important; 
-        }
-
-        /* Styling for links within the mobile dropdown */
-        .global-nav-links li {
-            margin: 0;
         }
 
         .global-nav-links li a {
-            padding: 16px var(--spacing-lg, 32px); 
-            text-align: left;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            width: 100%;
-            height: auto;
-            line-height: 1.5;
-            font-size: 16px;
-            color: #f0f0f0;
-            border-radius: 0;
+            display: none;
         }
-        .global-nav-links li:last-child a {
-            border-bottom: none;
-        }
-        .global-nav-links li a:hover {
-            background-color: rgba(255,255,255,0.1);
-            color: #ffffff;
-        }
-        .global-nav-links li a.current-demo {
-            background-color: rgba(255,255,255,0.15);
-            color: var(--global-nav-accent, #10e6e6);
-            font-weight: 700;
-        }
-        .global-nav-links li a.current-demo::after {
-            display: none; 
-        }
+
     }
 
      /* Adjust body padding */
