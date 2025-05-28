@@ -22,19 +22,6 @@ async function init() {
 }
 
 function bindNav() {
-    highlightCurrentDemoLink();
+    //highlightCurrentDemoLink();
 }
 
-function highlightCurrentDemoLink() {
-    const path = window.location.pathname;
-    const links = document.querySelectorAll('.global-nav-links a');
-    links.forEach(link => link.classList.remove('current-demo'));
-
-    let id = 'global-nav-hub';
-    if (path.includes('/home-services/'))       id = 'global-nav-home-services';
-    else if (path.includes('/real-estate/'))    id = 'global-nav-real-estate';
-    else if (path.includes('/fitness-centers/'))id = 'global-nav-fitness';
-
-    const activeLink = document.getElementById(id);
-    if (activeLink) activeLink.classList.add('current-demo');
-}
