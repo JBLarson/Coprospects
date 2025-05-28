@@ -23,7 +23,6 @@ async function init() {
 
 function bindNav() {
     highlightCurrentDemoLink();
-    setupMobileMenu();
 }
 
 function highlightCurrentDemoLink() {
@@ -38,24 +37,4 @@ function highlightCurrentDemoLink() {
 
     const activeLink = document.getElementById(id);
     if (activeLink) activeLink.classList.add('current-demo');
-}
-
-function setupMobileMenu() {
-    const hamburger = document.querySelector('.global-nav-hamburger');
-    const navLinks = document.getElementById('globalNavLinks');
-    console.log('setupMobileMenu:', hamburger, navLinks);
-    if (!hamburger || !navLinks) {
-        console.error('Hamburger or nav links not found');
-        return;
-    }
-
-    hamburger.setAttribute('aria-expanded', 'false');
-    hamburger.addEventListener('click', () => {
-        console.log('Hamburger clicked');
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('active');
-        const expanded = hamburger.getAttribute('aria-expanded') === 'true';
-        hamburger.setAttribute('aria-expanded', String(!expanded));
-        console.log('Menu active:', navLinks.classList.contains('active'));
-    });
 }

@@ -127,22 +127,6 @@
         height: 2px; background-color: var(--global-nav-accent, #10e6e6);
     }
 
-    /* --- HAMBURGER BUTTON --- */
-    .global-nav-hamburger {
-        display: none; 
-        background: none; border: none; cursor: pointer; padding: 8px;
-        z-index: 2001; 
-        margin-left: var(--spacing-sm);
-        /* align-self: center; Will be handled by container's align-items */
-    }
-    .global-nav-hamburger .bar {
-        display: block; width: 25px; height: 3px; 
-        background-color: var(--global-nav-text, #f0f0f0);
-        margin: 5px auto; transition: all 0.25s ease-in-out; border-radius: 1px;
-    }
-    .global-nav-hamburger.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); } 
-    .global-nav-hamburger.active .bar:nth-child(2) { opacity: 0; }
-    .global-nav-hamburger.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); } 
 
     /* --- MOBILE & RESPONSIVE STYLES (<= 850px) --- */
     @media (max-width: 850px) {
@@ -152,6 +136,9 @@
             padding-right: var(--spacing-sm);
         }
 
+        .global-site-nav ul {
+            display: none;
+        }
 
         .global-site-nav .container {
             display: flex;
@@ -177,11 +164,6 @@
             height: 200px;
         }
 
-        .global-nav-hamburger {
-            display: block; /* Show hamburger */
-            flex-shrink: 0; /* Prevent hamburger from being squeezed */
-            /* align-self: center; is handled by container's align-items: center */
-        }
 
         /* --- MOBILE MENU HIDING/SHOWING --- */
         .global-nav-links {
@@ -260,12 +242,6 @@
                 <img src="https://coprospects.com/images/Coprospects-blue-white.png" alt="Coprospects Blue on White Logo" class="logo-image logo-alternate" />
             </div>
         </a>
-
-        <button class="global-nav-hamburger" aria-label="Toggle Menu" aria-expanded="false">
-            <span class="bar"></span>
-            <span class="bar"></span>
-            <span class="bar"></span>
-        </button>
 
         <ul class="global-nav-links" id="globalNavLinks">
             <li><a href="/" id="global-nav-hub">Homepage</a></li>
