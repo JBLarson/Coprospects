@@ -9,8 +9,8 @@
     --color-bg-med: #161B22;        /* Medium dark (for cards/sections) */
     --color-bg-light: #21262D;       /* Lighter dark (for borders/hovers) */
     --color-primary-new: #347dff;   /* Brighter, modern blue */
-    --color-secondary-new: #f9a826; /* Kept the gold for vibrant CTA */
-    /*--color-secondary-new: #B08D57; // Gold for vibrant CTA */
+    --color-secondary-new: #f9a826; /* Orange - vibrant CTA */
+    /*--color-secondary-new: #B08D57; // Gold for more muted CTA */
 
     --color-accent-new: #48d1cc;   /* A teal/cyan for highlights */
     --color-text-light-new: #e6edf3;   /* Main text color (off-white) */
