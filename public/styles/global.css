@@ -460,6 +460,26 @@ textarea {
 
 
 
+
+
+
+
+a.inline-link {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+a.inline-link:hover {
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
 /* Responsive Adjustments for Global Styles */
 @media (max-width: 768px) {
     body {
