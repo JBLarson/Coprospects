@@ -152,8 +152,6 @@ body.service-page-theme {
 .service-section__visual img {
     max-width: 100%;
     border-radius: var(--border-radius-new);
-    border: 1px solid var(--color-bg-light);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
 }
 
 /* =============================================

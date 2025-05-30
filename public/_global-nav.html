@@ -184,10 +184,6 @@
     }
 
 
-    /* Desktop Submenu (Dropdown) */
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu > .nav-link {
-        /* padding-right to make space for caret if needed, or use ::after for caret */
-    }
     .coprospects-global-nav__desktop-links .nav-link--submenu-trigger::after { /* Override general link underline for submenu triggers */
         display: none; /* We use a caret instead of underline for submenu trigger */
     }
@@ -385,9 +381,7 @@
         overflow: hidden;
         transition: max-height var(--nav-transition-duration) ease-in-out;
     }
-    .coprospects-global-nav__mobile-links-overlay .submenu.is-open {
-       /* max-height set by JS based on content */
-    }
+
     .coprospects-global-nav__mobile-links-overlay .submenu-link {
         display: block;
         font-size: 1.1rem;
@@ -422,9 +416,6 @@
         }
         .coprospects-global-nav__mobile-toggle {
             display: flex;
-        }
-        body { /* Handled by your global.css, but for self-containment if absolutely needed */
-            /* padding-top: var(--nav-height-mobile) !important; */
         }
     }
 
