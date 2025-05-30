@@ -1,479 +1,483 @@
 <!DOCTYPE html>
-<!-- 
-    This is _global-nav.html
-    It will be fetched and injected into the #global-nav-placeholder div.
-    All styles are self-contained. No external CSS from global.css is used.
--->
 <style>
-    /* Reset and Base Styles for Navigation Component */
     :root {
-        --cp-nav-font-primary: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        --cp-nav-font-secondary: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        /* Core Palette & Fonts */
+        --nav-bg-color: #0D1117; /* User Requested */
+        --nav-text-color: #E0E6F1; /* Softer white/light blue-grey */
+        --nav-text-hover-color: #FFFFFF;
+        --nav-logo-co-spects-color: #FFFFFF;
+        --nav-logo-pro-color: #F9A826; /* Orange for "pro" */
+        --nav-accent-primary-color: #00A9FF; /* Vibrant Electric Blue for active/hover accents */
+        --nav-accent-secondary-color: #4A5568; /* Subtle grey for borders/dividers */
+        --nav-submenu-bg-color: #1A202C; /* Darker, slightly desaturated blue for dropdowns */
+        --nav-submenu-hover-bg-color: #2D3748;
 
-        --cp-nav-bg: #10121A; /* Deep, sophisticated dark blue/grey */
-        --cp-nav-text: #D1D5DB; /* Light grey for readable text */
-        --cp-nav-text-hover: #FFFFFF;
-        --cp-nav-accent: #3B82F6; /* A modern, vibrant blue (similar to Tailwind blue-500) */
-        --cp-nav-highlight: #F9A826; /* Coprospects Gold for logo highlight */
-        --cp-nav-border: #2D3748; /* Subtle border/divider */
-        --cp-nav-submenu-bg: #1A1D29; /* Slightly lighter for dropdown */
+        --nav-font-primary: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        --nav-font-secondary: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-        --cp-nav-height-desktop: 70px;
-        --cp-nav-height-mobile: 60px;
-        --cp-nav-transition-speed: 0.3s;
-        --cp-nav-z-index: 2000;
+        /* Dimensions & Transitions */
+        --nav-height-desktop: 70px;
+        --nav-height-mobile: 60px;
+        --nav-border-radius: 6px;
+        --nav-transition-duration: 0.25s;
+        --nav-z-index: 2000;
 
-        /* Spacing (can be adjusted) */
-        --cp-space-xs: 4px;
-        --cp-space-sm: 8px;
-        --cp-space-md: 16px;
-        --cp-space-lg: 24px;
-        --cp-space-xl: 32px;
+        /* Spacing Units */
+        --nav-space-1: 4px;
+        --nav-space-2: 8px;
+        --nav-space-3: 12px;
+        --nav-space-4: 16px;
+        --nav-space-5: 20px;
+        --nav-space-6: 24px;
     }
 
-    .cp-global-nav *,
-    .cp-global-nav *::before,
-    .cp-global-nav *::after {
+    /* Minimal Reset for Nav Scope */
+    .coprospects-global-nav *,
+    .coprospects-global-nav *::before,
+    .coprospects-global-nav *::after {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
     }
 
-    /* Main Navigation Bar Styling */
-    .cp-global-nav {
-        font-family: var(--cp-nav-font-primary);
-        background-color: var(--cp-nav-bg);
-        height: var(--cp-nav-height-desktop);
+    .coprospects-global-nav ul,
+    .coprospects-global-nav ol {
+        list-style: none;
+    }
+
+    .coprospects-global-nav a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .coprospects-global-nav button {
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    /* Visually Hidden Class for Accessibility */
+    .coprospects-global-nav .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+    }
+
+    /* Main Navigation Bar */
+    .coprospects-global-nav {
+        font-family: var(--nav-font-primary);
+        background-color: var(--nav-bg-color);
+        height: var(--nav-height-desktop);
         width: 100%;
         position: fixed;
         top: 0;
         left: 0;
-        z-index: var(--cp-nav-z-index);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        border-bottom: 1px solid var(--cp-nav-border);
+        z-index: var(--nav-z-index);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        border-bottom: 1px solid var(--nav-accent-secondary-color); /* Subtle border */
     }
 
-    .cp-global-nav__container {
+    .coprospects-global-nav__container {
         display: flex;
         justify-content: space-between;
         align-items: center;
         height: 100%;
-        width: 100%;
-        max-width: 1300px; /* Consistent max-width */
+        max-width: 1320px; /* Slightly wider for modern feel */
         margin: 0 auto;
-        padding: 0 var(--cp-space-lg);
+        padding: 0 var(--nav-space-6);
     }
 
-    /* Brand/Logo Styling */
-    .cp-global-nav__brand {
+    /* Logo Styling */
+    .coprospects-global-nav__brand {
         display: flex;
         align-items: center;
-        text-decoration: none;
-        color: var(--cp-nav-text-hover);
-        font-family: var(--cp-nav-font-secondary);
-        font-size: 1.6rem; /* Increased size */
-        font-weight: 700;
+        font-family: var(--nav-font-secondary);
+        font-size: 1.75rem; /* Adjusted size */
+        font-weight: 800; /* Bolder */
         letter-spacing: -0.5px;
-        transition: color var(--cp-nav-transition-speed) ease;
+        color: var(--nav-logo-co-spects-color);
+        transition: opacity var(--nav-transition-duration) ease;
     }
-    .cp-global-nav__brand:hover,
-    .cp-global-nav__brand:focus {
-        color: var(--cp-nav-highlight);
+    .coprospects-global-nav__brand:hover,
+    .coprospects-global-nav__brand:focus {
+        opacity: 0.85;
     }
-    .cp-global-nav__logo-highlight {
-        color: var(--cp-nav-highlight);
+    .coprospects-global-nav__brand .logo-pro {
+        color: var(--nav-logo-pro-color);
     }
 
-    /* Desktop Navigation Links Wrapper (Initially shown on desktop) */
-    .cp-global-nav__links-wrapper--desktop {
+    /* Desktop Navigation Links */
+    .coprospects-global-nav__desktop-links {
         display: flex;
         align-items: center;
         height: 100%;
     }
 
-    .cp-global-nav__links {
-        list-style: none;
-        display: flex;
-        align-items: center;
-        height: 100%;
+    .coprospects-global-nav__desktop-links .nav-item {
+        position: relative;
+        margin-left: var(--nav-space-3);
     }
-
-    .cp-global-nav__links li {
-        position: relative; /* For submenu positioning */
-        margin-left: var(--cp-space-sm); /* Spacing between top-level items */
-    }
-     .cp-global-nav__links li:first-child {
+     .coprospects-global-nav__desktop-links .nav-item:first-child {
         margin-left: 0;
     }
 
-    .cp-global-nav__link {
+    .coprospects-global-nav__desktop-links .nav-link {
         display: flex;
         align-items: center;
-        padding: 0 var(--cp-space-md);
+        padding: var(--nav-space-3) var(--nav-space-4);
         height: 100%;
-        text-decoration: none;
-        color: var(--cp-nav-text);
-        font-size: 0.95rem;
+        color: var(--nav-text-color);
+        font-size: 1rem;
         font-weight: 500;
         position: relative;
-        transition: color var(--cp-nav-transition-speed) ease, background-color var(--cp-nav-transition-speed) ease;
-        border-radius: 4px; /* Subtle rounding on hover */
+        border-radius: var(--nav-border-radius);
+        transition: color var(--nav-transition-duration) ease, background-color var(--nav-transition-duration) ease;
     }
-
-    .cp-global-nav__link:hover,
-    .cp-global-nav__link:focus,
-    .cp-global-nav__link.current-demo-page { /* For JS highlighting */
-        color: var(--cp-nav-text-hover);
-        background-color: rgba(255, 255, 255, 0.05); /* Subtle hover background */
+    .coprospects-global-nav__desktop-links .nav-link:hover,
+    .coprospects-global-nav__desktop-links .nav-link:focus,
+    .coprospects-global-nav__desktop-links .nav-link.current-page-highlight {
+        color: var(--nav-text-hover-color);
+        background-color: rgba(255, 255, 255, 0.07);
     }
-    
-    .cp-global-nav__link.current-demo-page {
+    .coprospects-global-nav__desktop-links .nav-link.current-page-highlight {
         font-weight: 600;
-        color: var(--cp-nav-accent); /* Highlight active page */
+        color: var(--nav-accent-primary-color);
+    }
+    .coprospects-global-nav__desktop-links .nav-link.current-page-highlight::after {
+        transform: scaleX(1);
+         background-color: var(--nav-accent-primary-color);
     }
 
-    /* Active link indicator (modern underline) 
-    .cp-global-nav__link::after {
+    /* Animated Underline for Desktop Links */
+    .coprospects-global-nav__desktop-links .nav-link::after {
         content: '';
         position: absolute;
-        bottom: 15px;
-        left: var(--cp-space-md);
-        right: var(--cp-space-md);
-        height: 2px;
-        background-color: var(--cp-nav-accent);
+        bottom: 12px; /* Adjusted position */
+        left: var(--nav-space-4);
+        right: var(--nav-space-4);
+        height: 2.5px;
+        background-color: var(--nav-accent-primary-color);
+        border-radius: 1px;
         transform: scaleX(0);
         transform-origin: center;
-        transition: transform var(--cp-nav-transition-speed) ease;
+        transition: transform var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1);
     }
-    */
-
-
-    .cp-global-nav__link:hover::after,
-    .cp-global-nav__link:focus::after,
-    .cp-global-nav__link.current-demo-page::after {
+    .coprospects-global-nav__desktop-links .nav-link:hover::after,
+    .coprospects-global-nav__desktop-links .nav-link:focus::after {
         transform: scaleX(1);
     }
-    .cp-global-nav__link.current-demo-page::after {
-         background-color: var(--cp-nav-accent); /* Ensure active indicator uses accent */
-    }
 
 
-    /* Submenu Styling (for "Demo Sites") */
-    .cp-global-nav__item--has-submenu > .cp-global-nav__link {
-        padding-right: calc(var(--cp-space-md) + var(--cp-space-sm) + 5px); /* Space for caret */
+    /* Desktop Submenu (Dropdown) */
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu > .nav-link {
+        /* padding-right to make space for caret if needed, or use ::after for caret */
     }
-    .cp-global-nav__link--submenu-trigger::before { /* Caret icon */
-        content: '▼';
+    .coprospects-global-nav__desktop-links .nav-link--submenu-trigger::after { /* Override general link underline for submenu triggers */
+        display: none; /* We use a caret instead of underline for submenu trigger */
+    }
+     .coprospects-global-nav__desktop-links .nav-link--submenu-trigger::before { /* Caret for dropdown */
+        content: '╲╱'; /* Unicode or SVG icon */
         font-size: 0.6em;
-        margin-left: var(--cp-space-sm);
+        line-height: 1;
+        margin-left: var(--nav-space-2);
         display: inline-block;
-        transition: transform var(--cp-nav-transition-speed) ease;
+        transform-origin: center;
+        transition: transform var(--nav-transition-duration) ease;
     }
-    .cp-global-nav__item--has-submenu:hover > .cp-global-nav__link--submenu-trigger::before,
-    .cp-global-nav__item--has-submenu > .cp-global-nav__link--submenu-trigger[aria-expanded="true"]::before {
-        transform: rotate(180deg);
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .nav-link--submenu-trigger::before,
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu > .nav-link--submenu-trigger[aria-expanded="true"]::before {
+        transform: scaleY(-1); /* Flips caret */
     }
 
-    .cp-global-nav__submenu {
-        list-style: none;
+
+    .coprospects-global-nav__desktop-links .submenu {
         position: absolute;
-        top: 100%; /* Position below parent */
-        left: 0;
-        background-color: var(--cp-nav-submenu-bg);
-        border: 1px solid var(--cp-nav-border);
-        border-top: none;
-        border-radius: 0 0 6px 6px;
-        padding: var(--cp-space-sm) 0;
-        min-width: 200px;
+        top: calc(100% + 5px); /* Position below parent with a small gap */
+        left: 50%;
+        transform: translateX(-50%) translateY(15px); /* Start slightly lower for animation */
+        min-width: 220px;
+        background-color: var(--nav-submenu-bg-color);
+        border: 1px solid var(--nav-accent-secondary-color);
+        border-radius: var(--nav-border-radius);
+        padding: var(--nav-space-2) 0;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         opacity: 0;
         visibility: hidden;
-        transform: translateY(10px);
-        transition: opacity var(--cp-nav-transition-speed) ease,
-                    visibility var(--cp-nav-transition-speed) ease,
-                    transform var(--cp-nav-transition-speed) ease;
-        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-        z-index: var(--cp-nav-z-index) + 1; /* Above main nav */
+        transition: opacity var(--nav-transition-duration) ease,
+                    transform var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1),
+                    visibility var(--nav-transition-duration) ease;
+        z-index: calc(var(--nav-z-index) + 10);
     }
 
-    .cp-global-nav__item--has-submenu:hover .cp-global-nav__submenu,
-    .cp-global-nav__item--has-submenu:focus-within .cp-global-nav__submenu { /* focus-within for keyboard nav */
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu,
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu:focus-within > .submenu {
         opacity: 1;
         visibility: visible;
-        transform: translateY(0);
+        transform: translateX(-50%) translateY(0);
     }
 
-    .cp-global-nav__submenu-link {
+    .coprospects-global-nav__desktop-links .submenu-link {
         display: block;
-        padding: var(--cp-space-sm) var(--cp-space-md);
-        text-decoration: none;
-        color: var(--cp-nav-text);
-        font-size: 0.9rem;
-        transition: background-color var(--cp-nav-transition-speed) ease, color var(--cp-nav-transition-speed) ease;
+        padding: var(--nav-space-3) var(--nav-space-5);
+        color: var(--nav-text-color);
+        font-size: 0.95rem;
+        transition: background-color var(--nav-transition-duration) ease, color var(--nav-transition-duration) ease;
+        white-space: nowrap;
     }
-    .cp-global-nav__submenu-link:hover,
-    .cp-global-nav__submenu-link:focus,
-    .cp-global-nav__submenu-link.current-demo-page {
-        background-color: var(--cp-nav-accent);
-        color: var(--cp-nav-text-hover);
+    .coprospects-global-nav__desktop-links .submenu-link:hover,
+    .coprospects-global-nav__desktop-links .submenu-link:focus,
+    .coprospects-global-nav__desktop-links .submenu-link.current-page-highlight {
+        background-color: var(--nav-submenu-hover-bg-color);
+        color: var(--nav-text-hover-color);
     }
-     .cp-global-nav__submenu-link.current-demo-page {
-        font-weight: 600;
+    .coprospects-global-nav__desktop-links .submenu-link.current-page-highlight {
+        color: var(--nav-accent-primary-color);
+        font-weight: 500;
     }
 
-
-    /* Mobile Navigation Toggle Button */
-    .cp-global-nav__mobile-toggle {
+    /* Mobile Navigation Toggle */
+    .coprospects-global-nav__mobile-toggle {
         display: none; /* Hidden on desktop */
-        background: none;
-        border: none;
-        padding: var(--cp-space-sm);
-        cursor: pointer;
-        z-index: var(--cp-nav-z-index) + 2; /* Above everything else when mobile menu is open */
+        padding: var(--nav-space-3);
+        z-index: calc(var(--nav-z-index) + 20); /* Highest z-index */
+        position: relative; /* For icon positioning if needed */
+        width: 40px; /* Ensure decent tap target */
+        height: 40px;
+        align-items: center;
+        justify-content: center;
     }
-
-    .cp-global-nav__mobile-toggle-icon {
+    .coprospects-global-nav__mobile-toggle-icon {
         display: block;
         position: relative;
         width: 24px;
-        height: 2px;
-        background-color: var(--cp-nav-text-hover);
-        transition: background-color 0s var(--cp-nav-transition-speed) linear; /* Delay hiding middle bar */
+        height: 2.5px;
+        background-color: var(--nav-text-hover-color);
+        border-radius: 1px;
+        transition: transform var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1),
+                    background-color var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1);
     }
-    .cp-global-nav__mobile-toggle-icon::before,
-    .cp-global-nav__mobile-toggle-icon::after {
+    .coprospects-global-nav__mobile-toggle-icon::before,
+    .coprospects-global-nav__mobile-toggle-icon::after {
         content: '';
         position: absolute;
         left: 0;
         width: 100%;
-        height: 2px;
-        background-color: var(--cp-nav-text-hover);
-        transition: transform var(--cp-nav-transition-speed) ease, top var(--cp-nav-transition-speed) ease;
+        height: 2.5px;
+        background-color: var(--nav-text-hover-color);
+        border-radius: 1px;
+        transition: transform var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1),
+                    top var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1);
     }
-    .cp-global-nav__mobile-toggle-icon::before { top: -7px; }
-    .cp-global-nav__mobile-toggle-icon::after { top: 7px; }
+    .coprospects-global-nav__mobile-toggle-icon::before { transform: translateY(-8px); }
+    .coprospects-global-nav__mobile-toggle-icon::after { transform: translateY(8px); }
 
     /* Mobile Toggle Active State (X icon) */
-    .cp-global-nav__mobile-toggle[aria-expanded="true"] .cp-global-nav__mobile-toggle-icon {
-        background-color: transparent; /* Hide middle bar */
+    .coprospects-global-nav__mobile-toggle[aria-expanded="true"] .coprospects-global-nav__mobile-toggle-icon {
+        background-color: transparent; /* Center bar fades out */
+        transform: rotate(135deg);
     }
-    .cp-global-nav__mobile-toggle[aria-expanded="true"] .cp-global-nav__mobile-toggle-icon::before {
-        top: 0;
-        transform: rotate(45deg);
+    .coprospects-global-nav__mobile-toggle[aria-expanded="true"] .coprospects-global-nav__mobile-toggle-icon::before {
+        transform: translateY(0) rotate(90deg);
     }
-    .cp-global-nav__mobile-toggle[aria-expanded="true"] .cp-global-nav__mobile-toggle-icon::after {
-        top: 0;
-        transform: rotate(-45deg);
+    .coprospects-global-nav__mobile-toggle[aria-expanded="true"] .coprospects-global-nav__mobile-toggle-icon::after {
+        transform: translateY(0) rotate(0deg); /* Aligns with the other bar to form X */
     }
 
-    /* Mobile Navigation Links Wrapper (Full-screen overlay) */
-    .cp-global-nav__links-wrapper--mobile {
-        display: none; /* Hidden by default, shown by JS */
+    /* Mobile Navigation Overlay */
+    .coprospects-global-nav__mobile-links-overlay {
+        display: none;
         position: fixed;
-        top: 0; /* Start from top after nav bar */
+        top: 0; 
         left: 0;
         width: 100%;
-        height: 100vh;
-        background-color: var(--cp-nav-bg); /* Same as nav bar or slightly different */
-        padding-top: var(--cp-nav-height-mobile); /* Space for the nav bar itself */
+        height: 100%; /* Full viewport height */
+        background-color: var(--nav-bg-color);
         overflow-y: auto;
-        z-index: var(--cp-nav-z-index) -1; /* Below main nav bar but above page content */
+        z-index: calc(var(--nav-z-index) - 1); /* Below main nav bar, above page content */
         
         flex-direction: column;
         align-items: center;
-        justify-content: center; /* Center links vertically */
+        justify-content: flex-start; /* Align items to top */
+        padding-top: calc(var(--nav-height-mobile) + var(--nav-space-6)); /* Space for nav bar + extra */
+        padding-bottom: var(--nav-space-6);
 
         opacity: 0;
-        visibility: hidden;
-        transform: translateY(-20px); /* Slight animation */
-        transition: opacity var(--cp-nav-transition-speed) ease,
-                    visibility var(--cp-nav-transition-speed) ease,
-                    transform var(--cp-nav-transition-speed) ease;
+        transform: translateY(-100%); /* Slide down from top */
+        transition: opacity var(--nav-transition-duration) ease,
+                    transform var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1);
     }
-
-    .cp-global-nav__links-wrapper--mobile.is-active {
-        display: flex; /* Show when active */
+    .coprospects-global-nav__mobile-links-overlay.is-active {
+        display: flex;
         opacity: 1;
-        visibility: visible;
         transform: translateY(0);
     }
     
-    /* Mobile links structure will reuse .cp-global-nav__links but with different layout */
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__links {
+    .coprospects-global-nav__mobile-links-overlay .nav-list {
+        display: flex;
         flex-direction: column;
         align-items: center;
+        width: 90%;
+        max-width: 400px; /* Max width for links content */
+    }
+    .coprospects-global-nav__mobile-links-overlay .nav-item {
         width: 100%;
-        height: auto; /* Allow it to grow */
-        padding: var(--cp-space-xl) 0;
+        margin-bottom: var(--nav-space-2);
+        border-bottom: 1px solid var(--nav-accent-secondary-color);
     }
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__links li {
-        margin-left: 0;
+     .coprospects-global-nav__mobile-links-overlay .nav-item:last-child {
+        border-bottom: none;
+    }
+    .coprospects-global-nav__mobile-links-overlay .nav-link {
+        display: flex; /* For caret alignment */
+        justify-content: space-between; /* Pushes caret to the right */
+        align-items: center;
+        font-size: 1.2rem;
+        font-weight: 500;
+        color: var(--nav-text-color);
+        padding: var(--nav-space-4) var(--nav-space-3);
         width: 100%;
-        text-align: center;
+        text-align: left;
+        border-radius: var(--nav-border-radius);
+        transition: background-color var(--nav-transition-duration) ease, color var(--nav-transition-duration) ease;
     }
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__link {
-        font-size: 1.3rem; /* Larger for touch */
-        padding: var(--cp-space-md) var(--cp-space-lg);
-        height: auto;
-        width: 100%;
-        justify-content: center;
+    .coprospects-global-nav__mobile-links-overlay .nav-link:hover,
+    .coprospects-global-nav__mobile-links-overlay .nav-link:focus {
+        background-color: var(--nav-submenu-hover-bg-color);
+        color: var(--nav-text-hover-color);
     }
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__link::after {
-       display: none; /* No underline indicator on mobile main links */
-    }
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__link.current-demo-page {
-        background-color: var(--cp-nav-accent);
-        color: var(--cp-nav-text-hover);
-        border-radius: 0;
+    .coprospects-global-nav__mobile-links-overlay .nav-link.current-page-highlight {
+        color: var(--nav-accent-primary-color);
+        font-weight: 600;
     }
 
-    /* Mobile Submenu Styling */
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__item--has-submenu > .cp-global-nav__link--submenu-trigger[aria-expanded="true"] {
-        background-color: rgba(255, 255, 255, 0.03); /* Slight indication it's open */
+    /* Mobile Submenu Styling (Accordion-like) */
+     .coprospects-global-nav__mobile-links-overlay .nav-link--submenu-trigger::after { /* Caret for mobile */
+        content: '›'; /* Chevron right */
+        font-size: 1.5em;
+        line-height: 1;
+        transition: transform var(--nav-transition-duration) ease;
     }
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__submenu {
-        position: static; /* Not absolute on mobile */
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        background-color: transparent;
-        border: none;
-        box-shadow: none;
-        padding: 0;
-        min-width: auto;
-        margin-top: var(--cp-space-xs);
-        display: none; /* Hidden by default, toggled by JS/ARIA */
+    .coprospects-global-nav__mobile-links-overlay .nav-link--submenu-trigger[aria-expanded="true"]::after {
+        transform: rotate(90deg); /* Chevron down */
     }
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__item--has-submenu > .cp-global-nav__link--submenu-trigger[aria-expanded="true"] + .cp-global-nav__submenu {
+
+    .coprospects-global-nav__mobile-links-overlay .submenu {
+        background-color: transparent; /* Inherits overlay background */
+        padding-left: var(--nav-space-5); /* Indent submenu items */
+        margin-top: var(--nav-space-2);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height var(--nav-transition-duration) ease-in-out;
+    }
+    .coprospects-global-nav__mobile-links-overlay .submenu.is-open {
+       /* max-height set by JS based on content */
+    }
+    .coprospects-global-nav__mobile-links-overlay .submenu-link {
         display: block;
-    }
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__submenu-link {
         font-size: 1.1rem;
-        color: var(--cp-nav-text);
-        padding: var(--cp-space-sm) var(--cp-space-lg);
-        background-color: rgba(255, 255, 255, 0.03); /* Subtle distinction */
+        color: var(--nav-text-color);
+        padding: var(--nav-space-3) 0;
+        border-top: 1px solid var(--nav-accent-secondary-color);
+        opacity: 0.85;
     }
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__submenu-link:hover,
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__submenu-link:focus,
-    .cp-global-nav__links-wrapper--mobile .cp-global-nav__submenu-link.current-demo-page {
-        background-color: var(--cp-nav-accent);
-        color: var(--cp-nav-text-hover);
+     .coprospects-global-nav__mobile-links-overlay .submenu li:first-child .submenu-link {
+        border-top: none;
+     }
+    .coprospects-global-nav__mobile-links-overlay .submenu-link:hover,
+    .coprospects-global-nav__mobile-links-overlay .submenu-link:focus,
+    .coprospects-global-nav__mobile-links-overlay .submenu-link.current-page-highlight {
+        color: var(--nav-accent-primary-color);
+        opacity: 1;
     }
-
 
     /* Responsive Adjustments */
-    @media (max-width: 850px) {
-        .cp-global-nav {
-            height: var(--cp-nav-height-mobile);
+    @media (max-width: 900px) { /* Breakpoint for mobile menu */
+        .coprospects-global-nav {
+            height: var(--nav-height-mobile);
         }
-        .cp-global-nav__container {
-            padding: 0 var(--cp-space-md); /* Less padding on mobile */
+        .coprospects-global-nav__container {
+            padding: 0 var(--nav-space-4);
         }
-        .cp-global-nav__brand {
-            font-size: 1.4rem; /* Slightly smaller logo on mobile */
+        .coprospects-global-nav__brand {
+            font-size: 1.5rem;
         }
-        .cp-global-nav__links-wrapper--desktop {
-            display: none; /* Hide desktop links */
+        .coprospects-global-nav__desktop-links {
+            display: none;
         }
-        .cp-global-nav__mobile-toggle {
-            display: flex; /* Show mobile toggle */
+        .coprospects-global-nav__mobile-toggle {
+            display: flex;
         }
-        /* Adjust body padding (this should ideally be in global CSS if possible, but for self-containment...) */
-        body {
-            padding-top: var(--cp-nav-height-mobile) !important;
+        body { /* Handled by your global.css, but for self-containment if absolutely needed */
+            /* padding-top: var(--nav-height-mobile) !important; */
         }
     }
 
-    /* Add a class to body when mobile menu is open to prevent scrolling */
-    body.cp-mobile-menu-open {
+    /* Body class to prevent scrolling when mobile menu is open */
+    body.coprospects-mobile-menu--is-open {
         overflow: hidden;
     }
 
-
-
-    a:hover {
-        text-decoration: none;
-    }
-
-
-
-
-
-
 </style>
 
-<nav class="cp-global-nav" aria-label="Main Navigation">
-    <div class="cp-global-nav__container">
-        <a href="/" class="cp-global-nav__brand" aria-label="Coprospects Homepage">
-            <span class="cp-global-nav__logo-text">Co<span class="cp-global-nav__logo-highlight">pro</span>spects</span>
+<nav class="coprospects-global-nav" aria-label="Main Navigation">
+    <div class="coprospects-global-nav__container">
+        <a href="/" class="coprospects-global-nav__brand" aria-label="Coprospects Homepage">
+            Co<span class="logo-pro">pro</span>spects
         </a>
 
-        <button class="cp-global-nav__mobile-toggle" aria-expanded="false" aria-controls="globalNavLinksMobile" aria-label="Toggle Navigation Menu">
-            <span class="cp-global-nav__mobile-toggle-icon"></span>
+        <button class="coprospects-global-nav__mobile-toggle" aria-expanded="false" aria-controls="mobileNavMenu" aria-label="Toggle Navigation Menu">
+            <span class="visually-hidden">Open Menu</span>
+            <span class="coprospects-global-nav__mobile-toggle-icon"></span>
         </button>
 
-        <div class="cp-global-nav__links-wrapper--desktop">
-            <ul class="cp-global-nav__links">
-                <li><a href="/" class="cp-global-nav__link" id="global-nav-hub-desktop">Homepage</a></li>
-                <li><a href="/initial-consult.html" class="cp-global-nav__link" id="global-nav-hub-desktop">Initial Consult</a></li>
-
-                <li class="cp-global-nav__item--has-submenu">
-                    <a href="#" class="cp-global-nav__link cp-global-nav__link--submenu-trigger" aria-haspopup="true" aria-expanded="false" role="button">Consulting Services</a>
-                    <ul class="cp-global-nav__submenu" id="demoSubmenuMobile" aria-label="Demo Sites Submenu">
-                        <li><a href="/consulting-services/pay-per-click-advertising.html" class="cp-global-nav__submenu-link" id="global-nav-hub-desktop">PPC Advertising</a></li>
-                        <li><a href="/consulting-services/custom-web-development.html" class="cp-global-nav__submenu-link" id="global-nav-custom-web-development-mobile" role="menuitem">Custom Web Development</a></li>
-                    </ul>
-
-
-                </li>
-
-
-                <li class="cp-global-nav__item--has-submenu">
-                    <a href="#" class="cp-global-nav__link cp-global-nav__link--submenu-trigger" aria-haspopup="true" aria-expanded="false" role="button">Demo Sites</a>
-                    <ul class="cp-global-nav__submenu" aria-label="Demo Sites Submenu">
-                        <li><a href="/home-services/" class="cp-global-nav__submenu-link" id="global-nav-home-services-desktop">Home Services</a></li>
-                        <li><a href="/real-estate/" class="cp-global-nav__submenu-link" id="global-nav-real-estate-desktop">Real Estate</a></li>
-                        <li><a href="/fitness-centers/" class="cp-global-nav__submenu-link" id="global-nav-fitness-desktop">Fitness Centers</a></li>
-                        
-                    </ul>
-                </li>
+        <ul class="coprospects-global-nav__desktop-links">
+            <li class="nav-item"><a href="/" class="nav-link" id="desktop-nav-home">Homepage</a></li>
+            <li class="nav-item"><a href="/initial-consult.html" class="nav-link" id="desktop-nav-consult">Initial Consult</a></li>
+            <li class="nav-item nav-item--has-submenu">
+                <a href="#" class="nav-link nav-link--submenu-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="desktopSubmenuConsulting" role="button">Consulting Services</a>
+                <ul class="submenu" id="desktopSubmenuConsulting" aria-label="Consulting Services">
+                    <li><a href="/consulting-services/pay-per-click-advertising.html" class="submenu-link" id="desktop-nav-ppc">PPC Advertising</a></li>
+                    <li><a href="/consulting-services/custom-web-development.html" class="submenu-link" id="desktop-nav-webdev">Custom Web Development</a></li>
                 </ul>
-        </div>
+            </li>
+            <li class="nav-item nav-item--has-submenu">
+                <a href="#" class="nav-link nav-link--submenu-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="desktopSubmenuDemos" role="button">Demo Sites</a>
+                <ul class="submenu" id="desktopSubmenuDemos" aria-label="Demo Sites">
+                    <li><a href="/home-services/" class="submenu-link" id="desktop-nav-demo-home">Home Services</a></li>
+                    <li><a href="/real-estate/" class="submenu-link" id="desktop-nav-demo-realestate">Real Estate</a></li>
+                    <li><a href="/fitness-centers/" class="submenu-link" id="desktop-nav-demo-fitness">Fitness Centers</a></li>
+                </ul>
+            </li>
+        </ul>
 
-        <div class="cp-global-nav__links-wrapper--mobile" id="globalNavLinksMobile" role="dialog" aria-modal="true" aria-labelledby="mobileMenuTitle">
-            <ul class="cp-global-nav__links">
-                
-                <li>
-                    <a href="/" class="cp-global-nav__link" id="global-nav-hub-mobile" role="menuitem">Homepage</a>
-                </li>
-                
-                <li class="cp-global-nav__item--has-submenu">
-                    <a href="#" class="cp-global-nav__link cp-global-nav__link--submenu-trigger" aria-haspopup="true" aria-expanded="false" role="button">Consulting Services</a>
-                    <ul class="cp-global-nav__submenu" id="consultingSubmenuMobile" aria-label="Consulting Services Submenu">
-                        <li>
-                            <a href="/consulting-services/pay-per-click-advertising.html" 
-                            class="cp-global-nav__submenu-link" id="global-nav-ppc-desktop">PPC Advertising</a>
-                        </li>
-                        <li>
-                            <a href="/consulting-services/custom-web-development.html" 
-                            class="cp-global-nav__submenu-link" 
-                            id="global-nav-web-dev-desktop">Custom Web Development</a>
-                        </li>
+        <div class="coprospects-global-nav__mobile-links-overlay" id="mobileNavMenu" role="dialog" aria-modal="true" aria-hidden="true">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="/" class="nav-link" id="mobile-nav-home" role="menuitem">Homepage</a></li>
+                <li class="nav-item"><a href="/initial-consult.html" class="nav-link" id="mobile-nav-consult" role="menuitem">Initial Consult</a></li>
+                <li class="nav-item nav-item--has-submenu">
+                    <a href="#" class="nav-link nav-link--submenu-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="mobileSubmenuConsulting" role="button">Consulting Services</a>
+                    <ul class="submenu" id="mobileSubmenuConsulting" aria-label="Consulting Services">
+                        <li><a href="/consulting-services/pay-per-click-advertising.html" class="submenu-link" id="mobile-nav-ppc" role="menuitem">PPC Advertising</a></li>
+                        <li><a href="/consulting-services/custom-web-development.html" class="submenu-link" id="mobile-nav-webdev" role="menuitem">Custom Web Development</a></li>
                     </ul>
                 </li>
-
-
-                <li class="cp-global-nav__item--has-submenu">
-                    
-                    <a href="#" class="cp-global-nav__link cp-global-nav__link--submenu-trigger" aria-haspopup="true" aria-expanded="false" role="button" aria-controls="demoSubmenuMobile">Demo Sites</a>
-                    
-                    <ul class="cp-global-nav__submenu" id="demoSubmenuMobile" aria-label="Demo Sites Submenu">
-                        
-                        <li><a href="/home-services/" class="cp-global-nav__submenu-link" id="global-nav-home-services-mobile" role="menuitem">Home Services</a></li>
-                        
-                        <li><a href="/real-estate/" class="cp-global-nav__submenu-link" id="global-nav-real-estate-mobile" role="menuitem">Real Estate</a></li>
-                        
-                        <li><a href="/fitness-centers/" class="cp-global-nav__submenu-link" id="global-nav-fitness-mobile" role="menuitem">Fitness Centers</a></li>
-                    
+                <li class="nav-item nav-item--has-submenu">
+                    <a href="#" class="nav-link nav-link--submenu-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="mobileSubmenuDemos" role="button">Demo Sites</a>
+                    <ul class="submenu" id="mobileSubmenuDemos" aria-label="Demo Sites">
+                        <li><a href="/home-services/" class="submenu-link" id="mobile-nav-demo-home" role="menuitem">Home Services</a></li>
+                        <li><a href="/real-estate/" class="submenu-link" id="mobile-nav-demo-realestate" role="menuitem">Real Estate</a></li>
+                        <li><a href="/fitness-centers/" class="submenu-link" id="mobile-nav-demo-fitness" role="menuitem">Fitness Centers</a></li>
                     </ul>
                 </li>
             </ul>
@@ -481,83 +485,100 @@
     </div>
 </nav>
 
-<!-- 
-    IMPORTANT: JavaScript for Toggling Mobile Menu and Submenus.
-    This script should ideally be part of your main.js or a dedicated navigation script
-    that runs after this HTML is injected. For self-containment demonstration,
-    it's included here, but best practice is to manage JS globally.
--->
 <script>
-    // Encapsulate script to avoid global scope pollution
-    (function() {
-        const nav = document.querySelector('.cp-global-nav');
-        if (!nav) return;
+// Self-contained Navigation JavaScript
+(function() {
+    const nav = document.querySelector('.coprospects-global-nav');
+    if (!nav) return;
 
-        const mobileToggleButton = nav.querySelector('.cp-global-nav__mobile-toggle');
-        const mobileMenu = nav.querySelector('.cp-global-nav__links-wrapper--mobile');
-        
-        // Mobile menu toggle
-        if (mobileToggleButton && mobileMenu) {
-            mobileToggleButton.addEventListener('click', () => {
-                const isExpanded = mobileToggleButton.getAttribute('aria-expanded') === 'true';
-                mobileToggleButton.setAttribute('aria-expanded', !isExpanded);
-                mobileMenu.classList.toggle('is-active');
-                document.body.classList.toggle('cp-mobile-menu-open'); // For overflow:hidden
-            });
-        }
+    const mobileToggleButton = nav.querySelector('.coprospects-global-nav__mobile-toggle');
+    const mobileMenuOverlay = nav.querySelector('.coprospects-global-nav__mobile-links-overlay');
+    const body = document.body;
 
-        // Mobile submenu toggles
-        const mobileSubmenuTriggers = mobileMenu.querySelectorAll('.cp-global-nav__link--submenu-trigger');
-        mobileSubmenuTriggers.forEach(trigger => {
-            trigger.addEventListener('click', (e) => {
-                e.preventDefault(); // Prevent navigation for the trigger link itself
-                const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
-                trigger.setAttribute('aria-expanded', !isExpanded);
-                // const submenu = trigger.nextElementSibling; // Assuming submenu is direct sibling
-                // if (submenu && submenu.classList.contains('cp-global-nav__submenu')) {
-                //     submenu.style.display = isExpanded ? 'none' : 'block';
-                // }
-                // More robust: find by ID if IDs are stable
-                const controlledSubmenuId = trigger.getAttribute('aria-controls');
-                if(controlledSubmenuId) {
-                    const submenu = document.getElementById(controlledSubmenuId);
-                    if(submenu) {
-                         submenu.style.display = isExpanded ? 'none' : 'block';
+    // --- Mobile Menu Toggle ---
+    if (mobileToggleButton && mobileMenuOverlay) {
+        mobileToggleButton.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            mobileMenuOverlay.classList.toggle('is-active');
+            mobileMenuOverlay.setAttribute('aria-hidden', isExpanded);
+            body.classList.toggle('coprospects-mobile-menu--is-open');
+
+            // Reset any open mobile submenus when main mobile menu is closed
+            if (!mobileMenuOverlay.classList.contains('is-active')) {
+                const openSubmenus = mobileMenuOverlay.querySelectorAll('.submenu.is-open');
+                openSubmenus.forEach(submenu => {
+                    submenu.classList.remove('is-open');
+                    submenu.style.maxHeight = null;
+                    const trigger = nav.querySelector('[aria-controls="' + submenu.id + '"]');
+                    if (trigger) {
+                        trigger.setAttribute('aria-expanded', 'false');
                     }
-                }
-            });
+                });
+            }
         });
+    }
 
-        // Function to highlight current page link (example, to be called from main.js)
-        // This is a simplified version. Your main.js has a more robust one.
-        function highlightCurrentNavPage() {
-            const path = window.location.pathname;
-            const allLinks = nav.querySelectorAll('.cp-global-nav__link, .cp-global-nav__submenu-link');
-            
-            allLinks.forEach(link => {
-                link.classList.remove('current-demo-page');
-                if (link.getAttribute('href') === path) {
-                    link.classList.add('current-demo-page');
+    // --- Mobile Submenu Accordion Toggle ---
+    const mobileSubmenuTriggers = mobileMenuOverlay.querySelectorAll('.nav-link--submenu-trigger');
+    mobileSubmenuTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function(event) {
+            event.preventDefault();
+            const targetSubmenuId = this.getAttribute('aria-controls');
+            const targetSubmenu = document.getElementById(targetSubmenuId);
 
-                    // If it's a submenu link, also highlight its parent trigger on desktop
-                    const parentSubmenuTrigger = link.closest('.cp-global-nav__item--has-submenu')?.querySelector('.cp-global-nav__link--submenu-trigger');
-                    if(parentSubmenuTrigger && window.innerWidth > 850) { // Only for desktop view
-                        // parentSubmenuTrigger.classList.add('current-demo-page'); // Or a different class for parent active
+            if (targetSubmenu) {
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !isExpanded);
+                targetSubmenu.classList.toggle('is-open');
+
+                if (targetSubmenu.classList.contains('is-open')) {
+                    targetSubmenu.style.maxHeight = targetSubmenu.scrollHeight + "px";
+                } else {
+                    targetSubmenu.style.maxHeight = null;
+                }
+            }
+        });
+    });
+
+    // --- Current Page Link Highlighting (Example) ---
+    // Your existing main.js logic for highlighting should be adapted for new class names.
+    // This is a placeholder to show intent.
+    function highlightCurrentPageLinks() {
+        const currentPath = window.location.pathname;
+        const allLinks = nav.querySelectorAll('.nav-link, .submenu-link');
+
+        allLinks.forEach(link => {
+            link.classList.remove('current-page-highlight');
+            // Simple path match, might need refinement for complex scenarios
+            if (link.getAttribute('href') === currentPath || 
+                (link.getAttribute('href') === '/' && currentPath === '/index.html') || // Handle homepage variations
+                (link.getAttribute('href') === '/index.html' && currentPath === '/')
+            ) {
+                link.classList.add('current-page-highlight');
+
+                // If it's a submenu link on desktop, highlight its parent dropdown trigger too
+                const desktopParentItem = link.closest('.submenu');
+                if (desktopParentItem && window.innerWidth > 900) { // Assuming 900px is the mobile breakpoint
+                    const trigger = desktopParentItem.closest('.nav-item--has-submenu')?.querySelector('.nav-link--submenu-trigger');
+                    if (trigger) {
+                       // trigger.classList.add('current-page-highlight'); // Or a distinct class
                     }
                 }
-            });
-        }
-        
-        // Call highlight on load (or better, integrate this logic into your existing main.js highlight function)
-        // highlightCurrentNavPage(); // Example call
-        // window.addEventListener('popstate', highlightCurrentNavPage); // Update on back/forward
+            }
+        });
+    }
+    
+    // This would ideally be called by your main.js after injecting the nav,
+    // or if the nav is static, on DOMContentLoaded of the main page.
+    // For demo, if you want it to run for this static snippet:
+    // document.addEventListener('DOMContentLoaded', highlightCurrentPageLinks);
+    // window.addEventListener('popstate', highlightCurrentPageLinks); // For back/forward navigation
 
-        // Ensure this script runs after the nav is in the DOM.
-        // If this _global-nav.html is fetched, the script in main.js that injects it
-        // should call a function to initialize this nav's JS behavior.
-        // For instance, in your main.js, after placeholder.innerHTML = await response.text();
-        // you could call: if (typeof window.initGlobalNav === 'function') { window.initGlobalNav(); }
-        // And then wrap this script content in: window.initGlobalNav = function() { ...this script... };
+    // A more robust way is to have a function in main.js call this.
+    // e.g., if (typeof window.initializeCoprospectsNav === 'function') window.initializeCoprospectsNav();
+    // window.initializeCoprospectsNav = function() { /* all the JS above */ highlightCurrentPageLinks(); };
 
-    })();
+
+})();
 </script>

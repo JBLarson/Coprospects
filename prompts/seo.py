@@ -83,6 +83,8 @@ def promptOut(pIndices, oIndices):
 
     promptString += "\n\nImportant Note: Be mindful of prior context regarding existing styling and UX/UI. Always produce material that is stylistically indistinguishable from the site overall."
 
+    promptString += "\n\n"
+
     return promptString
 
 
