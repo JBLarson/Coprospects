@@ -245,8 +245,6 @@ body.consulting-theme-v2 {
 .why-choose-visual { flex: 1 1 45%; }
 .why-choose-visual img {
     border-radius: var(--border-radius-new);
-    box-shadow: var(--shadow-new);
-    border: 1px solid var(--color-bg-light);
 }
 .why-items-list {
     display: grid;
