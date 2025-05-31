@@ -1,5 +1,4 @@
-vcEnv
-prompts/__py*
-design.drawio
-.htaccess
-.DS_Store
+vcEnv/
+__pycache__/
+*.drawio
+*.DS_Store
