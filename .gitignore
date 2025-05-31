@@ -1,3 +1,5 @@
 vcEnv
 prompts/__py*
 design.drawio
+.htaccess
+.DS_Store
