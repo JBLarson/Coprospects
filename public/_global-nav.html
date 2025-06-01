@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coprospects Navigation</title> <!-- Or a more appropriate title if this is part of a larger page -->
 <style>
     :root {
         /* Core Palette & Fonts */
@@ -196,7 +201,6 @@
         transform-origin: center;
         transition: transform var(--nav-transition-duration) ease;
     }
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .nav-link--submenu-trigger::before,
     .coprospects-global-nav__desktop-links .nav-item--has-submenu > .nav-link--submenu-trigger[aria-expanded="true"]::before {
         transform: scaleY(-1); /* Flips caret */
     }
@@ -221,8 +225,7 @@
         z-index: calc(var(--nav-z-index) + 10);
     }
 
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu,
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:focus-within > .submenu {
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu.is-active > .submenu {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
@@ -490,6 +493,45 @@
     const mobileToggleButton = nav.querySelector('.coprospects-global-nav__mobile-toggle');
     const mobileMenuOverlay = nav.querySelector('.coprospects-global-nav__mobile-links-overlay');
     const body = document.body;
+
+    // --- Desktop Submenu Toggle --- (NEW)
+    const desktopSubmenuTriggers = nav.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
+    const desktopNavItemsWithSubmenu = nav.querySelectorAll('.coprospects-global-nav__desktop-links .nav-item--has-submenu');
+
+    desktopSubmenuTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default link behavior
+            const parentNavItem = this.closest('.nav-item--has-submenu');
+            if (!parentNavItem) return;
+
+            const isActive = parentNavItem.classList.contains('is-active');
+
+            // Close all other open desktop submenus
+            desktopNavItemsWithSubmenu.forEach(item => {
+                if (item !== parentNavItem) {
+                    item.classList.remove('is-active');
+                    const otherTrigger = item.querySelector('.nav-link--submenu-trigger');
+                    if (otherTrigger) otherTrigger.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Toggle current submenu
+            parentNavItem.classList.toggle('is-active', !isActive);
+            this.setAttribute('aria-expanded', !isActive);
+        });
+    });
+
+    // --- Click outside to close Desktop Submenus --- (NEW)
+    document.addEventListener('click', function(event) {
+        if (window.innerWidth <= 900) return; // Only apply on desktop
+
+        const openDesktopSubmenu = nav.querySelector('.coprospects-global-nav__desktop-links .nav-item--has-submenu.is-active');
+        if (openDesktopSubmenu && !openDesktopSubmenu.contains(event.target)) {
+            openDesktopSubmenu.classList.remove('is-active');
+            const trigger = openDesktopSubmenu.querySelector('.nav-link--submenu-trigger');
+            if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        }
+    });
 
     // --- Mobile Menu Toggle ---
     if (mobileToggleButton && mobileMenuOverlay) {
