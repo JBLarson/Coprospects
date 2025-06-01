@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Message Generator – Coprospects</title>
+	<style>
+		:root {
+			--bg-color: #0d1117;
+			--card-bg: #0d1117;
+			--primary-color: #ffffff;
+			--accent-color: #f9a826;
+			--text-color: #ffffff;
+			--input-border: #d1d5da;
+			--border-radius: 8px;
+			--spacing: 16px;
+			--font-family: Arial, sans-serif;
+		}
+
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: var(--bg-color);
+			font-family: var(--font-family);
+			color: var(--text-color);
+		}
+
+		.container {
+			max-width: 60%;
+			margin: 40px 0;
+			margin-left: 20%;
+			padding: var(--spacing);
+			background-color: var(--card-bg);
+			border-radius: var(--border-radius);
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+			border: 0.4vw solid #ffffff;
+		}
+
+		h1 {
+			margin-top: 0;
+			font-size: 24px;
+			text-align: center;
+			color: var(--primary-color);
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			gap: var(--spacing);
+			align-items: center;
+		}
+
+		.form-group {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			width: 320px;
+		}
+
+		label {
+			font-weight: bold;
+			font-size: 14px;
+			margin-bottom: 4px;
+		}
+
+		input[type="text"] {
+			width: 320px;
+			padding: 10px;
+			font-size: 14px;
+			border: 1px solid var(--input-border);
+			border-radius: var(--border-radius);
+			outline: none;
+			transition: border-color 0.2s;
+			color: var(--text-color);
+			background-color: transparent;
+		}
+
+		input[type="text"]:focus {
+			border-color: var(--accent-color);
+		}
+
+		.radio-group {
+			display: flex;
+			gap: var(--spacing);
+			margin-top: 4px;
+		}
+
+		.radio-group label {
+			font-weight: normal;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			color: var(--text-color);
+		}
+
+		textarea {
+			width: 96%;
+			margin-left: 1%;
+			height: 40vw;
+			padding: 10px;
+			font-size: 14px;
+			border: 1px solid var(--input-border);
+			border-radius: var(--border-radius);
+			resize: vertical;
+			outline: none;
+			background-color: transparent;
+			color: var(--text-color);
+		}
+
+		textarea:focus {
+			border-color: var(--accent-color);
+		}
+
+		.button-group {
+			display: flex;
+			justify-content: center;
+			margin-top: var(--spacing);
+			width: 100%;
+		}
+
+		button {
+			padding: 12px 24px;
+			font-size: 14px;
+			font-weight: bold;
+			color: #fff;
+			background-color: var(--accent-color);
+			border: none;
+			border-radius: var(--border-radius);
+			cursor: pointer;
+			transition: background-color 0.2s;
+		}
+
+		button:hover {
+			background-color: #d78c1f;
+		}
+
+		@media (max-width: 480px) {
+			.container {
+				margin: 20px;
+				padding: var(--spacing);
+			}
+
+			h1 {
+				font-size: 20px;
+			}
+
+			button {
+				font-size: 12px;
+				padding: 10px;
+			}
+
+			textarea {
+				height: 200px;
+			}
+		}
+
+		@media (min-width: 1200px) {
+      .container {
+        max-width: 800px;
+        margin: 40px auto;
+      }
+			textarea {
+				height: 600px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Coprospects Message Generator</h1>
+		<form id="messageForm">
+			<div class="form-group">
+				<label for="firstName">First Name:</label>
+				<input type="text" id="firstName" placeholder="e.g., Mary" required />
+			</div>
+			<div class="form-group">
+				<label for="businessType">Business Type:</label>
+				<input type="text" id="businessType" placeholder="e.g., real estate firm" required />
+			</div>
+			<div class="form-group">
+				<label for="businessName">Business Name (Website/Company):</label>
+				<input type="text" id="businessName" placeholder="e.g., Wilson Pacific Development" required />
+			</div>
+			<div class="form-group">
+				<label>Sender:</label>
+				<div class="radio-group">
+					<label><input type="radio" name="sender" value="jb" checked /> JB Larson</label>
+					<label><input type="radio" name="sender" value="caelan" /> Caelan LaMure</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Has Website?</label>
+				<div class="radio-group">
+					<label><input type="radio" name="hasWebsite" value="yes" checked /> Yes</label>
+					<label><input type="radio" name="hasWebsite" value="no" /> No</label>
+				</div>
+			</div>
+		</form>
+		<div style="margin-top: var(--spacing);">
+			<textarea id="outputMessage" readonly placeholder="Your generated message will appear here..."></textarea>
+		</div>
+		<div class="button-group">
+			<button type="button" id="copyBtn">Copy to Clipboard</button>
+		</div>
+	</div>
+
+	<script>
+		(function() {
+			const firstNameInput = document.getElementById('firstName');
+			const businessTypeInput = document.getElementById('businessType');
+			const businessNameInput = document.getElementById('businessName');
+			const senderRadios = document.querySelectorAll('input[name="sender"]');
+			const hasWebsiteRadios = document.querySelectorAll('input[name="hasWebsite"]');
+			const output = document.getElementById('outputMessage');
+			const copyBtn = document.getElementById('copyBtn');
+
+			function updateMessage() {
+				const firstName = firstNameInput.value.trim();
+				const businessType = businessTypeInput.value.trim();
+				const businessName = businessNameInput.value.trim();
+				const senderValue = document.querySelector('input[name="sender"]:checked').value;
+				const hasWebsiteValue = document.querySelector('input[name="hasWebsite"]:checked').value;
+
+				let senderName = '';
+				let senderEmail = '';
+				if (senderValue === 'jb') {
+					senderName = 'JB Larson';
+					senderEmail = 'jb@coprospects.com';
+				} else {
+					senderName = 'Caelan LaMure';
+					senderEmail = 'caelan@coprospects.com';
+				}
+
+				let consultationLine = '';
+				if (hasWebsiteValue === 'yes') {
+					consultationLine = `We’ll review your current website and provide actionable recommendations for an art-focused, conversion-optimized overhaul.`;
+				} else {
+					consultationLine = `We’ll analyze your business and outline what creating a website for you would look like.`;
+				}
+
+				let message = '';
+				message += `Hi ${ firstName },\n\n`;
+				message += `I’m ${ senderName } from Coprospects, a digital agency in Orange County that builds high-performance websites and runs targeted Google Ads for ${ businessType } companies. I briefly reviewed ${ businessName } and it seems like you provide a great service to your customers.\n\n`;
+				message += `I’d like to offer you a free consultation: ${ consultationLine } We’ll also outline how a data-driven Google Ads campaign can significantly increase your new client acquisition.\n\n`;
+				message += `Would you be open to a 15-minute call next week to discuss?\n\n`;
+				message += `— ${ senderName }\n`;
+				message += `Coprospects\n`;
+				message += `${ senderEmail }`;
+
+				output.value = message;
+			}
+
+			function copyToClipboard() {
+				const text = output.value.trim();
+				if (!text) return;
+				navigator.clipboard.writeText(text).then(() => {
+					copyBtn.textContent = 'Copied!';
+					setTimeout(() => {
+						copyBtn.textContent = 'Copy to Clipboard';
+					}, 1500);
+				});
+			}
+
+			[firstNameInput, businessTypeInput, businessNameInput].forEach(input =>
+				input.addEventListener('input', updateMessage)
+			);
+			senderRadios.forEach(radio => radio.addEventListener('change', updateMessage));
+			hasWebsiteRadios.forEach(radio => radio.addEventListener('change', updateMessage));
+			copyBtn.addEventListener('click', copyToClipboard);
+
+			// initialize on load
+			updateMessage();
+		})();
+	</script>
+</body>
+</html>
