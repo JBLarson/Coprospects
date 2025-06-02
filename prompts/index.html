@@ -3,16 +3,24 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GitHub Code Context Generator</title>
+    <title>GitHub Code Context Generator V2</title>
+    <script src="token-config.js"></script>
     <style>
         :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22; /* Slightly different from body for card effect */
-            --primary-color: #ffffff;
-            /*--accent-color: #f9a826;*/
-            --accent-color: blue;
-            --text-color: #c9d1d9; /* Lighter text for better readability on dark bg */
-            --input-border: #30363d;
+            /* Dark Green Theme */
+            --bg-color: #0B1D12; /* Very dark desaturated green */
+            --card-bg: #112B1A; /* Dark green, slightly less desaturated */
+            --primary-color: #E6F0EA; /* Light, slightly greenish white for text on cards */
+            --accent-color: #34D399; /* Vibrant green (e.g., Emerald 400) */
+            --text-color: #A0B0A8; /* Muted green-gray for less important text */
+            --input-border: #2A5238; /* Darker green for borders */
+            --input-bg-color: #08140A; /* Very dark green for input backgrounds */
+            --error-bg: #4d1f1f;
+            --error-text: #ffacac;
+            --loading-bg: #1A3824;
+            --warning-bg: #4a3b00; /* Kept from previous for PAT warning */
+
+
             --border-radius: 8px;
             --spacing: 16px;
             --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
@@ -25,19 +33,19 @@
             color: var(--text-color);
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align to top for scroll */
+            align-items: flex-start;
             min-height: 100vh;
-            padding-top: 40px; /* Add some top padding */
+            padding-top: 40px;
             padding-bottom: 40px;
         }
         .container {
             width: 90%;
-            max-width: 900px; /* Increased max-width */
+            max-width: 900px;
             margin: 0 auto;
             padding: var(--spacing);
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow for depth */
             border: 1px solid var(--input-border);
         }
         h1 {
@@ -58,34 +66,37 @@
             color: var(--primary-color);
         }
         input[type="text"],
+        input[type="password"],
         textarea {
-            width: calc(100% - 22px); /* Account for padding and border */
+            width: calc(100% - 22px);
             padding: 10px;
             font-size: 14px;
             border: 1px solid var(--input-border);
             border-radius: var(--border-radius);
             outline: none;
-            transition: border-color 0.2s;
-            color: var(--text-color);
-            background-color: #0d1117; /* Darker input background */
+            transition: border-color 0.2s, background-color 0.2s;
+            color: var(--primary-color); /* Primary text color for inputs too */
+            background-color: var(--input-bg-color);
             font-family: inherit;
         }
         input[type="text"]:focus,
+        input[type="password"]:focus,
         textarea:focus {
             border-color: var(--accent-color);
+            background-color: #0E1E14; /* Slightly lighter on focus */
         }
         textarea {
             min-height: 100px;
             resize: vertical;
         }
         #outputMessage {
-            min-height: 200px;
-            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; /* Monospace for code */
+            min-height: 250px; /* Increased height */
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
         }
         .button-group {
             display: flex;
             gap: var(--spacing);
-            justify-content: flex-start; /* Align buttons to start */
+            justify-content: flex-start;
             margin-top: var(--spacing);
             margin-bottom: var(--spacing);
         }
@@ -93,7 +104,7 @@
             padding: 10px 20px;
             font-size: 14px;
             font-weight: bold;
-            color: #ffffff;
+            color: var(--bg-color); /* Dark text on bright button */
             background-color: var(--accent-color);
             border: none;
             border-radius: var(--border-radius);
@@ -101,50 +112,68 @@
             transition: background-color 0.2s;
         }
         button:hover {
-            background-color: #d78c1f; /* Darker shade of accent */
+            background-color: #2CB87E; /* Slightly darker/muted accent on hover */
         }
         button:disabled {
-            background-color: #586069; /* GitHub's disabled button color */
+            background-color: #50685A; /* Muted green for disabled */
+            color: var(--text-color);
             cursor: not-allowed;
         }
         #fileListContainer {
-            max-height: 300px;
+            max-height: 250px; /* Adjusted height */
             overflow-y: auto;
             border: 1px solid var(--input-border);
             border-radius: var(--border-radius);
             padding: var(--spacing);
             margin-top: var(--spacing);
-            background-color: #0d1117;
+            background-color: var(--input-bg-color);
         }
         .file-item {
             display: flex;
             align-items: center;
             margin-bottom: 8px;
+            padding: 4px; /* Added padding */
+            border-radius: 4px; /* Rounded corners for items */
+            transition: background-color 0.2s;
+        }
+        .file-item:hover {
+            background-color: #1A3824; /* Hover effect for file items */
         }
         .file-item input[type="checkbox"] {
             margin-right: 10px;
-            accent-color: var(--accent-color); /* Style checkbox color */
+            accent-color: var(--accent-color);
+            cursor: pointer;
         }
         .file-item label {
             font-weight: normal;
             font-size: 14px;
             color: var(--text-color);
-            margin-bottom: 0; /* Override default label margin */
+            margin-bottom: 0;
             cursor: pointer;
+            flex-grow: 1; /* Make label take available space */
         }
-        .loading-message, .error-message {
+        .loading-indicator {
+            font-size: 12px;
+            color: var(--accent-color);
+            margin-left: auto; /* Push to the right */
+            display: none; /* Hidden by default */
+        }
+        .file-item.is-loading .loading-indicator {
+            display: inline;
+        }
+        .message-area { /* Common styling for status messages */
             margin-top: 10px;
             padding: 10px;
             border-radius: var(--border-radius);
             text-align: center;
+            font-size: 14px;
         }
-        .loading-message {
-            background-color: #222a33;
-            color: var(--accent-color);
-        }
-        .error-message {
-            background-color: #4d1f1f;
-            color: #ffacac;
+        .loading-message { background-color: var(--loading-bg); color: var(--accent-color); }
+        .error-message { background-color: var(--error-bg); color: var(--error-text); }
+        .warning-message { background-color: var(--warning-bg); color: var(--accent-color); font-size: 12px; text-align: left; }
+        
+        #patInputGroup { /* To hide/show PAT input */
+             /* display: none; by default, JS will show if needed */
         }
         hr {
             border: none;
@@ -155,11 +184,19 @@
 </head>
 <body>
     <div class="container">
-        <h1>GitHub Code Context Generator</h1>
+        <h1>GitHub Code Context Generator V2</h1>
+
+        <div id="patInputGroup" class="form-group" style="display: none;"> <label for="githubPat">GitHub Personal Access Token (PAT):</label>
+            <input type="password" id="githubPat" placeholder="Enter GitHub PAT (e.g., fine-grained with 'Contents: Read-only')" />
+            <div class="warning-message" style="margin-top: 5px;">
+                <strong>Security Note:</strong> PAT needed for private repos or to avoid rate limits.
+                It's processed in your browser. Use a fine-grained token if possible.
+            </div>
+        </div>
 
         <div class="form-group">
             <label for="repoUrl">GitHub Repository URL:</label>
-            <input type="text" id="repoUrl" placeholder="e.g., https://github.com/owner/repo-name" />
+            <input type="text" id="repoUrl" placeholder="https://github.com/jblarson/" value="https://github.com/jblarson/" />
         </div>
 
         <div class="button-group">
@@ -169,26 +206,22 @@
         <div id="statusMessages"></div>
 
         <div class="form-group">
-            <label for="fileListContainer">Select Files:</label>
+            <label for="fileListContainer">Select Files (updates context below automatically):</label>
             <div id="fileListContainer">
-                <p>Enter a repository URL and click "Fetch Files" to see the file list.</p>
+                <p>Enter PAT (if needed), repository URL, and click "Fetch Files".</p>
             </div>
         </div>
         
         <hr>
 
         <div class="form-group">
-            <label for="userInstructions">Your Instructions/Prompt:</label>
+            <label for="userInstructions">Your Instructions/Prompt (updates context below automatically):</label>
             <textarea id="userInstructions" placeholder="Enter your instructions or question for the AI..."></textarea>
-        </div>
-
-        <div class="button-group">
-            <button id="generateCtxBtn">Generate Context</button>
         </div>
 
         <div class="form-group">
             <label for="outputMessage">Generated Context:</label>
-            <textarea id="outputMessage" readonly placeholder="Generated context will appear here..."></textarea>
+            <textarea id="outputMessage" readonly placeholder="Context will appear here as you select files and type instructions..."></textarea>
         </div>
 
         <div class="button-group">
@@ -198,200 +231,254 @@
 
     <script>
         const repoUrlInput = document.getElementById('repoUrl');
+        const githubPatInput = document.getElementById('githubPat');
+        const patInputGroup = document.getElementById('patInputGroup');
         const fetchFilesBtn = document.getElementById('fetchFilesBtn');
         const fileListContainer = document.getElementById('fileListContainer');
         const userInstructionsInput = document.getElementById('userInstructions');
-        const generateCtxBtn = document.getElementById('generateCtxBtn');
         const outputMessageTextarea = document.getElementById('outputMessage');
         const copyBtn = document.getElementById('copyBtn');
         const statusMessagesDiv = document.getElementById('statusMessages');
 
-        let currentRepoInfo = null; // To store { owner, repo, defaultBranch }
+        let currentRepoInfo = null;
+        let fetchedFileContents = {}; // Cache for file contents: { filePath: content }
+        let autoLoadedToken = null;
 
-        function showLoading(message) {
-            statusMessagesDiv.innerHTML = `<div class="loading-message">${message}</div>`;
-        }
+        // --- Message Display Functions ---
+        function showLoading(message) { statusMessagesDiv.innerHTML = `<div class="message-area loading-message">${message}</div>`; }
+        function showError(message) { statusMessagesDiv.innerHTML = `<div class="message-area error-message">${message}</div>`; }
+        function clearStatus() { statusMessagesDiv.innerHTML = ''; }
 
-        function showError(message) {
-            statusMessagesDiv.innerHTML = `<div class="error-message">${message}</div>`;
-            setTimeout(() => { statusMessagesDiv.innerHTML = ''; }, 5000); // Clear error after 5s
-        }
-        
-        function clearStatus() {
-            statusMessagesDiv.innerHTML = '';
-        }
-
-        function parseGitHubUrl(url) {
+        // --- GitHub API & Token Handling ---
+        async function tryLoadTokenFromFile() {
             try {
-                const parsedUrl = new URL(url);
-                if (parsedUrl.hostname !== 'github.com') {
-                    return null;
+                const response = await fetch('tokens.json'); // Assumes tokens.json is in the same directory
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        console.log('tokens.json not found. Manual PAT input will be shown.');
+                        return null;
+                    }
+                    throw new Error(`Failed to fetch tokens.json: ${response.statusText}`);
                 }
-                const pathParts = parsedUrl.pathname.split('/').filter(part => part.length > 0);
-                if (pathParts.length >= 2) {
-                    return { owner: pathParts[0], repo: pathParts[1] };
-                }
-                return null;
-            } catch (e) {
+                const data = await response.json();
+                return data.quizProToken || null;
+            } catch (error) {
+                console.warn('Could not load or parse tokens.json:', error);
                 return null;
             }
         }
 
-        async function getDefaultBranch(owner, repo) {
+        async function validateToken(token) {
+            if (!token) return false;
+            const apiUrl = 'https://api.github.com/user';
+            try {
+                // Use a modified getApiHeaders that directly uses the passed token for validation
+                const headers = { 'Accept': 'application/vnd.github.v3+json' };
+                headers['Authorization'] = `Bearer ${token}`;
+                const response = await fetch(apiUrl, { headers: headers });
+                return response.ok;
+            } catch (error) {
+                console.error('Error validating token:', error);
+                return false;
+            }
+        }
+
+        function getApiHeaders() {
+            const headers = { 'Accept': 'application/vnd.github.v3+json' };
+            const tokenToUse = autoLoadedToken || githubPatInput.value.trim();
+            if (tokenToUse) {
+                headers['Authorization'] = `Bearer ${tokenToUse}`;
+            }
+            return headers;
+        }
+        
+        async function initializeApp() {
+            let tokenFromConfigFile = null;
+
+            // Check if GITHUB_APP_TOKEN is defined globally (from token-config.js)
+            if (typeof GITHUB_APP_TOKEN !== 'undefined' && GITHUB_APP_TOKEN) {
+                tokenFromConfigFile = GITHUB_APP_TOKEN;
+                console.log('Token found from token-config.js.');
+            }
+
+            if (tokenFromConfigFile) {
+                showLoading('Validating token from config file...');
+                const isValid = await validateToken(tokenFromConfigFile);
+                clearStatus();
+                if (isValid) {
+                    autoLoadedToken = tokenFromConfigFile; // Set the global autoLoadedToken
+                    console.log('Successfully validated token from token-config.js.');
+                    patInputGroup.style.display = 'none'; // Hide manual input
+                } else {
+                    console.warn('Token from token-config.js is invalid. Showing manual PAT input.');
+                    showError('Token from token-config.js failed validation. Please enter a valid PAT manually if needed, or check token-config.js.');
+                    patInputGroup.style.display = 'block'; // Show manual input
+                }
+            } else {
+                console.log('No token found in token-config.js or token-config.js not loaded. Showing manual PAT input.');
+                patInputGroup.style.display = 'block'; // Show manual input if no token found
+            }
+            userInstructionsInput.addEventListener('input', renderOutput);
+        }
+
+        // --- Core Logic: Fetching Repo Structure ---
+        function parseGitHubUrl(url) { /* ... (same as before) ... */ 
+            try {
+                const parsedUrl = new URL(url);
+                if (parsedUrl.hostname !== 'github.com') return null;
+                const pathParts = parsedUrl.pathname.split('/').filter(part => part.length > 0);
+                if (pathParts.length >= 2) return { owner: pathParts[0], repo: pathParts[1] };
+                return null;
+            } catch (e) { return null; }
+        }
+
+        async function getDefaultBranch(owner, repo) { /* ... (same, but uses getApiHeaders) ... */
             const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
             try {
-                const response = await fetch(apiUrl);
+                const response = await fetch(apiUrl, { headers: getApiHeaders() });
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`GitHub API error: ${errorData.message || response.status}`);
+                    const errorData = await response.json().catch(() => ({ message: response.statusText }));
+                    throw new Error(`GitHub API error (${response.status}): ${errorData.message}. Check repo visibility or PAT permissions.`);
                 }
                 const repoData = await response.json();
-                return repoData.default_branch || 'main'; // Fallback to 'main' if not found
+                return repoData.default_branch || 'main';
             } catch (error) {
                 console.error('Error fetching default branch:', error);
                 showError(`Error fetching repository details: ${error.message}. Assuming 'main' branch.`);
-                return 'main'; // Fallback on error
+                return 'main'; // Fallback
             }
         }
 
-
         fetchFilesBtn.addEventListener('click', async () => {
             const url = repoUrlInput.value.trim();
-            if (!url) {
-                showError('Please enter a GitHub repository URL.');
-                return;
-            }
-
+            if (!url) { showError('Please enter a GitHub repository URL.'); return; }
             const repoData = parseGitHubUrl(url);
-            if (!repoData) {
-                showError('Invalid GitHub repository URL format.');
-                return;
-            }
+            if (!repoData) { showError('Invalid GitHub repository URL format.'); return; }
             
             showLoading('Fetching repository information...');
+            fetchFilesBtn.disabled = true;
+            fetchedFileContents = {}; // Clear cache for new repo
+
             const defaultBranch = await getDefaultBranch(repoData.owner, repoData.repo);
             currentRepoInfo = { ...repoData, branch: defaultBranch };
             clearStatus();
-
+            if (!currentRepoInfo.branch) { fetchFilesBtn.disabled = false; return; }
 
             showLoading(`Fetching file list for ${currentRepoInfo.owner}/${currentRepoInfo.repo} (branch: ${currentRepoInfo.branch})...`);
-            fetchFilesBtn.disabled = true;
-            generateCtxBtn.disabled = true;
-
             const apiUrl = `https://api.github.com/repos/${currentRepoInfo.owner}/${currentRepoInfo.repo}/git/trees/${currentRepoInfo.branch}?recursive=1`;
 
             try {
-                const response = await fetch(apiUrl);
+                const response = await fetch(apiUrl, { headers: getApiHeaders() });
                 if (!response.ok) {
-                     const errorData = await response.json();
-                     throw new Error(`GitHub API error: ${errorData.message || response.status}. Ensure the repository is public and the URL/branch is correct.`);
+                     const errorData = await response.json().catch(() => ({ message: response.statusText }));
+                     throw new Error(`GitHub API error (${response.status}): ${errorData.message}. Check PAT permissions.`);
                 }
                 const data = await response.json();
-                
-                fileListContainer.innerHTML = ''; // Clear previous list
-                if (data.truncated) {
-                     showError('File list is too large and has been truncated by GitHub. Some files may not be shown.');
-                }
+                fileListContainer.innerHTML = ''; 
+                if (data.truncated) { showError('Warning: File list is large and may have been truncated by GitHub.'); }
 
-                const files = data.tree.filter(item => item.type === 'blob'); // 'blob' means file
-
+                const files = data.tree.filter(item => item.type === 'blob');
                 if (files.length === 0) {
-                    fileListContainer.innerHTML = '<p>No files found in this repository/branch.</p>';
+                    fileListContainer.innerHTML = '<p>No files found. Check path and PAT permissions.</p>';
                 } else {
-                    files.forEach(file => {
-                        const div = document.createElement('div');
-                        div.classList.add('file-item');
-                        
-                        const checkbox = document.createElement('input');
-                        checkbox.type = 'checkbox';
-                        checkbox.id = `file-${file.path.replace(/[^a-zA-Z0-9]/g, '-')}`; // Create a unique ID
-                        checkbox.value = file.path;
-                        
-                        const label = document.createElement('label');
-                        label.htmlFor = checkbox.id;
-                        label.textContent = file.path;
-                        
-                        div.appendChild(checkbox);
-                        div.appendChild(label);
-                        fileListContainer.appendChild(div);
-                    });
+                    files.forEach(file => createFileCheckbox(file.path));
                 }
                 clearStatus();
             } catch (error) {
                 console.error('Error fetching files:', error);
                 showError(`Error fetching files: ${error.message}`);
-                fileListContainer.innerHTML = '<p>Could not fetch files. Check the console for details.</p>';
+                fileListContainer.innerHTML = '<p>Could not fetch files. Check console and PAT.</p>';
             } finally {
                 fetchFilesBtn.disabled = false;
-                generateCtxBtn.disabled = false;
+                renderOutput(); // Initial render after fetching file list
             }
         });
+        
+        function createFileCheckbox(filePath) {
+            const div = document.createElement('div');
+            div.classList.add('file-item');
+            div.dataset.filePath = filePath; // Store filePath for easier access
 
-        generateCtxBtn.addEventListener('click', async () => {
-            if (!currentRepoInfo) {
-                showError('Please fetch files from a repository first.');
-                return;
-            }
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            const safeFilePathId = `file-${filePath.replace(/[^a-zA-Z0-9]/g, '-')}`;
+            checkbox.id = safeFilePathId;
+            checkbox.value = filePath;
+            checkbox.addEventListener('change', handleFileSelectionChange);
 
-            const userInstructions = userInstructionsInput.value.trim();
-            const selectedCheckboxes = Array.from(fileListContainer.querySelectorAll('input[type="checkbox"]:checked'));
+            const label = document.createElement('label');
+            label.htmlFor = safeFilePathId;
+            label.textContent = filePath;
+
+            const loadingSpan = document.createElement('span');
+            loadingSpan.classList.add('loading-indicator');
+            loadingSpan.textContent = 'loading...';
             
-            if (selectedCheckboxes.length === 0 && !userInstructions) {
-                showError('Please write some instructions or select at least one file.');
-                return;
+            div.appendChild(checkbox);
+            div.appendChild(label);
+            div.appendChild(loadingSpan);
+            fileListContainer.appendChild(div);
+        }
+
+        // --- Core Logic: Dynamic Output Generation ---
+        async function handleFileSelectionChange(event) {
+            const checkbox = event.target;
+            const filePath = checkbox.value;
+            const fileItemDiv = checkbox.closest('.file-item');
+
+            if (checkbox.checked) {
+                if (fetchedFileContents[filePath] === undefined) {
+                    fileItemDiv.classList.add('is-loading');
+                    try {
+                        const content = await fetchSingleFileContent(filePath);
+                        fetchedFileContents[filePath] = content;
+                    } catch (error) {
+                        showError(`Failed to fetch ${filePath}: ${error.message}`);
+                        checkbox.checked = false; // Uncheck on error
+                    } finally {
+                        fileItemDiv.classList.remove('is-loading');
+                    }
+                }
             }
+            renderOutput();
+        }
 
-            showLoading('Generating context... Fetching selected file contents...');
-            generateCtxBtn.disabled = true;
-            fetchFilesBtn.disabled = true;
-
-            let outputString = userInstructions;
-            const filePromises = selectedCheckboxes.map(checkbox => {
-                const filePath = checkbox.value;
-                const apiUrl = `https://api.github.com/repos/${currentRepoInfo.owner}/${currentRepoInfo.repo}/contents/${filePath}?ref=${currentRepoInfo.branch}`;
-                
-                return fetch(apiUrl)
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().then(err => {
-                                throw new Error(`Failed to fetch ${filePath}: ${err.message || response.status}`);
-                            });
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.encoding !== 'base64') {
-                            throw new Error(`Unsupported encoding for ${filePath}: ${data.encoding}`);
-                        }
-                        // Use atob for Base64 decoding. Handle potential errors if content is not valid Base64.
-                        try {
-                            const decodedContent = atob(data.content);
-                            return { path: filePath, content: decodedContent };
-                        } catch (e) {
-                            console.error(`Error decoding Base64 content for ${filePath}:`, e);
-                            throw new Error(`Error decoding content for ${filePath}.`);
-                        }
-                    });
-            });
-
+        async function fetchSingleFileContent(filePath) {
+            if (!currentRepoInfo) throw new Error("Repository info not available.");
+            const apiUrl = `https://api.github.com/repos/${currentRepoInfo.owner}/${currentRepoInfo.repo}/contents/${filePath}?ref=${currentRepoInfo.branch}`;
+            const response = await fetch(apiUrl, { headers: getApiHeaders() });
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({ message: response.statusText }));
+                throw new Error(`(${response.status}) ${errorData.message}`);
+            }
+            const data = await response.json();
+            if (data.encoding !== 'base64') throw new Error(`Unsupported encoding: ${data.encoding}`);
             try {
-                const filesData = await Promise.all(filePromises);
-                filesData.forEach(fileData => {
-                    outputString += `\n\n---\n\n${fileData.path}\n\n---\n\n${fileData.content}`;
-                });
-                outputMessageTextarea.value = outputString;
-                clearStatus();
-            } catch (error) {
-                console.error('Error fetching file contents:', error);
-                showError(`Error generating context: ${error.message}`);
-                outputMessageTextarea.value = `Error: Could not generate full context. ${error.message}`;
-            } finally {
-                generateCtxBtn.disabled = false;
-                fetchFilesBtn.disabled = false;
+                return atob(data.content);
+            } catch (e) {
+                throw new Error(`Error decoding Base64 content for ${filePath}.`);
             }
-        });
+        }
 
-        copyBtn.addEventListener('click', () => {
+        function renderOutput() {
+            let output = userInstructionsInput.value; // No trim, allow leading/trailing user spaces
+            const selectedCheckboxes = Array.from(fileListContainer.querySelectorAll('input[type="checkbox"]:checked'));
+
+            selectedCheckboxes.forEach(checkbox => {
+                const filePath = checkbox.value;
+                if (fetchedFileContents[filePath] !== undefined) {
+                    output += `\n\n---\n\n${filePath}\n\n---\n\n${fetchedFileContents[filePath]}`;
+                } else {
+                    // This case should ideally not happen if pre-fetching on check works,
+                    // but if it does, the content is simply not included yet.
+                    // Could add a placeholder like "[${filePath} content pending...]"
+                }
+            });
+            outputMessageTextarea.value = output;
+        }
+
+        // --- Utility: Copy to Clipboard ---
+        copyBtn.addEventListener('click', () => { /* ... (same as before) ... */ 
             if (!outputMessageTextarea.value) {
                 showError('Nothing to copy.');
                 return;
@@ -408,6 +495,9 @@
                     showError('Failed to copy text. See console for details.');
                 });
         });
+
+        // --- Initialize the App ---
+        initializeApp();
 
     </script>
 </body>
