@@ -526,6 +526,11 @@
     document.addEventListener('click', function(event) {
         if (window.innerWidth <= 900) return; // Only apply on desktop
 
+        // Don't close if clicking on a submenu trigger (let the trigger handle it)
+        if (event.target.closest('.nav-link--submenu-trigger')) {
+            return;
+        }
+
         const openDesktopSubmenu = nav.querySelector('.coprospects-global-nav__desktop-links .nav-item--has-submenu.is-active');
         if (openDesktopSubmenu && !openDesktopSubmenu.contains(event.target)) {
             openDesktopSubmenu.classList.remove('is-active');
