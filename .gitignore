@@ -2,3 +2,4 @@ vcEnv/
 __pycache__/
 *.drawio
 *.DS_Store
+prompts/tokens.json
