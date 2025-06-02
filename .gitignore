@@ -1,5 +1,17 @@
+# the python virtual environment
 vcEnv/
+
+# all __pycache__'s
 __pycache__/
+
+# all drawio graphic design files
 *.drawio
+
+# all DS_Store MacOS config files
 *.DS_Store
+
+# javascript to inject github access token
 prompts/token-config.js
+
+# shell script to connect to staging site VPS
+connTiki.sh
