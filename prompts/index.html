@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Code Context Generator</title>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22; /* Slightly different from body for card effect */
+            --primary-color: #ffffff;
+            /*--accent-color: #f9a826;*/
+            --accent-color: blue;
+            --text-color: #c9d1d9; /* Lighter text for better readability on dark bg */
+            --input-border: #30363d;
+            --border-radius: 8px;
+            --spacing: 16px;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            font-family: var(--font-family);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top for scroll */
+            min-height: 100vh;
+            padding-top: 40px; /* Add some top padding */
+            padding-bottom: 40px;
+        }
+        .container {
+            width: 90%;
+            max-width: 900px; /* Increased max-width */
+            margin: 0 auto;
+            padding: var(--spacing);
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--input-border);
+        }
+        h1 {
+            margin-top: 0;
+            font-size: 24px;
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: calc(var(--spacing) * 1.5);
+        }
+        .form-group {
+            margin-bottom: var(--spacing);
+        }
+        label {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 6px;
+            display: block;
+            color: var(--primary-color);
+        }
+        input[type="text"],
+        textarea {
+            width: calc(100% - 22px); /* Account for padding and border */
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid var(--input-border);
+            border-radius: var(--border-radius);
+            outline: none;
+            transition: border-color 0.2s;
+            color: var(--text-color);
+            background-color: #0d1117; /* Darker input background */
+            font-family: inherit;
+        }
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: var(--accent-color);
+        }
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        #outputMessage {
+            min-height: 200px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace; /* Monospace for code */
+        }
+        .button-group {
+            display: flex;
+            gap: var(--spacing);
+            justify-content: flex-start; /* Align buttons to start */
+            margin-top: var(--spacing);
+            margin-bottom: var(--spacing);
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: var(--accent-color);
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #d78c1f; /* Darker shade of accent */
+        }
+        button:disabled {
+            background-color: #586069; /* GitHub's disabled button color */
+            cursor: not-allowed;
+        }
+        #fileListContainer {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid var(--input-border);
+            border-radius: var(--border-radius);
+            padding: var(--spacing);
+            margin-top: var(--spacing);
+            background-color: #0d1117;
+        }
+        .file-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .file-item input[type="checkbox"] {
+            margin-right: 10px;
+            accent-color: var(--accent-color); /* Style checkbox color */
+        }
+        .file-item label {
+            font-weight: normal;
+            font-size: 14px;
+            color: var(--text-color);
+            margin-bottom: 0; /* Override default label margin */
+            cursor: pointer;
+        }
+        .loading-message, .error-message {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+        .loading-message {
+            background-color: #222a33;
+            color: var(--accent-color);
+        }
+        .error-message {
+            background-color: #4d1f1f;
+            color: #ffacac;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid var(--input-border);
+            margin: calc(var(--spacing) * 1.5) 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>GitHub Code Context Generator</h1>
+
+        <div class="form-group">
+            <label for="repoUrl">GitHub Repository URL:</label>
+            <input type="text" id="repoUrl" placeholder="e.g., https://github.com/owner/repo-name" />
+        </div>
+
+        <div class="button-group">
+            <button id="fetchFilesBtn">Fetch Files</button>
+        </div>
+
+        <div id="statusMessages"></div>
+
+        <div class="form-group">
+            <label for="fileListContainer">Select Files:</label>
+            <div id="fileListContainer">
+                <p>Enter a repository URL and click "Fetch Files" to see the file list.</p>
+            </div>
+        </div>
+        
+        <hr>
+
+        <div class="form-group">
+            <label for="userInstructions">Your Instructions/Prompt:</label>
+            <textarea id="userInstructions" placeholder="Enter your instructions or question for the AI..."></textarea>
+        </div>
+
+        <div class="button-group">
+            <button id="generateCtxBtn">Generate Context</button>
+        </div>
+
+        <div class="form-group">
+            <label for="outputMessage">Generated Context:</label>
+            <textarea id="outputMessage" readonly placeholder="Generated context will appear here..."></textarea>
+        </div>
+
+        <div class="button-group">
+            <button id="copyBtn">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <script>
+        const repoUrlInput = document.getElementById('repoUrl');
+        const fetchFilesBtn = document.getElementById('fetchFilesBtn');
+        const fileListContainer = document.getElementById('fileListContainer');
+        const userInstructionsInput = document.getElementById('userInstructions');
+        const generateCtxBtn = document.getElementById('generateCtxBtn');
+        const outputMessageTextarea = document.getElementById('outputMessage');
+        const copyBtn = document.getElementById('copyBtn');
+        const statusMessagesDiv = document.getElementById('statusMessages');
+
+        let currentRepoInfo = null; // To store { owner, repo, defaultBranch }
+
+        function showLoading(message) {
+            statusMessagesDiv.innerHTML = `<div class="loading-message">${message}</div>`;
+        }
+
+        function showError(message) {
+            statusMessagesDiv.innerHTML = `<div class="error-message">${message}</div>`;
+            setTimeout(() => { statusMessagesDiv.innerHTML = ''; }, 5000); // Clear error after 5s
+        }
+        
+        function clearStatus() {
+            statusMessagesDiv.innerHTML = '';
+        }
+
+        function parseGitHubUrl(url) {
+            try {
+                const parsedUrl = new URL(url);
+                if (parsedUrl.hostname !== 'github.com') {
+                    return null;
+                }
+                const pathParts = parsedUrl.pathname.split('/').filter(part => part.length > 0);
+                if (pathParts.length >= 2) {
+                    return { owner: pathParts[0], repo: pathParts[1] };
+                }
+                return null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        async function getDefaultBranch(owner, repo) {
+            const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`GitHub API error: ${errorData.message || response.status}`);
+                }
+                const repoData = await response.json();
+                return repoData.default_branch || 'main'; // Fallback to 'main' if not found
+            } catch (error) {
+                console.error('Error fetching default branch:', error);
+                showError(`Error fetching repository details: ${error.message}. Assuming 'main' branch.`);
+                return 'main'; // Fallback on error
+            }
+        }
+
+
+        fetchFilesBtn.addEventListener('click', async () => {
+            const url = repoUrlInput.value.trim();
+            if (!url) {
+                showError('Please enter a GitHub repository URL.');
+                return;
+            }
+
+            const repoData = parseGitHubUrl(url);
+            if (!repoData) {
+                showError('Invalid GitHub repository URL format.');
+                return;
+            }
+            
+            showLoading('Fetching repository information...');
+            const defaultBranch = await getDefaultBranch(repoData.owner, repoData.repo);
+            currentRepoInfo = { ...repoData, branch: defaultBranch };
+            clearStatus();
+
+
+            showLoading(`Fetching file list for ${currentRepoInfo.owner}/${currentRepoInfo.repo} (branch: ${currentRepoInfo.branch})...`);
+            fetchFilesBtn.disabled = true;
+            generateCtxBtn.disabled = true;
+
+            const apiUrl = `https://api.github.com/repos/${currentRepoInfo.owner}/${currentRepoInfo.repo}/git/trees/${currentRepoInfo.branch}?recursive=1`;
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                     const errorData = await response.json();
+                     throw new Error(`GitHub API error: ${errorData.message || response.status}. Ensure the repository is public and the URL/branch is correct.`);
+                }
+                const data = await response.json();
+                
+                fileListContainer.innerHTML = ''; // Clear previous list
+                if (data.truncated) {
+                     showError('File list is too large and has been truncated by GitHub. Some files may not be shown.');
+                }
+
+                const files = data.tree.filter(item => item.type === 'blob'); // 'blob' means file
+
+                if (files.length === 0) {
+                    fileListContainer.innerHTML = '<p>No files found in this repository/branch.</p>';
+                } else {
+                    files.forEach(file => {
+                        const div = document.createElement('div');
+                        div.classList.add('file-item');
+                        
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.id = `file-${file.path.replace(/[^a-zA-Z0-9]/g, '-')}`; // Create a unique ID
+                        checkbox.value = file.path;
+                        
+                        const label = document.createElement('label');
+                        label.htmlFor = checkbox.id;
+                        label.textContent = file.path;
+                        
+                        div.appendChild(checkbox);
+                        div.appendChild(label);
+                        fileListContainer.appendChild(div);
+                    });
+                }
+                clearStatus();
+            } catch (error) {
+                console.error('Error fetching files:', error);
+                showError(`Error fetching files: ${error.message}`);
+                fileListContainer.innerHTML = '<p>Could not fetch files. Check the console for details.</p>';
+            } finally {
+                fetchFilesBtn.disabled = false;
+                generateCtxBtn.disabled = false;
+            }
+        });
+
+        generateCtxBtn.addEventListener('click', async () => {
+            if (!currentRepoInfo) {
+                showError('Please fetch files from a repository first.');
+                return;
+            }
+
+            const userInstructions = userInstructionsInput.value.trim();
+            const selectedCheckboxes = Array.from(fileListContainer.querySelectorAll('input[type="checkbox"]:checked'));
+            
+            if (selectedCheckboxes.length === 0 && !userInstructions) {
+                showError('Please write some instructions or select at least one file.');
+                return;
+            }
+
+            showLoading('Generating context... Fetching selected file contents...');
+            generateCtxBtn.disabled = true;
+            fetchFilesBtn.disabled = true;
+
+            let outputString = userInstructions;
+            const filePromises = selectedCheckboxes.map(checkbox => {
+                const filePath = checkbox.value;
+                const apiUrl = `https://api.github.com/repos/${currentRepoInfo.owner}/${currentRepoInfo.repo}/contents/${filePath}?ref=${currentRepoInfo.branch}`;
+                
+                return fetch(apiUrl)
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(err => {
+                                throw new Error(`Failed to fetch ${filePath}: ${err.message || response.status}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.encoding !== 'base64') {
+                            throw new Error(`Unsupported encoding for ${filePath}: ${data.encoding}`);
+                        }
+                        // Use atob for Base64 decoding. Handle potential errors if content is not valid Base64.
+                        try {
+                            const decodedContent = atob(data.content);
+                            return { path: filePath, content: decodedContent };
+                        } catch (e) {
+                            console.error(`Error decoding Base64 content for ${filePath}:`, e);
+                            throw new Error(`Error decoding content for ${filePath}.`);
+                        }
+                    });
+            });
+
+            try {
+                const filesData = await Promise.all(filePromises);
+                filesData.forEach(fileData => {
+                    outputString += `\n\n---\n\n${fileData.path}\n\n---\n\n${fileData.content}`;
+                });
+                outputMessageTextarea.value = outputString;
+                clearStatus();
+            } catch (error) {
+                console.error('Error fetching file contents:', error);
+                showError(`Error generating context: ${error.message}`);
+                outputMessageTextarea.value = `Error: Could not generate full context. ${error.message}`;
+            } finally {
+                generateCtxBtn.disabled = false;
+                fetchFilesBtn.disabled = false;
+            }
+        });
+
+        copyBtn.addEventListener('click', () => {
+            if (!outputMessageTextarea.value) {
+                showError('Nothing to copy.');
+                return;
+            }
+            navigator.clipboard.writeText(outputMessageTextarea.value)
+                .then(() => {
+                    copyBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Copy to Clipboard';
+                    }, 1500);
+                })
+                .catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    showError('Failed to copy text. See console for details.');
+                });
+        });
+
+    </script>
+</body>
+</html>
