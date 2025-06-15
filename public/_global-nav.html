@@ -209,14 +209,12 @@
         transform: scaleY(-1);
     }
 
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu,
-    .coprospects-global-nav__desktop-links .submenu.is-open {
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
     }
 
-    /* Rotate caret when submenu is pinned */
     .coprospects-global-nav__desktop-links .nav-item--has-submenu.is-pinned > .nav-link--submenu-trigger::before {
         transform: scaleY(-1);
     }
@@ -241,7 +239,7 @@
     }
 
     /* Show submenu when explicitly opened via JS pin */
-    .coprospects-global-nav__desktop-links .submenu.is-open {
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu.is-pinned > .submenu {
         opacity: 1 !important;
         visibility: visible !important;
         transform: translateX(-50%) translateY(0) !important;
