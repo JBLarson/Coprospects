@@ -512,19 +512,22 @@
 </nav>
 
 <script>
-// Self-contained Navigation JavaScript
-document.addEventListener('DOMContentLoaded', function() {
+// Initialize navigation immediately
+(function() {
+    console.log('Initializing navigation...');
+    
+    // Get the navigation element
     const nav = document.querySelector('.coprospects-global-nav');
     if (!nav) {
         console.error('Navigation element not found');
         return;
     }
+    console.log('Navigation element found');
 
-    // --- Desktop Submenu Toggle ---
+    // Get all submenu triggers
     const desktopSubmenuTriggers = nav.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
-    
     console.log('Found submenu triggers:', desktopSubmenuTriggers.length);
-    
+
     // Add click handlers to all submenu triggers
     desktopSubmenuTriggers.forEach(trigger => {
         console.log('Setting up click handler for:', trigger.textContent);
@@ -564,129 +567,5 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     });
-
-    // --- Mobile Menu Toggle ---
-    const mobileToggleButton = nav.querySelector('.coprospects-global-nav__mobile-toggle');
-    const mobileMenuOverlay = nav.querySelector('.coprospects-global-nav__mobile-links-overlay');
-    const body = document.body;
-
-    if (mobileToggleButton && mobileMenuOverlay) {
-        mobileToggleButton.addEventListener('click', function() {
-            const isExpanded = this.getAttribute('aria-expanded') === 'true';
-            this.setAttribute('aria-expanded', !isExpanded);
-            mobileMenuOverlay.classList.toggle('is-active');
-            mobileMenuOverlay.setAttribute('aria-hidden', isExpanded);
-            body.classList.toggle('coprospects-mobile-menu--is-open');
-
-            // Reset any open mobile submenus when main mobile menu is closed
-            if (!mobileMenuOverlay.classList.contains('is-active')) {
-                const openSubmenus = mobileMenuOverlay.querySelectorAll('.submenu.is-open');
-                openSubmenus.forEach(submenu => {
-                    submenu.classList.remove('is-open');
-                    submenu.style.maxHeight = null;
-                    const trigger = nav.querySelector('[aria-controls="' + submenu.id + '"]');
-                    if (trigger) {
-                        trigger.setAttribute('aria-expanded', 'false');
-                    }
-                });
-            }
-        });
-    }
-
-    // --- Mobile Submenu Accordion Toggle ---
-    const mobileSubmenuTriggers = mobileMenuOverlay.querySelectorAll('.nav-link--submenu-trigger');
-    mobileSubmenuTriggers.forEach(trigger => {
-        trigger.addEventListener('click', function(event) {
-            event.preventDefault();
-            const targetSubmenuId = this.getAttribute('aria-controls');
-            const targetSubmenu = document.getElementById(targetSubmenuId);
-
-            if (targetSubmenu) {
-                const isExpanded = this.getAttribute('aria-expanded') === 'true';
-                this.setAttribute('aria-expanded', !isExpanded);
-                targetSubmenu.classList.toggle('is-open');
-
-                if (targetSubmenu.classList.contains('is-open')) {
-                    targetSubmenu.style.maxHeight = targetSubmenu.scrollHeight + "px";
-                } else {
-                    targetSubmenu.style.maxHeight = null;
-                }
-            }
-        });
-    });
-
-    // --- Current Page Link Highlighting (Example) ---
-    function highlightCurrentPageLinks() {
-        const currentPath = window.location.pathname;
-        const allLinks = nav.querySelectorAll('.nav-link, .submenu-link');
-
-        allLinks.forEach(link => {
-            link.classList.remove('current-page-highlight');
-            // Simple path match, might need refinement for complex scenarios
-            if (link.getAttribute('href') === currentPath || 
-                (link.getAttribute('href') === '/' && currentPath === '/index.html') || // Handle homepage variations
-                (link.getAttribute('href') === '/index.html' && currentPath === '/')
-            ) {
-                link.classList.add('current-page-highlight');
-
-                // If it's a submenu link on desktop, highlight its parent dropdown trigger too
-                const desktopParentItem = link.closest('.submenu');
-                if (desktopParentItem && window.innerWidth > 900) { // Assuming 900px is the mobile breakpoint
-                    const trigger = desktopParentItem.closest('.nav-item--has-submenu')?.querySelector('.nav-link--submenu-trigger');
-                    if (trigger) {
-                       // trigger.classList.add('current-page-highlight'); // Or a distinct class
-                    }
-                }
-            }
-        });
-    }
-    
-    // This would ideally be called by your main.js after injecting the nav,
-    // or if the nav is static, on DOMContentLoaded of the main page.
-    // For demo, if you want it to run for this static snippet:
-    // document.addEventListener('DOMContentLoaded', highlightCurrentPageLinks);
-    // window.addEventListener('popstate', highlightCurrentPageLinks); // For back/forward navigation
-
-    // A more robust way is to have a function in main.js call this.
-    // e.g., if (typeof window.initializeCoprospectsNav === 'function') window.initializeCoprospectsNav();
-    // window.initializeCoprospectsNav = function() { /* all the JS above */ highlightCurrentPageLinks(); };
-
-    // Add version check
-    async function checkVersion() {
-        try {
-            const response = await fetch('/version.json');
-            const data = await response.json();
-            const lastUpdated = new Date(data.lastUpdated);
-            const now = new Date();
-            const diffMinutes = Math.floor((now - lastUpdated) / (1000 * 60));
-            
-            // Create version indicator
-            const versionIndicator = document.createElement('div');
-            versionIndicator.style.cssText = `
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                background: rgba(0, 0, 0, 0.8);
-                color: white;
-                padding: 5px 10px;
-                border-radius: 4px;
-                font-size: 12px;
-                z-index: 9999;
-                font-family: monospace;
-            `;
-            versionIndicator.innerHTML = `
-                Build: ${data.buildId}<br>
-                Updated: ${diffMinutes} minutes ago
-            `;
-            document.body.appendChild(versionIndicator);
-        } catch (error) {
-            console.error('Failed to check version:', error);
-        }
-    }
-
-    // Check version every 5 minutes
-    checkVersion();
-    setInterval(checkVersion, 5 * 60 * 1000);
-
 })();
 </script>
