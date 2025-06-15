@@ -222,8 +222,8 @@
     }
 
     /* Show submenu on hover or when explicitly opened */
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu,
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:focus-within > .submenu,
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu:not(.is-open),
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu:focus-within > .submenu:not(.is-open),
     .coprospects-global-nav__desktop-links .submenu.is-open {
         opacity: 1;
         visibility: visible;
@@ -498,6 +498,7 @@
     desktopSubmenuTriggers.forEach(trigger => {
         trigger.addEventListener('click', function(event) {
             event.preventDefault();
+            event.stopPropagation(); // Prevent event from bubbling up
             const targetSubmenuId = this.getAttribute('aria-controls');
             const targetSubmenu = document.getElementById(targetSubmenuId);
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
