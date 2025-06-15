@@ -15,7 +15,8 @@ async function init() {
         if (!response.ok) throw new Error('Fetch failed: ' + response.status);
         placeholder.innerHTML = await response.text();
         console.log('Navigation injected');
-        bindNav();
+        // Delay bindNav until next microtask to allow styles to apply
+        setTimeout(bindNav, 0);
     } catch (error) {
         console.error('Failed to load navigation:', error);
     }
@@ -24,12 +25,14 @@ async function init() {
 function bindNav() {
     // Desktop dropdown functionality
     const desktopSubmenuTriggers = document.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
+    console.log('bindNav: desktopSubmenuTriggers found', desktopSubmenuTriggers.length);
     if (desktopSubmenuTriggers.length === 0) {
         console.warn('No desktop submenu triggers found');
     }
 
     desktopSubmenuTriggers.forEach(trigger => {
         trigger.addEventListener('click', function(event) {
+            console.log('desktop trigger click', this.textContent);
             event.preventDefault();
             event.stopPropagation();
 
@@ -45,6 +48,7 @@ function bindNav() {
             if (willPin) {
                 navItem.classList.add('is-pinned');
                 this.setAttribute('aria-expanded', 'true');
+                console.log('Pinned', navItem);
             }
         });
     });
