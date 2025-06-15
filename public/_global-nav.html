@@ -229,8 +229,7 @@
         z-index: calc(var(--nav-z-index) + 10);
     }
 
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu,
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:focus-within > .submenu,
+    /* Only show submenu on explicit open state, not hover */
     .coprospects-global-nav__desktop-links .submenu.is-open {
         opacity: 1;
         visibility: visible;
@@ -573,14 +572,7 @@
             const targetSubmenu = document.getElementById(targetSubmenuId);
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
             
-            // If clicking the same button that's already open, close it
-            if (isExpanded) {
-                this.setAttribute('aria-expanded', 'false');
-                targetSubmenu.classList.remove('is-open');
-                return;
-            }
-            
-            // Close all other submenus first
+            // Close all submenus first
             desktopSubmenuTriggers.forEach(otherTrigger => {
                 otherTrigger.setAttribute('aria-expanded', 'false');
                 const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
@@ -589,9 +581,11 @@
                 }
             });
             
-            // Open the clicked submenu
-            this.setAttribute('aria-expanded', 'true');
-            targetSubmenu.classList.add('is-open');
+            // If this submenu wasn't open, open it
+            if (!isExpanded) {
+                this.setAttribute('aria-expanded', 'true');
+                targetSubmenu.classList.add('is-open');
+            }
         });
     });
 
