@@ -506,17 +506,27 @@
             const targetSubmenu = document.getElementById(targetSubmenuId);
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
             
-            // Close all submenus first
-            desktopSubmenuTriggers.forEach(otherTrigger => {
-                otherTrigger.setAttribute('aria-expanded', 'false');
-                const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
-                if (otherSubmenu) {
-                    otherSubmenu.classList.remove('is-open');
-                }
-            });
-
-            // If this submenu wasn't open, open it
-            if (!isExpanded) {
+            console.log('Click on trigger:', targetSubmenuId);
+            console.log('Is expanded:', isExpanded);
+            
+            // Toggle the current submenu
+            if (isExpanded) {
+                console.log('Closing submenu');
+                this.setAttribute('aria-expanded', 'false');
+                targetSubmenu.classList.remove('is-open');
+            } else {
+                console.log('Opening submenu');
+                // Close all other submenus first
+                desktopSubmenuTriggers.forEach(otherTrigger => {
+                    if (otherTrigger !== trigger) {
+                        otherTrigger.setAttribute('aria-expanded', 'false');
+                        const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
+                        if (otherSubmenu) {
+                            otherSubmenu.classList.remove('is-open');
+                        }
+                    }
+                });
+                
                 this.setAttribute('aria-expanded', 'true');
                 targetSubmenu.classList.add('is-open');
             }
