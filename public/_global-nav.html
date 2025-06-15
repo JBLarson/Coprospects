@@ -209,14 +209,8 @@
         transform: scaleY(-1);
     }
 
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-50%) translateY(0);
-    }
-
-    /* Keep submenu open when pinned via click */
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu.is-pinned > .submenu {
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu,
+    .coprospects-global-nav__desktop-links .submenu.is-open {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
@@ -556,23 +550,40 @@ document.addEventListener('DOMContentLoaded', function() {
     desktopSubmenuTriggers.forEach(trigger => {
         trigger.addEventListener('click', function(event) {
             event.preventDefault();
+            event.stopPropagation();
 
-            // Parent <li> element that contains the submenu
             const navItem = this.parentElement;
-            const isCurrentlyPinned = navItem.classList.contains('is-pinned');
+            const submenu = document.getElementById(this.getAttribute('aria-controls'));
+            const willPin = !navItem.classList.contains('is-pinned');
 
-            // Remove pinned state from all desktop nav items
+            // Reset all desktop nav items
             desktopSubmenuTriggers.forEach(t => {
-                t.parentElement.classList.remove('is-pinned');
+                const li = t.parentElement;
+                li.classList.remove('is-pinned');
+                const sm = document.getElementById(t.getAttribute('aria-controls'));
+                if (sm) sm.classList.remove('is-open');
                 t.setAttribute('aria-expanded', 'false');
             });
 
-            // If it was not previously pinned, pin it now
-            if (!isCurrentlyPinned) {
+            if (willPin) {
                 navItem.classList.add('is-pinned');
+                submenu.classList.add('is-open');
                 this.setAttribute('aria-expanded', 'true');
             }
         });
+    });
+
+    // Close any pinned submenu when clicking outside the nav bar
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.coprospects-global-nav__desktop-links')) {
+            desktopSubmenuTriggers.forEach(t => {
+                const li = t.parentElement;
+                li.classList.remove('is-pinned');
+                const sm = document.getElementById(t.getAttribute('aria-controls'));
+                if (sm) sm.classList.remove('is-open');
+                t.setAttribute('aria-expanded', 'false');
+            });
+        }
     });
 });
 </script>
