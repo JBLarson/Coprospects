@@ -574,27 +574,27 @@
             const targetSubmenu = document.getElementById(targetSubmenuId);
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
             
-            // If clicking the same button that's already open, close it
+            // Toggle the current submenu
             if (isExpanded) {
+                // Close this submenu
                 this.setAttribute('aria-expanded', 'false');
                 targetSubmenu.classList.remove('is-open');
-                return;
-            }
-            
-            // Close all other submenus first
-            desktopSubmenuTriggers.forEach(otherTrigger => {
-                if (otherTrigger !== trigger) {
-                    otherTrigger.setAttribute('aria-expanded', 'false');
-                    const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
-                    if (otherSubmenu) {
-                        otherSubmenu.classList.remove('is-open');
+            } else {
+                // Close all other submenus first
+                desktopSubmenuTriggers.forEach(otherTrigger => {
+                    if (otherTrigger !== trigger) {
+                        otherTrigger.setAttribute('aria-expanded', 'false');
+                        const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
+                        if (otherSubmenu) {
+                            otherSubmenu.classList.remove('is-open');
+                        }
                     }
-                }
-            });
-            
-            // Open the clicked submenu
-            this.setAttribute('aria-expanded', 'true');
-            targetSubmenu.classList.add('is-open');
+                });
+                
+                // Open this submenu
+                this.setAttribute('aria-expanded', 'true');
+                targetSubmenu.classList.add('is-open');
+            }
         });
     });
 
