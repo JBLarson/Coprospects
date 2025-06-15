@@ -228,7 +228,7 @@
         z-index: calc(var(--nav-z-index) + 10);
     }
 
-    /* Show submenu only when explicitly opened */
+    /* Show submenu when it has the is-open class */
     .coprospects-global-nav__desktop-links .submenu.is-open {
         opacity: 1;
         visibility: visible;
@@ -569,29 +569,11 @@
             
             const targetSubmenuId = this.getAttribute('aria-controls');
             const targetSubmenu = document.getElementById(targetSubmenuId);
-            const isExpanded = this.getAttribute('aria-expanded') === 'true';
             
             // Toggle the current submenu
-            if (isExpanded) {
-                // Close this submenu
-                this.setAttribute('aria-expanded', 'false');
-                targetSubmenu.classList.remove('is-open');
-            } else {
-                // Close all other submenus first
-                desktopSubmenuTriggers.forEach(otherTrigger => {
-                    if (otherTrigger !== trigger) {
-                        otherTrigger.setAttribute('aria-expanded', 'false');
-                        const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
-                        if (otherSubmenu) {
-                            otherSubmenu.classList.remove('is-open');
-                        }
-                    }
-                });
-                
-                // Open this submenu
-                this.setAttribute('aria-expanded', 'true');
-                targetSubmenu.classList.add('is-open');
-            }
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            targetSubmenu.classList.toggle('is-open');
         });
     });
 
