@@ -32,13 +32,12 @@ function bindNav() {
     }
 
     desktopSubmenuTriggers.forEach(trigger => {
-        trigger.addEventListener('click', function(event) {
-            console.log('desktop trigger click', this.textContent);
-            event.preventDefault();
-            event.stopPropagation();
+        trigger.addEventListener('click', e => {
+            console.log('desktop trigger click', trigger.textContent);
+            e.preventDefault();
 
-            const navItem = this.parentElement;
-            const willPin = !navItem.classList.contains('is-pinned');
+            const li = trigger.parentElement;
+            const newState = !li.classList.contains('is-pinned');
 
             // Reset all nav items
             desktopSubmenuTriggers.forEach(t => {
@@ -46,10 +45,10 @@ function bindNav() {
                 t.setAttribute('aria-expanded', 'false');
             });
 
-            if (willPin) {
-                navItem.classList.add('is-pinned');
-                this.setAttribute('aria-expanded', 'true');
-                console.log('Pinned', navItem);
+            if (newState) {
+                li.classList.add('is-pinned');
+                trigger.setAttribute('aria-expanded', 'true');
+                console.log('Pinned', li);
             } else {
                 console.log('Unpinned');
             }
@@ -58,13 +57,13 @@ function bindNav() {
 
     // Close any pinned submenu when clicking outside the desktop nav
     document.addEventListener('click', e => {
-        if (!e.target.closest('.coprospects-global-nav__desktop-links')) {
+        if (!e.target.closest('.coprospects-global-nav')) {
             desktopSubmenuTriggers.forEach(x => {
                 x.parentElement.classList.remove('is-pinned');
                 x.setAttribute('aria-expanded', 'false');
             });
         }
-    }, true);
+    });
 
     // Optional mobile functionality (will silently skip if elements absent)
     const mobileToggle = document.querySelector('.coprospects-global-nav__mobile-toggle');
