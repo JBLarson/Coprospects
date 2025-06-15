@@ -50,8 +50,20 @@ function bindNav() {
                 navItem.classList.add('is-pinned');
                 this.setAttribute('aria-expanded', 'true');
                 console.log('Pinned', navItem);
+            } else {
+                console.log('Unpinned');
             }
         });
+    });
+
+    // Close any pinned submenu when clicking outside the desktop nav
+    document.addEventListener('click', e => {
+        if (!e.target.closest('.coprospects-global-nav__desktop-links')) {
+            desktopSubmenuTriggers.forEach(x => {
+                x.parentElement.classList.remove('is-pinned');
+                x.setAttribute('aria-expanded', 'false');
+            });
+        }
     });
 
     // Optional mobile functionality (will silently skip if elements absent)
