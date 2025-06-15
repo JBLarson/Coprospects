@@ -209,6 +209,24 @@
         transform: scaleY(-1);
     }
 
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* Keep submenu open when pinned via click */
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu.is-pinned > .submenu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* Rotate caret when submenu is pinned */
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu.is-pinned > .nav-link--submenu-trigger::before {
+        transform: scaleY(-1);
+    }
+
     .coprospects-global-nav__desktop-links .submenu {
         position: absolute;
         top: calc(100% + 5px);
@@ -226,12 +244,6 @@
                     transform var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1),
                     visibility var(--nav-transition-duration) ease;
         z-index: calc(var(--nav-z-index) + 10);
-    }
-
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu {
-        opacity: 1;
-        visibility: visible;
-        transform: translateX(-50%) translateY(0);
     }
 
     .coprospects-global-nav__desktop-links .submenu-link {
@@ -533,6 +545,33 @@ document.addEventListener('DOMContentLoaded', function() {
             this.setAttribute('aria-expanded', !isExpanded);
             const submenu = document.getElementById(this.getAttribute('aria-controls'));
             submenu.style.maxHeight = isExpanded ? '0' : submenu.scrollHeight + 'px';
+        });
+    });
+
+    /* -----------------------------
+       Desktop: click to pin dropdown
+    ----------------------------- */
+    const desktopSubmenuTriggers = document.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
+
+    desktopSubmenuTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            // Parent <li> element that contains the submenu
+            const navItem = this.parentElement;
+            const isCurrentlyPinned = navItem.classList.contains('is-pinned');
+
+            // Remove pinned state from all desktop nav items
+            desktopSubmenuTriggers.forEach(t => {
+                t.parentElement.classList.remove('is-pinned');
+                t.setAttribute('aria-expanded', 'false');
+            });
+
+            // If it was not previously pinned, pin it now
+            if (!isCurrentlyPinned) {
+                navItem.classList.add('is-pinned');
+                this.setAttribute('aria-expanded', 'true');
+            }
         });
     });
 });
