@@ -1,6 +1,11 @@
 // main.js
 
-document.addEventListener('DOMContentLoaded', init);
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    // DOMContentLoaded already fired
+    init();
+}
 
 async function init() {
     console.log('main.js loaded');
