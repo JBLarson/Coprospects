@@ -15,8 +15,9 @@ async function init() {
         if (!response.ok) throw new Error('Fetch failed: ' + response.status);
         placeholder.innerHTML = await response.text();
         console.log('Navigation injected');
-        // Delay bindNav until next microtask to allow styles to apply
-        setTimeout(bindNav, 0);
+        console.log('Calling bindNav');
+        bindNav();
+        console.log('bindNav call finished scheduling');
     } catch (error) {
         console.error('Failed to load navigation:', error);
     }
