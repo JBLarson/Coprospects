@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <style>
+    /* Import fonts at the top */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&family=Montserrat:wght@400;500;600;800&display=swap');
+
+    /* CSS Custom Properties (Variables) */
     :root {
         /* Core Palette & Fonts */
-        --nav-bg-color: #0D1117; /* User Requested */
-        --nav-text-color: #E0E6F1; /* Softer white/light blue-grey */
+        --nav-bg-color: #0D1117;
+        --nav-text-color: #E0E6F1;
         --nav-text-hover-color: #FFFFFF;
         --nav-logo-co-spects-color: #FFFFFF;
-        --nav-logo-pro-color: #F9A826; /* Orange for "pro" */
-        --nav-accent-primary-color: #00A9FF; /* Vibrant Electric Blue for active/hover accents */
-        --nav-accent-secondary-color: #4A5568; /* Subtle grey for borders/dividers */
-        --nav-submenu-bg-color: #1A202C; /* Darker, slightly desaturated blue for dropdowns */
+        --nav-logo-pro-color: #F9A826;
+        --nav-accent-primary-color: #00A9FF;
+        --nav-accent-secondary-color: #4A5568;
+        --nav-submenu-bg-color: #1A202C;
         --nav-submenu-hover-bg-color: #2D3748;
 
+        /* Typography */
         --nav-font-primary: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         --nav-font-secondary: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
@@ -31,7 +36,7 @@
         --nav-space-6: 24px;
     }
 
-    /* Minimal Reset for Nav Scope */
+    /* Reset & Base Styles */
     .coprospects-global-nav *,
     .coprospects-global-nav *::before,
     .coprospects-global-nav *::after {
@@ -58,7 +63,6 @@
         color: #F9A826;
     }
 
-
     .coprospects-global-nav button {
         background: none;
         border: none;
@@ -67,7 +71,7 @@
         font-family: inherit;
     }
 
-    /* Visually Hidden Class for Accessibility */
+    /* Accessibility */
     .coprospects-global-nav .visually-hidden {
         position: absolute;
         width: 1px;
@@ -79,7 +83,7 @@
         border: 0;
     }
 
-    /* Main Navigation Bar */
+    /* Main Navigation Container */
     .coprospects-global-nav {
         font-family: var(--nav-font-primary);
         background-color: var(--nav-bg-color);
@@ -90,7 +94,7 @@
         left: 0;
         z-index: var(--nav-z-index);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-        border-bottom: 1px solid var(--nav-accent-secondary-color); /* Subtle border */
+        border-bottom: 1px solid var(--nav-accent-secondary-color);
     }
 
     .coprospects-global-nav__container {
@@ -98,31 +102,33 @@
         justify-content: space-between;
         align-items: center;
         height: 100%;
-        max-width: 1320px; /* Slightly wider for modern feel */
+        max-width: 1320px;
         margin: 0 auto;
         padding: 0 var(--nav-space-6);
     }
 
-    /* Logo Styling */
+    /* Brand/Logo */
     .coprospects-global-nav__brand {
         display: flex;
         align-items: center;
         font-family: var(--nav-font-secondary);
-        font-size: 1.75rem; /* Adjusted size */
-        font-weight: 800; /* Bolder */
+        font-size: 1.75rem;
+        font-weight: 800;
         letter-spacing: -0.5px;
         color: var(--nav-logo-co-spects-color);
         transition: opacity var(--nav-transition-duration) ease;
     }
+
     .coprospects-global-nav__brand:hover,
     .coprospects-global-nav__brand:focus {
         opacity: 0.85;
     }
+
     .coprospects-global-nav__brand .logo-pro {
         color: var(--nav-logo-pro-color);
     }
 
-    /* Desktop Navigation Links */
+    /* Desktop Navigation */
     .coprospects-global-nav__desktop-links {
         display: flex;
         align-items: center;
@@ -133,7 +139,8 @@
         position: relative;
         margin-left: var(--nav-space-3);
     }
-     .coprospects-global-nav__desktop-links .nav-item:first-child {
+
+    .coprospects-global-nav__desktop-links .nav-item:first-child {
         margin-left: 0;
     }
 
@@ -147,28 +154,27 @@
         font-weight: 500;
         position: relative;
         border-radius: var(--nav-border-radius);
-        transition: color var(--nav-transition-duration) ease, background-color var(--nav-transition-duration) ease;
+        transition: color var(--nav-transition-duration) ease, 
+                    background-color var(--nav-transition-duration) ease;
     }
+
     .coprospects-global-nav__desktop-links .nav-link:hover,
     .coprospects-global-nav__desktop-links .nav-link:focus,
     .coprospects-global-nav__desktop-links .nav-link.current-page-highlight {
         color: var(--nav-text-hover-color);
         background-color: rgba(255, 255, 255, 0.07);
     }
+
     .coprospects-global-nav__desktop-links .nav-link.current-page-highlight {
         font-weight: 600;
         color: var(--nav-accent-primary-color);
     }
-    .coprospects-global-nav__desktop-links .nav-link.current-page-highlight::after {
-        transform: scaleX(1);
-         background-color: var(--nav-accent-primary-color);
-    }
 
-    /* Animated Underline for Desktop Links */
+    /* Desktop Link Underline Animation */
     .coprospects-global-nav__desktop-links .nav-link::after {
         content: '';
         position: absolute;
-        bottom: 12px; /* Adjusted position */
+        bottom: 12px;
         left: var(--nav-space-4);
         right: var(--nav-space-4);
         height: 2.5px;
@@ -178,17 +184,19 @@
         transform-origin: center;
         transition: transform var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1);
     }
+
     .coprospects-global-nav__desktop-links .nav-link:hover::after,
     .coprospects-global-nav__desktop-links .nav-link:focus::after {
         transform: scaleX(1);
     }
 
-
-    .coprospects-global-nav__desktop-links .nav-link--submenu-trigger::after { /* Override general link underline for submenu triggers */
-        display: none; /* We use a caret instead of underline for submenu trigger */
+    /* Desktop Submenu Styles */
+    .coprospects-global-nav__desktop-links .nav-link--submenu-trigger::after {
+        display: none;
     }
-     .coprospects-global-nav__desktop-links .nav-link--submenu-trigger::before { /* Caret for dropdown */
-        content: '╲╱'; /* Unicode or SVG icon */
+
+    .coprospects-global-nav__desktop-links .nav-link--submenu-trigger::before {
+        content: '╲╱';
         font-size: 0.6em;
         line-height: 1;
         margin-left: var(--nav-space-2);
@@ -196,17 +204,17 @@
         transform-origin: center;
         transition: transform var(--nav-transition-duration) ease;
     }
+
     .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .nav-link--submenu-trigger::before,
     .coprospects-global-nav__desktop-links .nav-item--has-submenu > .nav-link--submenu-trigger[aria-expanded="true"]::before {
-        transform: scaleY(-1); /* Flips caret */
+        transform: scaleY(-1);
     }
-
 
     .coprospects-global-nav__desktop-links .submenu {
         position: absolute;
-        top: calc(100% + 5px); /* Position below parent with a small gap */
+        top: calc(100% + 5px);
         left: 50%;
-        transform: translateX(-50%) translateY(15px); /* Start slightly lower for animation */
+        transform: translateX(-50%) translateY(15px);
         min-width: 220px;
         background-color: var(--nav-submenu-bg-color);
         border: 1px solid var(--nav-accent-secondary-color);
@@ -221,7 +229,6 @@
         z-index: calc(var(--nav-z-index) + 10);
     }
 
-    /* Show submenu on hover or when explicitly opened */
     .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu,
     .coprospects-global-nav__desktop-links .nav-item--has-submenu:focus-within > .submenu,
     .coprospects-global-nav__desktop-links .submenu.is-open {
@@ -235,31 +242,35 @@
         padding: var(--nav-space-3) var(--nav-space-5);
         color: var(--nav-text-color);
         font-size: 0.95rem;
-        transition: background-color var(--nav-transition-duration) ease, color var(--nav-transition-duration) ease;
+        transition: background-color var(--nav-transition-duration) ease, 
+                    color var(--nav-transition-duration) ease;
         white-space: nowrap;
     }
+
     .coprospects-global-nav__desktop-links .submenu-link:hover,
     .coprospects-global-nav__desktop-links .submenu-link:focus,
     .coprospects-global-nav__desktop-links .submenu-link.current-page-highlight {
         background-color: var(--nav-submenu-hover-bg-color);
         color: var(--nav-text-hover-color);
     }
+
     .coprospects-global-nav__desktop-links .submenu-link.current-page-highlight {
         color: var(--nav-accent-primary-color);
         font-weight: 500;
     }
 
-    /* Mobile Navigation Toggle */
+    /* Mobile Navigation */
     .coprospects-global-nav__mobile-toggle {
-        display: none; /* Hidden on desktop */
+        display: none;
         padding: var(--nav-space-3);
-        z-index: calc(var(--nav-z-index) + 20); /* Highest z-index */
-        position: relative; /* For icon positioning if needed */
-        width: 40px; /* Ensure decent tap target */
+        z-index: calc(var(--nav-z-index) + 20);
+        position: relative;
+        width: 40px;
         height: 40px;
         align-items: center;
         justify-content: center;
     }
+
     .coprospects-global-nav__mobile-toggle-icon {
         display: block;
         position: relative;
@@ -270,6 +281,7 @@
         transition: transform var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1),
                     background-color var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1);
     }
+
     .coprospects-global-nav__mobile-toggle-icon::before,
     .coprospects-global-nav__mobile-toggle-icon::after {
         content: '';
@@ -282,68 +294,77 @@
         transition: transform var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1),
                     top var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1);
     }
-    .coprospects-global-nav__mobile-toggle-icon::before { transform: translateY(-8px); }
-    .coprospects-global-nav__mobile-toggle-icon::after { transform: translateY(8px); }
 
-    /* Mobile Toggle Active State (X icon) */
+    .coprospects-global-nav__mobile-toggle-icon::before {
+        transform: translateY(-8px);
+    }
+
+    .coprospects-global-nav__mobile-toggle-icon::after {
+        transform: translateY(8px);
+    }
+
     .coprospects-global-nav__mobile-toggle[aria-expanded="true"] .coprospects-global-nav__mobile-toggle-icon {
-        background-color: transparent; /* Center bar fades out */
+        background-color: transparent;
         transform: rotate(135deg);
     }
+
     .coprospects-global-nav__mobile-toggle[aria-expanded="true"] .coprospects-global-nav__mobile-toggle-icon::before {
         transform: translateY(0) rotate(90deg);
     }
+
     .coprospects-global-nav__mobile-toggle[aria-expanded="true"] .coprospects-global-nav__mobile-toggle-icon::after {
-        transform: translateY(0) rotate(0deg); /* Aligns with the other bar to form X */
+        transform: translateY(0) rotate(0deg);
     }
 
-    /* Mobile Navigation Overlay */
+    /* Mobile Menu Overlay */
     .coprospects-global-nav__mobile-links-overlay {
         display: none;
         position: fixed;
-        top: 0; 
+        top: 0;
         left: 0;
         width: 100%;
-        height: 100%; /* Full viewport height */
+        height: 100%;
         background-color: var(--nav-bg-color);
         overflow-y: auto;
-        z-index: calc(var(--nav-z-index) - 1); /* Below main nav bar, above page content */
-        
+        z-index: calc(var(--nav-z-index) - 1);
         flex-direction: column;
         align-items: center;
-        justify-content: flex-start; /* Align items to top */
-        padding-top: calc(var(--nav-height-mobile) + var(--nav-space-6)); /* Space for nav bar + extra */
+        justify-content: flex-start;
+        padding-top: calc(var(--nav-height-mobile) + var(--nav-space-6));
         padding-bottom: var(--nav-space-6);
-
         opacity: 0;
-        transform: translateY(-100%); /* Slide down from top */
+        transform: translateY(-100%);
         transition: opacity var(--nav-transition-duration) ease,
                     transform var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1);
     }
+
     .coprospects-global-nav__mobile-links-overlay.is-active {
         display: flex;
         opacity: 1;
         transform: translateY(0);
     }
-    
+
     .coprospects-global-nav__mobile-links-overlay .nav-list {
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 90%;
-        max-width: 400px; /* Max width for links content */
+        max-width: 400px;
     }
+
     .coprospects-global-nav__mobile-links-overlay .nav-item {
         width: 100%;
         margin-bottom: var(--nav-space-2);
         border-bottom: 1px solid var(--nav-accent-secondary-color);
     }
-     .coprospects-global-nav__mobile-links-overlay .nav-item:last-child {
+
+    .coprospects-global-nav__mobile-links-overlay .nav-item:last-child {
         border-bottom: none;
     }
+
     .coprospects-global-nav__mobile-links-overlay .nav-link {
-        display: flex; /* For caret alignment */
-        justify-content: space-between; /* Pushes caret to the right */
+        display: flex;
+        justify-content: space-between;
         align-items: center;
         font-size: 1.2rem;
         font-weight: 500;
@@ -352,32 +373,36 @@
         width: 100%;
         text-align: left;
         border-radius: var(--nav-border-radius);
-        transition: background-color var(--nav-transition-duration) ease, color var(--nav-transition-duration) ease;
+        transition: background-color var(--nav-transition-duration) ease,
+                    color var(--nav-transition-duration) ease;
     }
+
     .coprospects-global-nav__mobile-links-overlay .nav-link:hover,
     .coprospects-global-nav__mobile-links-overlay .nav-link:focus {
         background-color: var(--nav-submenu-hover-bg-color);
         color: var(--nav-text-hover-color);
     }
+
     .coprospects-global-nav__mobile-links-overlay .nav-link.current-page-highlight {
         color: var(--nav-accent-primary-color);
         font-weight: 600;
     }
 
-    /* Mobile Submenu Styling (Accordion-like) */
-     .coprospects-global-nav__mobile-links-overlay .nav-link--submenu-trigger::after { /* Caret for mobile */
-        content: '›'; /* Chevron right */
+    /* Mobile Submenu Styles */
+    .coprospects-global-nav__mobile-links-overlay .nav-link--submenu-trigger::after {
+        content: '›';
         font-size: 1.5em;
         line-height: 1;
         transition: transform var(--nav-transition-duration) ease;
     }
+
     .coprospects-global-nav__mobile-links-overlay .nav-link--submenu-trigger[aria-expanded="true"]::after {
-        transform: rotate(90deg); /* Chevron down */
+        transform: rotate(90deg);
     }
 
     .coprospects-global-nav__mobile-links-overlay .submenu {
-        background-color: transparent; /* Inherits overlay background */
-        padding-left: var(--nav-space-5); /* Indent submenu items */
+        background-color: transparent;
+        padding-left: var(--nav-space-5);
         margin-top: var(--nav-space-2);
         max-height: 0;
         overflow: hidden;
@@ -392,9 +417,11 @@
         border-top: 1px solid var(--nav-accent-secondary-color);
         opacity: 0.85;
     }
-     .coprospects-global-nav__mobile-links-overlay .submenu li:first-child .submenu-link {
+
+    .coprospects-global-nav__mobile-links-overlay .submenu li:first-child .submenu-link {
         border-top: none;
-     }
+    }
+
     .coprospects-global-nav__mobile-links-overlay .submenu-link:hover,
     .coprospects-global-nav__mobile-links-overlay .submenu-link:focus,
     .coprospects-global-nav__mobile-links-overlay .submenu-link.current-page-highlight {
@@ -402,30 +429,33 @@
         opacity: 1;
     }
 
-    /* Responsive Adjustments */
-    @media (max-width: 900px) { /* Breakpoint for mobile menu */
+    /* Responsive Styles */
+    @media (max-width: 900px) {
         .coprospects-global-nav {
             height: var(--nav-height-mobile);
         }
+
         .coprospects-global-nav__container {
             padding: 0 var(--nav-space-4);
         }
+
         .coprospects-global-nav__brand {
             font-size: 1.5rem;
         }
+
         .coprospects-global-nav__desktop-links {
             display: none;
         }
+
         .coprospects-global-nav__mobile-toggle {
             display: flex;
         }
     }
 
-    /* Body class to prevent scrolling when mobile menu is open */
+    /* Utility Classes */
     body.coprospects-mobile-menu--is-open {
         overflow: hidden;
     }
-
 </style>
 
 <nav class="coprospects-global-nav" aria-label="Main Navigation">
