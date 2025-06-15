@@ -513,67 +513,42 @@
 
 <script>
 // Self-contained Navigation JavaScript
-(function() {
+document.addEventListener('DOMContentLoaded', function() {
     const nav = document.querySelector('.coprospects-global-nav');
-    if (!nav) return;
-
-    // Add version check
-    async function checkVersion() {
-        try {
-            const response = await fetch('/version.json');
-            const data = await response.json();
-            const lastUpdated = new Date(data.lastUpdated);
-            const now = new Date();
-            const diffMinutes = Math.floor((now - lastUpdated) / (1000 * 60));
-            
-            // Create version indicator
-            const versionIndicator = document.createElement('div');
-            versionIndicator.style.cssText = `
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                background: rgba(0, 0, 0, 0.8);
-                color: white;
-                padding: 5px 10px;
-                border-radius: 4px;
-                font-size: 12px;
-                z-index: 9999;
-                font-family: monospace;
-            `;
-            versionIndicator.innerHTML = `
-                Build: ${data.buildId}<br>
-                Updated: ${diffMinutes} minutes ago
-            `;
-            document.body.appendChild(versionIndicator);
-        } catch (error) {
-            console.error('Failed to check version:', error);
-        }
+    if (!nav) {
+        console.error('Navigation element not found');
+        return;
     }
-
-    // Check version every 5 minutes
-    checkVersion();
-    setInterval(checkVersion, 5 * 60 * 1000);
-
-    const mobileToggleButton = nav.querySelector('.coprospects-global-nav__mobile-toggle');
-    const mobileMenuOverlay = nav.querySelector('.coprospects-global-nav__mobile-links-overlay');
-    const body = document.body;
 
     // --- Desktop Submenu Toggle ---
     const desktopSubmenuTriggers = nav.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
     
+    console.log('Found submenu triggers:', desktopSubmenuTriggers.length);
+    
     // Add click handlers to all submenu triggers
     desktopSubmenuTriggers.forEach(trigger => {
+        console.log('Setting up click handler for:', trigger.textContent);
+        
         trigger.addEventListener('click', function(event) {
+            console.log('Click detected on:', this.textContent);
             event.preventDefault();
             event.stopPropagation();
             
             const targetSubmenuId = this.getAttribute('aria-controls');
+            console.log('Target submenu ID:', targetSubmenuId);
+            
             const targetSubmenu = document.getElementById(targetSubmenuId);
+            console.log('Found target submenu:', targetSubmenu);
             
             // Toggle the current submenu
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            console.log('Current expanded state:', isExpanded);
+            
             this.setAttribute('aria-expanded', !isExpanded);
             targetSubmenu.classList.toggle('is-open');
+            
+            console.log('New expanded state:', !isExpanded);
+            console.log('Submenu is-open class:', targetSubmenu.classList.contains('is-open'));
         });
     });
 
@@ -591,6 +566,10 @@
     });
 
     // --- Mobile Menu Toggle ---
+    const mobileToggleButton = nav.querySelector('.coprospects-global-nav__mobile-toggle');
+    const mobileMenuOverlay = nav.querySelector('.coprospects-global-nav__mobile-links-overlay');
+    const body = document.body;
+
     if (mobileToggleButton && mobileMenuOverlay) {
         mobileToggleButton.addEventListener('click', function() {
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
@@ -671,6 +650,43 @@
     // A more robust way is to have a function in main.js call this.
     // e.g., if (typeof window.initializeCoprospectsNav === 'function') window.initializeCoprospectsNav();
     // window.initializeCoprospectsNav = function() { /* all the JS above */ highlightCurrentPageLinks(); };
+
+    // Add version check
+    async function checkVersion() {
+        try {
+            const response = await fetch('/version.json');
+            const data = await response.json();
+            const lastUpdated = new Date(data.lastUpdated);
+            const now = new Date();
+            const diffMinutes = Math.floor((now - lastUpdated) / (1000 * 60));
+            
+            // Create version indicator
+            const versionIndicator = document.createElement('div');
+            versionIndicator.style.cssText = `
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 5px 10px;
+                border-radius: 4px;
+                font-size: 12px;
+                z-index: 9999;
+                font-family: monospace;
+            `;
+            versionIndicator.innerHTML = `
+                Build: ${data.buildId}<br>
+                Updated: ${diffMinutes} minutes ago
+            `;
+            document.body.appendChild(versionIndicator);
+        } catch (error) {
+            console.error('Failed to check version:', error);
+        }
+    }
+
+    // Check version every 5 minutes
+    checkVersion();
+    setInterval(checkVersion, 5 * 60 * 1000);
 
 })();
 </script>
