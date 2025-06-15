@@ -55,15 +55,16 @@ function bindNav() {
         });
     });
 
-    // Close any pinned submenu when clicking outside the desktop nav
+    // Close any pinned submenu when clicking anywhere outside the dropdowns
     document.addEventListener('click', e => {
-        if (!e.target.closest('.coprospects-global-nav')) {
+        // If click did NOT occur within any nav-item--has-submenu element, close all
+        if (!e.target.closest('.coprospects-global-nav__desktop-links .nav-item--has-submenu')) {
             desktopSubmenuTriggers.forEach(x => {
                 x.parentElement.classList.remove('is-pinned');
                 x.setAttribute('aria-expanded', 'false');
             });
         }
-    });
+    }, true);
 
     // Optional mobile functionality (will silently skip if elements absent)
     const mobileToggle = document.querySelector('.coprospects-global-nav__mobile-toggle');
