@@ -537,44 +537,6 @@
         });
     });
 
-    // --- Desktop Submenu Toggle ---
-    const desktopSubmenuTriggers = nav.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
-    desktopSubmenuTriggers.forEach(trigger => {
-        trigger.addEventListener('click', function(event) {
-            event.preventDefault();
-            const targetSubmenuId = this.getAttribute('aria-controls');
-            const targetSubmenu = document.getElementById(targetSubmenuId);
-            const isExpanded = this.getAttribute('aria-expanded') === 'true';
-            
-            // Close all other submenus first
-            desktopSubmenuTriggers.forEach(otherTrigger => {
-                if (otherTrigger !== trigger) {
-                    otherTrigger.setAttribute('aria-expanded', 'false');
-                    const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
-                    if (otherSubmenu) {
-                        otherSubmenu.style.opacity = '0';
-                        otherSubmenu.style.visibility = 'hidden';
-                        otherSubmenu.style.transform = 'translateX(-50%) translateY(15px)';
-                    }
-                }
-            });
-
-            // Toggle current submenu
-            this.setAttribute('aria-expanded', !isExpanded);
-            if (targetSubmenu) {
-                if (!isExpanded) {
-                    targetSubmenu.style.opacity = '1';
-                    targetSubmenu.style.visibility = 'visible';
-                    targetSubmenu.style.transform = 'translateX(-50%) translateY(0)';
-                } else {
-                    targetSubmenu.style.opacity = '0';
-                    targetSubmenu.style.visibility = 'hidden';
-                    targetSubmenu.style.transform = 'translateX(-50%) translateY(15px)';
-                }
-            }
-        });
-    });
-
     // --- Current Page Link Highlighting (Example) ---
     function highlightCurrentPageLinks() {
         const currentPath = window.location.pathname;
