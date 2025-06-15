@@ -496,17 +496,6 @@
     // --- Desktop Submenu Toggle ---
     const desktopSubmenuTriggers = nav.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
     
-    // Function to close all submenus
-    function closeAllSubmenus() {
-        desktopSubmenuTriggers.forEach(trigger => {
-            trigger.setAttribute('aria-expanded', 'false');
-            const submenu = document.getElementById(trigger.getAttribute('aria-controls'));
-            if (submenu) {
-                submenu.classList.remove('is-open');
-            }
-        });
-    }
-
     // Add click handlers to all submenu triggers
     desktopSubmenuTriggers.forEach(trigger => {
         trigger.addEventListener('click', function(event) {
@@ -517,23 +506,33 @@
             const targetSubmenu = document.getElementById(targetSubmenuId);
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
             
-            // If this submenu is already open, close it (treat as clicking outside)
-            if (isExpanded) {
-                closeAllSubmenus();
-                return;
+            // Close all submenus first
+            desktopSubmenuTriggers.forEach(otherTrigger => {
+                otherTrigger.setAttribute('aria-expanded', 'false');
+                const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
+                if (otherSubmenu) {
+                    otherSubmenu.classList.remove('is-open');
+                }
+            });
+
+            // If this submenu wasn't open, open it
+            if (!isExpanded) {
+                this.setAttribute('aria-expanded', 'true');
+                targetSubmenu.classList.add('is-open');
             }
-            
-            // Close all other submenus and open this one
-            closeAllSubmenus();
-            this.setAttribute('aria-expanded', 'true');
-            targetSubmenu.classList.add('is-open');
         });
     });
 
     // Close submenus when clicking outside
     document.addEventListener('click', function(event) {
         if (!event.target.closest('.coprospects-global-nav__desktop-links .nav-item--has-submenu')) {
-            closeAllSubmenus();
+            desktopSubmenuTriggers.forEach(trigger => {
+                trigger.setAttribute('aria-expanded', 'false');
+                const submenu = document.getElementById(trigger.getAttribute('aria-controls'));
+                if (submenu) {
+                    submenu.classList.remove('is-open');
+                }
+            });
         }
     });
 
