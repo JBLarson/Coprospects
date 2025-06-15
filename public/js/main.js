@@ -22,6 +22,55 @@ async function init() {
 }
 
 function bindNav() {
-    //highlightCurrentDemoLink();
+    // Desktop dropdown functionality
+    const desktopSubmenuTriggers = document.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
+    if (desktopSubmenuTriggers.length === 0) {
+        console.warn('No desktop submenu triggers found');
+    }
+
+    desktopSubmenuTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const navItem = this.parentElement;
+            const willPin = !navItem.classList.contains('is-pinned');
+
+            // Reset all nav items
+            desktopSubmenuTriggers.forEach(t => {
+                t.parentElement.classList.remove('is-pinned');
+                t.setAttribute('aria-expanded', 'false');
+            });
+
+            if (willPin) {
+                navItem.classList.add('is-pinned');
+                this.setAttribute('aria-expanded', 'true');
+            }
+        });
+    });
+
+    // Optional mobile functionality (will silently skip if elements absent)
+    const mobileToggle = document.querySelector('.coprospects-global-nav__mobile-toggle');
+    const mobileMenu  = document.querySelector('.coprospects-global-nav__mobile-links-overlay');
+    const mobileSubmenuTriggers = document.querySelectorAll('.coprospects-global-nav__mobile-links-overlay .nav-link--submenu-trigger');
+
+    if (mobileToggle && mobileMenu) {
+        mobileToggle.addEventListener('click', function() {
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            mobileMenu.classList.toggle('is-active');
+            document.body.classList.toggle('coprospects-mobile-menu--is-open');
+        });
+
+        mobileSubmenuTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function(event) {
+                event.preventDefault();
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                this.setAttribute('aria-expanded', !isExpanded);
+                const submenu = document.getElementById(this.getAttribute('aria-controls'));
+                submenu.style.maxHeight = isExpanded ? '0' : submenu.scrollHeight + 'px';
+            });
+        });
+    }
 }
 
