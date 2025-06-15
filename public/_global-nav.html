@@ -205,7 +205,6 @@
         transition: transform var(--nav-transition-duration) ease;
     }
 
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .nav-link--submenu-trigger::before,
     .coprospects-global-nav__desktop-links .nav-item--has-submenu > .nav-link--submenu-trigger[aria-expanded="true"]::before {
         transform: scaleY(-1);
     }
@@ -229,9 +228,7 @@
         z-index: calc(var(--nav-z-index) + 10);
     }
 
-    /* Show submenu on hover or when explicitly opened */
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu,
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:focus-within > .submenu,
+    /* Show submenu only when explicitly opened */
     .coprospects-global-nav__desktop-links .submenu.is-open {
         opacity: 1;
         visibility: visible;
