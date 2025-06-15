@@ -240,6 +240,13 @@
         z-index: calc(var(--nav-z-index) + 10);
     }
 
+    /* Show submenu when explicitly opened via JS pin */
+    .coprospects-global-nav__desktop-links .submenu.is-open {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: translateX(-50%) translateY(0) !important;
+    }
+
     .coprospects-global-nav__desktop-links .submenu-link {
         display: block;
         padding: var(--nav-space-3) var(--nav-space-5);
@@ -569,21 +576,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 navItem.classList.add('is-pinned');
                 submenu.classList.add('is-open');
                 this.setAttribute('aria-expanded', 'true');
+            } else {
+                // Already pinned, so unpin (close)
+                navItem.classList.remove('is-pinned');
+                submenu.classList.remove('is-open');
+                this.setAttribute('aria-expanded', 'false');
             }
         });
     });
 
-    // Close any pinned submenu when clicking outside the nav bar
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.coprospects-global-nav__desktop-links')) {
-            desktopSubmenuTriggers.forEach(t => {
-                const li = t.parentElement;
-                li.classList.remove('is-pinned');
-                const sm = document.getElementById(t.getAttribute('aria-controls'));
-                if (sm) sm.classList.remove('is-open');
-                t.setAttribute('aria-expanded', 'false');
-            });
-        }
-    });
+    /* Removed outside-click auto-close to keep submenu pinned until user toggles */
 });
 </script>
