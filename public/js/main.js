@@ -64,7 +64,7 @@ function bindNav() {
                 x.setAttribute('aria-expanded', 'false');
             });
         }
-    });
+    }, true);
 
     // Optional mobile functionality (will silently skip if elements absent)
     const mobileToggle = document.querySelector('.coprospects-global-nav__mobile-toggle');
