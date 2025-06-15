@@ -219,13 +219,15 @@
                     transform var(--nav-transition-duration) cubic-bezier(0.23, 1, 0.32, 1),
                     visibility var(--nav-transition-duration) ease;
         z-index: calc(var(--nav-z-index) + 10);
+        pointer-events: none; /* Prevent interaction when hidden */
     }
 
-    /* Only show submenu when explicitly opened */
+    /* Show submenu when explicitly opened */
     .coprospects-global-nav__desktop-links .submenu.is-open {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
+        pointer-events: auto; /* Enable interaction when visible */
     }
 
     .coprospects-global-nav__desktop-links .submenu-link {
