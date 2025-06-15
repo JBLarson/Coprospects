@@ -221,14 +221,9 @@
         z-index: calc(var(--nav-z-index) + 10);
     }
 
-    /* Remove hover-based display */
+    /* Show submenu on hover or when explicitly opened */
     .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu,
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:focus-within > .submenu {
-        opacity: 0;
-        visibility: hidden;
-    }
-
-    /* Add new class for showing submenu */
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu:focus-within > .submenu,
     .coprospects-global-nav__desktop-links .submenu.is-open {
         opacity: 1;
         visibility: visible;
