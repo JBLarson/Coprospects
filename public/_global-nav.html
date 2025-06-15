@@ -221,9 +221,7 @@
         z-index: calc(var(--nav-z-index) + 10);
     }
 
-    /* Show submenu on hover or when explicitly opened */
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu:not(.is-open),
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu:focus-within > .submenu:not(.is-open),
+    /* Only show submenu when explicitly opened */
     .coprospects-global-nav__desktop-links .submenu.is-open {
         opacity: 1;
         visibility: visible;
@@ -495,43 +493,48 @@
 
     // --- Desktop Submenu Toggle ---
     const desktopSubmenuTriggers = nav.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
+    
+    // Function to close all submenus
+    function closeAllSubmenus() {
+        desktopSubmenuTriggers.forEach(trigger => {
+            trigger.setAttribute('aria-expanded', 'false');
+            const submenu = document.getElementById(trigger.getAttribute('aria-controls'));
+            if (submenu) {
+                submenu.classList.remove('is-open');
+            }
+        });
+    }
+
+    // Add click handlers to all submenu triggers
     desktopSubmenuTriggers.forEach(trigger => {
         trigger.addEventListener('click', function(event) {
             event.preventDefault();
-            event.stopPropagation(); // Prevent event from bubbling up
+            event.stopPropagation();
+            
             const targetSubmenuId = this.getAttribute('aria-controls');
             const targetSubmenu = document.getElementById(targetSubmenuId);
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
             
-            // Close all other submenus first
-            desktopSubmenuTriggers.forEach(otherTrigger => {
-                if (otherTrigger !== trigger) {
-                    otherTrigger.setAttribute('aria-expanded', 'false');
-                    const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
-                    if (otherSubmenu) {
-                        otherSubmenu.classList.remove('is-open');
-                    }
-                }
-            });
-
-            // Toggle current submenu
-            this.setAttribute('aria-expanded', !isExpanded);
-            if (targetSubmenu) {
-                targetSubmenu.classList.toggle('is-open');
+            // If this submenu is already open, close it
+            if (isExpanded) {
+                this.setAttribute('aria-expanded', 'false');
+                targetSubmenu.classList.remove('is-open');
+                return;
             }
+            
+            // Close all other submenus
+            closeAllSubmenus();
+            
+            // Open this submenu
+            this.setAttribute('aria-expanded', 'true');
+            targetSubmenu.classList.add('is-open');
         });
     });
 
     // Close submenus when clicking outside
     document.addEventListener('click', function(event) {
         if (!event.target.closest('.coprospects-global-nav__desktop-links .nav-item--has-submenu')) {
-            desktopSubmenuTriggers.forEach(trigger => {
-                trigger.setAttribute('aria-expanded', 'false');
-                const submenu = document.getElementById(trigger.getAttribute('aria-controls'));
-                if (submenu) {
-                    submenu.classList.remove('is-open');
-                }
-            });
+            closeAllSubmenus();
         }
     });
 
