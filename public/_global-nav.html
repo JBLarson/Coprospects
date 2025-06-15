@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
 <style>
     /* Import fonts at the top */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&family=Montserrat:wght@400;500;600;800&display=swap');
@@ -210,7 +205,7 @@
         transition: transform var(--nav-transition-duration) ease;
     }
 
-    .coprospects-global-nav__desktop-links .nav-item--has-submenu > .nav-link--submenu-trigger[aria-expanded="true"]::before {
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .nav-link--submenu-trigger::before {
         transform: scaleY(-1);
     }
 
@@ -233,8 +228,7 @@
         z-index: calc(var(--nav-z-index) + 10);
     }
 
-    /* Show submenu when it has the is-open class */
-    .coprospects-global-nav__desktop-links .submenu.is-open {
+    .coprospects-global-nav__desktop-links .nav-item--has-submenu:hover > .submenu {
         opacity: 1;
         visibility: visible;
         transform: translateX(-50%) translateY(0);
@@ -517,48 +511,29 @@
 </nav>
 
 <script>
+// Mobile menu functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Get all submenu triggers
-    const desktopSubmenuTriggers = document.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
-    
-    // Add click handlers to all submenu triggers
-    desktopSubmenuTriggers.forEach(trigger => {
-        trigger.addEventListener('click', function(event) {
-            event.preventDefault();
-            event.stopPropagation();
-            
-            const targetSubmenuId = this.getAttribute('aria-controls');
-            const targetSubmenu = document.getElementById(targetSubmenuId);
-            
-            // Close all other submenus first
-            desktopSubmenuTriggers.forEach(otherTrigger => {
-                if (otherTrigger !== trigger) {
-                    otherTrigger.setAttribute('aria-expanded', 'false');
-                    const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
-                    if (otherSubmenu) {
-                        otherSubmenu.classList.remove('is-open');
-                    }
-                }
-            });
-            
-            // Toggle the current submenu
-            const isExpanded = this.getAttribute('aria-expanded') === 'true';
-            this.setAttribute('aria-expanded', !isExpanded);
-            targetSubmenu.classList.toggle('is-open');
-        });
+    const mobileToggle = document.querySelector('.coprospects-global-nav__mobile-toggle');
+    const mobileMenu = document.querySelector('.coprospects-global-nav__mobile-links-overlay');
+    const mobileSubmenuTriggers = document.querySelectorAll('.coprospects-global-nav__mobile-links-overlay .nav-link--submenu-trigger');
+
+    // Toggle mobile menu
+    mobileToggle.addEventListener('click', function() {
+        const isExpanded = this.getAttribute('aria-expanded') === 'true';
+        this.setAttribute('aria-expanded', !isExpanded);
+        mobileMenu.classList.toggle('is-active');
+        document.body.classList.toggle('coprospects-mobile-menu--is-open');
     });
 
-    // Close submenus when clicking outside
-    document.addEventListener('click', function(event) {
-        if (!event.target.closest('.coprospects-global-nav__desktop-links .nav-item--has-submenu')) {
-            desktopSubmenuTriggers.forEach(trigger => {
-                trigger.setAttribute('aria-expanded', 'false');
-                const submenu = document.getElementById(trigger.getAttribute('aria-controls'));
-                if (submenu) {
-                    submenu.classList.remove('is-open');
-                }
-            });
-        }
+    // Toggle mobile submenus
+    mobileSubmenuTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function(event) {
+            event.preventDefault();
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !isExpanded);
+            const submenu = document.getElementById(this.getAttribute('aria-controls'));
+            submenu.style.maxHeight = isExpanded ? '0' : submenu.scrollHeight + 'px';
+        });
     });
 });
 </script>
