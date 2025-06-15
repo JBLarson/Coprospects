@@ -519,6 +519,43 @@
     const nav = document.querySelector('.coprospects-global-nav');
     if (!nav) return;
 
+    // Add version check
+    async function checkVersion() {
+        try {
+            const response = await fetch('/version.json');
+            const data = await response.json();
+            const lastUpdated = new Date(data.lastUpdated);
+            const now = new Date();
+            const diffMinutes = Math.floor((now - lastUpdated) / (1000 * 60));
+            
+            // Create version indicator
+            const versionIndicator = document.createElement('div');
+            versionIndicator.style.cssText = `
+                position: fixed;
+                bottom: 10px;
+                right: 10px;
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 5px 10px;
+                border-radius: 4px;
+                font-size: 12px;
+                z-index: 9999;
+                font-family: monospace;
+            `;
+            versionIndicator.innerHTML = `
+                Build: ${data.buildId}<br>
+                Updated: ${diffMinutes} minutes ago
+            `;
+            document.body.appendChild(versionIndicator);
+        } catch (error) {
+            console.error('Failed to check version:', error);
+        }
+    }
+
+    // Check version every 5 minutes
+    checkVersion();
+    setInterval(checkVersion, 5 * 60 * 1000);
+
     const mobileToggleButton = nav.querySelector('.coprospects-global-nav__mobile-toggle');
     const mobileMenuOverlay = nav.querySelector('.coprospects-global-nav__mobile-links-overlay');
     const body = document.body;
@@ -536,30 +573,25 @@
             const targetSubmenu = document.getElementById(targetSubmenuId);
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
             
-            console.log('Click on trigger:', targetSubmenuId);
-            console.log('Is expanded:', isExpanded);
-            
-            // Toggle the current submenu
+            // If clicking the same button that's already open, close it
             if (isExpanded) {
-                console.log('Closing submenu');
                 this.setAttribute('aria-expanded', 'false');
                 targetSubmenu.classList.remove('is-open');
-            } else {
-                console.log('Opening submenu');
-                // Close all other submenus first
-                desktopSubmenuTriggers.forEach(otherTrigger => {
-                    if (otherTrigger !== trigger) {
-                        otherTrigger.setAttribute('aria-expanded', 'false');
-                        const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
-                        if (otherSubmenu) {
-                            otherSubmenu.classList.remove('is-open');
-                        }
-                    }
-                });
-                
-                this.setAttribute('aria-expanded', 'true');
-                targetSubmenu.classList.add('is-open');
+                return;
             }
+            
+            // Close all other submenus first
+            desktopSubmenuTriggers.forEach(otherTrigger => {
+                otherTrigger.setAttribute('aria-expanded', 'false');
+                const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
+                if (otherSubmenu) {
+                    otherSubmenu.classList.remove('is-open');
+                }
+            });
+            
+            // Open the clicked submenu
+            this.setAttribute('aria-expanded', 'true');
+            targetSubmenu.classList.add('is-open');
         });
     });
 
@@ -657,7 +689,6 @@
     // A more robust way is to have a function in main.js call this.
     // e.g., if (typeof window.initializeCoprospectsNav === 'function') window.initializeCoprospectsNav();
     // window.initializeCoprospectsNav = function() { /* all the JS above */ highlightCurrentPageLinks(); };
-
 
 })();
 </script>
