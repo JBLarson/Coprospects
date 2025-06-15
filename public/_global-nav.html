@@ -1,4 +1,9 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
 <style>
     /* Import fonts at the top */
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;800&family=Montserrat:wght@400;500;600;800&display=swap');
@@ -512,46 +517,34 @@
 </nav>
 
 <script>
-// Initialize navigation immediately
-(function() {
-    console.log('Initializing navigation...');
-    
-    // Get the navigation element
-    const nav = document.querySelector('.coprospects-global-nav');
-    if (!nav) {
-        console.error('Navigation element not found');
-        return;
-    }
-    console.log('Navigation element found');
-
+document.addEventListener('DOMContentLoaded', function() {
     // Get all submenu triggers
-    const desktopSubmenuTriggers = nav.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
-    console.log('Found submenu triggers:', desktopSubmenuTriggers.length);
-
+    const desktopSubmenuTriggers = document.querySelectorAll('.coprospects-global-nav__desktop-links .nav-link--submenu-trigger');
+    
     // Add click handlers to all submenu triggers
     desktopSubmenuTriggers.forEach(trigger => {
-        console.log('Setting up click handler for:', trigger.textContent);
-        
         trigger.addEventListener('click', function(event) {
-            console.log('Click detected on:', this.textContent);
             event.preventDefault();
             event.stopPropagation();
             
             const targetSubmenuId = this.getAttribute('aria-controls');
-            console.log('Target submenu ID:', targetSubmenuId);
-            
             const targetSubmenu = document.getElementById(targetSubmenuId);
-            console.log('Found target submenu:', targetSubmenu);
+            
+            // Close all other submenus first
+            desktopSubmenuTriggers.forEach(otherTrigger => {
+                if (otherTrigger !== trigger) {
+                    otherTrigger.setAttribute('aria-expanded', 'false');
+                    const otherSubmenu = document.getElementById(otherTrigger.getAttribute('aria-controls'));
+                    if (otherSubmenu) {
+                        otherSubmenu.classList.remove('is-open');
+                    }
+                }
+            });
             
             // Toggle the current submenu
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
-            console.log('Current expanded state:', isExpanded);
-            
             this.setAttribute('aria-expanded', !isExpanded);
             targetSubmenu.classList.toggle('is-open');
-            
-            console.log('New expanded state:', !isExpanded);
-            console.log('Submenu is-open class:', targetSubmenu.classList.contains('is-open'));
         });
     });
 
@@ -567,5 +560,5 @@
             });
         }
     });
-})();
+});
 </script>
